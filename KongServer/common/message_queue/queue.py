@@ -1,5 +1,5 @@
 from collections import defaultdict
-from src.routes.events.schema import TrackingEvent
+from KongServer.routes.events.schema import TrackingEvent
 from threading import Lock
 
 class LockingDict:

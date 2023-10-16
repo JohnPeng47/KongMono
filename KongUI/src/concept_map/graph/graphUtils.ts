@@ -23,7 +23,7 @@ export class GraphUtils {
   private Y_INTERVAL = 50;
 
   // Is this consistent with RF getNodes()??
-  private depthNodes: NodeID[][];
+  public depthNodes: { [NodeID: NodeID] : number };
   private rootNode: Node<RFNodeData>;
 
   public constructor(
@@ -33,7 +33,7 @@ export class GraphUtils {
     this.getNodes = getNodes;
     this.getEdges = getEdges;
     this.rootNode = this.getNodes()[0];
-    this.depthNodes = [];
+    this.depthNodes = {};
   }
 
   /**
@@ -52,7 +52,6 @@ export class GraphUtils {
     newNodes: Node<RFNodeData>[];
     newEdges: any[]
   } => {
-
     const updateNodes = [];
     const updateEdges = [];
     const newNodes = [];
@@ -76,12 +75,7 @@ export class GraphUtils {
         newNodes.push(rfNode);
 
         // create a new depth index to hold nodes
-        if (this.depthNodes.length < depth + 1) {
-          this.depthNodes.push([currNode.id])
-        }
-        else {
-          this.depthNodes[depth].push(currNode.id)
-        }
+        this.depthNodes[currNode.id] = depth;
 
         // all nodes not root
         if (parentId !== currNode.id)
@@ -203,7 +197,7 @@ export class GraphUtils {
   public findNodeDepth(nodeId: string): number | undefined {
     return this.depthNodes[nodeId];
   }
-  
+
   /**
   * Returns JSON reprentation of node
   */

@@ -14,6 +14,7 @@ export const CreateNode = (
   node: BackendNode,
   opType: GraphType
 ): RFNode => {
+  // console.log(node.position.x);
   return {
     id: node.id,
     data: {
@@ -31,8 +32,10 @@ export const CreateNode = (
       children: node.data.children
     },
     position: {
-      x: node.position.x ? node.position.x : 0,
-      y: node.position.y ? node.position.y : 0
+      x: 0,
+      y: 0
+      // x: node.position.x ? node.position.x : 0,
+      // y: node.position.y ? node.position.y : 0
     },
     // need to change this
     type:

@@ -84,12 +84,20 @@ export const GlobalProvider = memo(
     const [selecteNodeID, setSelectedNode] = useState<string>("null_user_id");
     
     const downloadGraph = (graphId: string, graphType: GraphType) => {
-      console.log("Downloading: ", graphType);
       async function fetchData() {
         backend.downloadGraph(graphId)
           .then((res) => {
             // represents the order of nodes in JSON format
-            const {newNodes, newEdges} = graph.processJson(res.data);
+            let {newNodes, newEdges} = graph.processJson(res.data);
+            newNodes = newNodes.map((node, index) => (
+              {
+                ...node,
+                position: {
+                  x : graph.findNodeDepth(node.id) * 50,
+                  y : index * 74
+                }
+              }
+            ))
 
             setNodes(newNodes);
             setEdges(newEdges);
@@ -245,15 +253,15 @@ export const GlobalProvider = memo(
     /**
      * Add nodes as well as repositioning
      */
-    const addNodes = useCallback(
-      (nodes: [{child: Node<RFNodeData>, parent: Node<RFNodeData>}]) : void => {
-        const newNodes = [];
-        for (let node of nodes) {
-          const parentNode = 
+    // const addNodes = useCallback(
+    //   (nodes: [{child: Node<RFNodeData>, parent: Node<RFNodeData>}]) : void => {
+    //     const newNodes = [];
+    //     for (let node of nodes) {
+    //       const parentNode = 
           
-        }
-      }, [changeNodes]
-    )
+    //     }
+    //   }, [changeNodes]
+    // )
 
 
 
@@ -279,10 +287,10 @@ export const GlobalProvider = memo(
       const subgraph = graph.RFtoJSON(nodeId);
 
       backend.genSubGraph(subgraph).then((res) => {
-        const {initialNodes, initialEdges} = graph.processJson(res.data);
+        const {newNodes, newEdges} = graph.processJson(res.data);
 
-        setNodes(initialNodes);
-        setEdges(initialEdges);
+        setNodes(newNodes);
+        setEdges(newEdges);
       })
     } 
 
