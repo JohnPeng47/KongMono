@@ -1,0 +1,62 @@
+# Visual Studio Code
+.vscode/
+
+# Node / NPM / React
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# build directories
+dist/
+build/
+out/
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Directories used by tools like eslint
+node_modules/
+coverage/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+*.venv
+*.virtualenv
+db.sqlite3
+
+# Databases
+*.sqlite
+
+# Backup files (e.g. from editors)
+*~
+*.swp
+*.swo
+
+# IDEs
+.idea/

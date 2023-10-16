@@ -1,0 +1,322 @@
+Connected to database 'kongbot'
+Generator global in config not found
+Generator generate_tree in config not found
+Generator generate_tree_details in config not found
+Generator generate_sub_trees in config not found
+Generator generate_detailed_descriptions in config not found
+Generator generate_entity_relations in config not found
+Generator generate_details_hierarchal in config not found
+> Emergence of Psychology
+--> Philosophical Roots (Plato, Aristotle)
+--> Wilhelm Wundt and Structuralism
+--> William James and Functionalism
+--> Psychoanalysis and Sigmund Freud
+--> Behaviorism and John B. Watson
+--> Humanistic Psychology and Carl Rogers
+--> Cognitive Revolution
+
+Title:  Philosophical Roots (Plato, Aristotle) 
+Detailed description:  The emergence of psychology can be traced back to the philosophical ideas of ancient Greek scholars like Plato and Aristotle. Both philosophers pondered questions about the nature of the mind, consciousness, and human behavior, setting the stage for the development of psychology as a scientific discipline.
+Modifying node_id:  28db6fb8-59dc-4af6-a750-31395d59f5cf The emergence of psychology can be traced back to the philosophical ideas of ancient Greek scholars like Plato and Aristotle. Both philosophers pondered questions about the nature of the mind, consciousness, and human behavior, setting the stage for the development of psychology as a scientific discipline.
+{
+    "id": "28db6fb8-59dc-4af6-a750-31395d59f5cf",
+    "node_data": {
+        "title": "Emergence of Psychology",
+        "node_type": "ROOT",
+        "description": "",
+        "randomfield": "The emergence of psychology can be traced back to the philosophical ideas of ancient Greek scholars like Plato and Aristotle. Both philosophers pondered questions about the nature of the mind, consciousness, and human behavior, setting the stage for the development of psychology as a scientific discipline.",
+        "children": [
+            {
+                "id": "8ee04614-4c0b-47de-b637-b4c8ce276979",
+                "node_data": {
+                    "title": "Philosophical Roots (Plato, Aristotle)",
+                    "node_type": "TREE_NODE",
+                    "description": "hellworold",
+                    "children": []
+                }
+            },
+            {
+                "id": "4f62c412-7f65-4925-b2d1-68a5e53a45ca",
+                "node_data": {
+                    "title": "Wilhelm Wundt and Structuralism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "d2c005a7-a4a2-4e35-9ed7-cfa83536d7c0",
+                "node_data": {
+                    "title": "William James and Functionalism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "2912b783-7734-4411-817f-226edb09722d",
+                "node_data": {
+                    "title": "Psychoanalysis and Sigmund Freud",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "b3d2d2b4-bc1c-4da0-9106-2f8db53daed5",
+                "node_data": {
+                    "title": "Behaviorism and John B. Watson",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "06a79c8f-3d5a-4ec5-a396-6e3fa6cd8e9f",
+                "node_data": {
+                    "title": "Humanistic Psychology and Carl Rogers",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "158cf3cd-13d1-44c7-99c9-39d9ed517d06",
+                "node_data": {
+                    "title": "Cognitive Revolution",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            }
+        ]
+    }
+}
+Title:  Wilhelm Wundt and Structuralism 
+Detailed description:  Wilhelm Wundt, a German psychologist, is considered the founder of psychology as an experimental science. He established the first laboratory dedicated to psychological research and developed the approach known as structuralism. Wundt's structuralism focused on analyzing the basic components and structures of conscious experience to understand the workings of the human mind.
+Modifying node_id:  28db6fb8-59dc-4af6-a750-31395d59f5cf Wilhelm Wundt, a German psychologist, is considered the founder of psychology as an experimental science. He established the first laboratory dedicated to psychological research and developed the approach known as structuralism. Wundt's structuralism focused on analyzing the basic components and structures of conscious experience to understand the workings of the human mind.
+{
+    "id": "28db6fb8-59dc-4af6-a750-31395d59f5cf",
+    "node_data": {
+        "title": "Emergence of Psychology",
+        "node_type": "ROOT",
+        "description": "",
+        "randomfield": "Wilhelm Wundt, a German psychologist, is considered the founder of psychology as an experimental science. He established the first laboratory dedicated to psychological research and developed the approach known as structuralism. Wundt's structuralism focused on analyzing the basic components and structures of conscious experience to understand the workings of the human mind.",
+        "children": [
+            {
+                "id": "8ee04614-4c0b-47de-b637-b4c8ce276979",
+                "node_data": {
+                    "title": "Philosophical Roots (Plato, Aristotle)",
+                    "node_type": "TREE_NODE",
+                    "description": "hellworold",
+                    "children": []
+                }
+            },
+            {
+                "id": "4f62c412-7f65-4925-b2d1-68a5e53a45ca",
+                "node_data": {
+                    "title": "Wilhelm Wundt and Structuralism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "d2c005a7-a4a2-4e35-9ed7-cfa83536d7c0",
+                "node_data": {
+                    "title": "William James and Functionalism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "2912b783-7734-4411-817f-226edb09722d",
+                "node_data": {
+                    "title": "Psychoanalysis and Sigmund Freud",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "b3d2d2b4-bc1c-4da0-9106-2f8db53daed5",
+                "node_data": {
+                    "title": "Behaviorism and John B. Watson",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "06a79c8f-3d5a-4ec5-a396-6e3fa6cd8e9f",
+                "node_data": {
+                    "title": "Humanistic Psychology and Carl Rogers",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "158cf3cd-13d1-44c7-99c9-39d9ed517d06",
+                "node_data": {
+                    "title": "Cognitive Revolution",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            }
+        ]
+    }
+}
+Title:  William James and Functionalism 
+Detailed description:  William James, an American philosopher and psychologist, played a crucial role in the development of psychology by introducing the functionalist perspective. James believed that psychology should focus on the functions and purposes of mental processes rather than just their structure. He emphasized the adaptive nature of human behavior and the importance of studying consciousness in relation to its practical value.
+Modifying node_id:  28db6fb8-59dc-4af6-a750-31395d59f5cf William James, an American philosopher and psychologist, played a crucial role in the development of psychology by introducing the functionalist perspective. James believed that psychology should focus on the functions and purposes of mental processes rather than just their structure. He emphasized the adaptive nature of human behavior and the importance of studying consciousness in relation to its practical value.
+{
+    "id": "28db6fb8-59dc-4af6-a750-31395d59f5cf",
+    "node_data": {
+        "title": "Emergence of Psychology",
+        "node_type": "ROOT",
+        "description": "",
+        "randomfield": "William James, an American philosopher and psychologist, played a crucial role in the development of psychology by introducing the functionalist perspective. James believed that psychology should focus on the functions and purposes of mental processes rather than just their structure. He emphasized the adaptive nature of human behavior and the importance of studying consciousness in relation to its practical value.",
+        "children": [
+            {
+                "id": "8ee04614-4c0b-47de-b637-b4c8ce276979",
+                "node_data": {
+                    "title": "Philosophical Roots (Plato, Aristotle)",
+                    "node_type": "TREE_NODE",
+                    "description": "hellworold",
+                    "children": []
+                }
+            },
+            {
+                "id": "4f62c412-7f65-4925-b2d1-68a5e53a45ca",
+                "node_data": {
+                    "title": "Wilhelm Wundt and Structuralism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "d2c005a7-a4a2-4e35-9ed7-cfa83536d7c0",
+                "node_data": {
+                    "title": "William James and Functionalism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "2912b783-7734-4411-817f-226edb09722d",
+                "node_data": {
+                    "title": "Psychoanalysis and Sigmund Freud",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "b3d2d2b4-bc1c-4da0-9106-2f8db53daed5",
+                "node_data": {
+                    "title": "Behaviorism and John B. Watson",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "06a79c8f-3d5a-4ec5-a396-6e3fa6cd8e9f",
+                "node_data": {
+                    "title": "Humanistic Psychology and Carl Rogers",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "158cf3cd-13d1-44c7-99c9-39d9ed517d06",
+                "node_data": {
+                    "title": "Cognitive Revolution",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            }
+        ]
+    }
+}
+{
+    "id": "28db6fb8-59dc-4af6-a750-31395d59f5cf",
+    "node_data": {
+        "title": "Emergence of Psychology",
+        "node_type": "ROOT",
+        "description": "",
+        "randomfield": "William James, an American philosopher and psychologist, played a crucial role in the development of psychology by introducing the functionalist perspective. James believed that psychology should focus on the functions and purposes of mental processes rather than just their structure. He emphasized the adaptive nature of human behavior and the importance of studying consciousness in relation to its practical value.",
+        "children": [
+            {
+                "id": "8ee04614-4c0b-47de-b637-b4c8ce276979",
+                "node_data": {
+                    "title": "Philosophical Roots (Plato, Aristotle)",
+                    "node_type": "TREE_NODE",
+                    "description": "hellworold",
+                    "children": []
+                }
+            },
+            {
+                "id": "4f62c412-7f65-4925-b2d1-68a5e53a45ca",
+                "node_data": {
+                    "title": "Wilhelm Wundt and Structuralism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "d2c005a7-a4a2-4e35-9ed7-cfa83536d7c0",
+                "node_data": {
+                    "title": "William James and Functionalism",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "2912b783-7734-4411-817f-226edb09722d",
+                "node_data": {
+                    "title": "Psychoanalysis and Sigmund Freud",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "b3d2d2b4-bc1c-4da0-9106-2f8db53daed5",
+                "node_data": {
+                    "title": "Behaviorism and John B. Watson",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "06a79c8f-3d5a-4ec5-a396-6e3fa6cd8e9f",
+                "node_data": {
+                    "title": "Humanistic Psychology and Carl Rogers",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            },
+            {
+                "id": "158cf3cd-13d1-44c7-99c9-39d9ed517d06",
+                "node_data": {
+                    "title": "Cognitive Revolution",
+                    "node_type": "TREE_NODE",
+                    "description": "",
+                    "children": []
+                }
+            }
+        ]
+    }
+}

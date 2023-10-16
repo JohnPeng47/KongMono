@@ -1,0 +1,6 @@
+[submodule "KongBot"]
+	path = KongBot
+	url = git@github.com:JohnPeng47/KongBot.git
+[submodule "KongUI"]
+	path = KongUI
+	url = git@github.com:JohnPeng47/KongUI.git

@@ -1,0 +1,10 @@
+{
+    "local": {
+        "db_host": "localhost",
+        "db_port": "8081"
+    },
+    "remote" : {
+        "db_host" : "18.221.129.100",
+        "db_port" : "27017"
+    }
+}

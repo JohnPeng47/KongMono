@@ -1,0 +1,1210 @@
+{
+    "id": "e45cd912-37a7-4eb4-9c72-c24345f07f2f",
+    "node_data": {
+        "title": "Russia's situation leading up to the Great War",
+        "node_type": "ROOT",
+        "description": "",
+        "color": "#5ABCB9",
+        "keywords": [],
+        "children": [
+            {
+                "id": "419677dc-2e1b-4080-9ecf-456b66a33530",
+                "node_data": {
+                    "title": "Political instability",
+                    "node_type": "TREE_NODE",
+                    "description": "In the period leading up to the Great War, Russia was marked by significant political instability. This was a result of various factors, including a lack of robust governance structures and the influence of numerous internal and external pressures.",
+                    "color": "#5ABCB9",
+                    "keywords": [],
+                    "children": [
+                        {
+                            "id": "d1c27859-966c-45a7-b03b-13ddfefee3d6",
+                            "node_data": {
+                                "title": "Influence of Tsar's abdication",
+                                "node_type": "TREE_NODE",
+                                "description": "In the context of political instability and Russia's precarious situation leading up to the Great War, the Tsar's abdication had a profound impact. The relinquishing of royal power by Tsar Nicholas II in 1917 marked a turning point in the political landscape of Russia, opening the door to a new era of uncertainty and upheaval.",
+                                "color": "#56EEF4",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "ee63250b-3e02-4594-bc88-b8699abfe02e",
+                                        "node_data": {
+                                            "title": "Power vacuum in government",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The Tsar's abdication led to a power vacuum in the Russian government. This void in leadership triggered a scramble for control among various political factions, further exacerbating the instability. The lack of a clear successor or established leadership structure led to chaos and disorder, making the situation ripe for exploitation by radical elements.",
+                                            "color": "#56EEF4",
+                                            "keywords": [],
+                                            "children": [
+                                                {
+                                                    "id": "453a1b58-690e-484f-9e9d-7707f334d100",
+                                                    "node_data": {
+                                                        "title": "Establishment of Provisional Government",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "",
+                                                        "color": "#56EEF4",
+                                                        "keywords": [],
+                                                        "children": [
+                                                            {
+                                                                "id": "35eb2708-f309-4c6e-ba54-0d5aadc8615f",
+                                                                "node_data": {
+                                                                    "title": "Formation of different political factions",
+                                                                    "node_type": "TREE_NODE",
+                                                                    "description": "",
+                                                                    "color": "#56EEF4",
+                                                                    "keywords": [],
+                                                                    "children": []
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "52b2fd8d-e860-4185-a099-0d2e95f7c7c3",
+                                        "node_data": {
+                                            "title": "Public disillusionment with monarchy",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The public's disillusionment with the monarchy grew significantly following the Tsar's abdication. The people, already disgruntled by the failures of the monarchy and the hardships of the Great War, lost faith in the system. This loss of belief in the monarchy fueled a surge in radical ideologies and a desire for a new form of governance.",
+                                            "color": "#56EEF4",
+                                            "keywords": [],
+                                            "children": [
+                                                {
+                                                    "id": "85800479-7872-40a0-a638-a3578b323b00",
+                                                    "node_data": {
+                                                        "title": "Increased support for democratic ideals",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "",
+                                                        "color": "#56EEF4",
+                                                        "keywords": [],
+                                                        "children": [
+                                                            {
+                                                                "id": "698852e1-8ebd-496d-869d-e7404c9d0186",
+                                                                "node_data": {
+                                                                    "title": "Emergence of socialist and communist ideologies",
+                                                                    "node_type": "TREE_NODE",
+                                                                    "description": "",
+                                                                    "color": "#56EEF4",
+                                                                    "keywords": [],
+                                                                    "children": []
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "97040110-d781-447c-b95d-dd1145405ebb",
+                                        "node_data": {
+                                            "title": "Spread of radical ideologies",
+                                            "node_type": "TREE_NODE",
+                                            "description": "In the aftermath of the Tsar's abdication and the resulting power vacuum, radical ideologies began to gain traction. The public's disillusionment with the monarchy and the existing power structures provided a fertile ground for the spread of these ideologies. The most significant of these was Bolshevism, which eventually led to the establishment of a communist regime in Russia.",
+                                            "color": "#56EEF4",
+                                            "keywords": [],
+                                            "children": [
+                                                {
+                                                    "id": "7e7395b3-f20e-4794-a391-c1ee1892204a",
+                                                    "node_data": {
+                                                        "title": "Rise of Bolsheviks and Mensheviks",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "",
+                                                        "color": "#56EEF4",
+                                                        "keywords": [],
+                                                        "children": [
+                                                            {
+                                                                "id": "c065cfee-d64e-45f4-8e2d-3ebe5f174a10",
+                                                                "node_data": {
+                                                                    "title": "Argue for proletariat power",
+                                                                    "node_type": "TREE_NODE",
+                                                                    "description": "In the backdrop of the Bolsheviks and Mensheviks' rise, radical ideologies spread, and political instability following the Tsar's abdication, the argument for proletariat power gained momentum. This argument centred on the transfer of power to the working class, who were perceived as the real engine of societal progress and economic production.",
+                                                                    "color": "#56EEF4",
+                                                                    "keywords": [],
+                                                                    "children": [
+                                                                        {
+                                                                            "id": "83e38549-7144-4717-a003-3e40a23743ad",
+                                                                            "node_data": {
+                                                                                "title": "Highlight working class struggles",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of the rise of Bolsheviks and Mensheviks, radical ideologies, the influence of the Tsar's abdication, and Russia's political instability leading up to the Great War, it is important to highlight the struggles faced by the working class. They were the backbone of the country's economy, yet suffered from horrendous work conditions, low wages, and a lack of basic rights.",
+                                                                                "color": "#56EEF4",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "bfafb289-5b80-41b0-a825-f9459b598ed1",
+                                                                                        "node_data": {
+                                                                                            "title": "Exploit of labor by bourgeoisie",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "A major issue that fueled the radical ideologies was the exploitation of labor by the bourgeoisie. The capitalist class, who owned the means of production, often took advantage of the proletariat, or working class, leading them to work long hours in unsafe conditions for meager pay. This exploitative economic structure was a catalyst for the spread of revolutionary ideologies.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "b5080e8e-35c1-43ed-afb8-d1519aa7ea69",
+                                                                                        "node_data": {
+                                                                                            "title": "Economic inequality and poverty",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The exploitation of labor by the bourgeoisie contributed to profound economic inequality and widespread poverty among the working class. Despite their essential role in the economy, the proletariat lived in dire conditions, barely able to afford basic necessities. The glaring disparity between the wealthy bourgeoisie and the impoverished working class further incited revolutionary sentiments.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "a77ccb2f-79b3-4f51-a791-9c68ccf6e2df",
+                                                                                        "node_data": {
+                                                                                            "title": "Lack of political representation",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "f7973629-084f-4ccb-80c8-6b7236685267",
+                                                                            "node_data": {
+                                                                                "title": "Cite Marx's theory of class struggle",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of arguing for proletariat power, the rise of Bolsheviks and Mensheviks, and the spread of radical ideologies, Marx's theory of class struggle becomes central. This theory, which posits an ongoing conflict between the bourgeoisie and the proletariat, provided the intellectual foundation for the Bolsheviks and Mensheviks. The theory's relevance was further emphasized in light of the political instability following the Tsar's abdication and the situation leading up to the Great War.",
+                                                                                "color": "#56EEF4",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "8ac0edec-1209-43f2-a9c8-ee4494d8ade6",
+                                                                                        "node_data": {
+                                                                                            "title": "Alienation of labor under capitalism",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Marx's theory of class struggle also emphasized the alienation of labor under capitalism. This concept, which describes how workers are distanced from the products of their labor, resonated with the Russian proletariat. In a time of political unrest and radical ideologies, the idea of labor alienation under capitalism further fueled the desire for a proletarian revolution.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "85f39256-b42e-4d31-b441-8408d82b380c",
+                                                                                        "node_data": {
+                                                                                            "title": "Historical inevitability of proletariat revolution",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Marx's theory took a deterministic view, asserting the historical inevitability of a proletarian revolution. This concept posited that the inherent contradictions of capitalism would inevitably lead to its own downfall. It provided the Bolsheviks and Mensheviks with a theoretical justification for their revolutionary activities and helped fuel the spread of radical ideologies.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "c35a4a7b-d4d7-499f-8329-60dbf793d98f",
+                                                                                        "node_data": {
+                                                                                            "title": "Vision of a classless society",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "At the heart of Marx's theory of class struggle is the vision of a classless society. This utopian vision, where the proletariat would seize power and establish a society without class distinctions, was a powerful motivating force for the Bolsheviks and Mensheviks. In the context of the Tsar's abdication and the political instability that ensued, this vision provided a hopeful and radical alternative for the future of Russia.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "ef2062f1-ce60-45ae-bd13-238f344b38df",
+                                                                            "node_data": {
+                                                                                "title": "Draw from international workers' movement",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of the rise of Bolsheviks and Mensheviks, radical ideologies' spread and the influence of the Tsar's abdication, the international workers' movement provided a significant source of inspiration. This movement, marked by increasing worker solidarity and a rising tide of socialism, greatly influenced the argument for proletariat power in Russia.",
+                                                                                "color": "#56EEF4",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "e4fee349-b6e1-4298-90a6-77d9646e95ec",
+                                                                                        "node_data": {
+                                                                                            "title": "Success of labor rights in Western Europe",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The success of labor rights in Western Europe was a testament to the power of the proletariat. These victories, secured through relentless struggle and resistance, offered a powerful model for Russian revolutionaries. The Bolsheviks and Mensheviks, in particular, drew heavily from these successes in their fight for workers' rights in Russia.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "9f99a7b8-8870-403e-aa23-a374e3d8b76d",
+                                                                                        "node_data": {
+                                                                                            "title": "Rising tide of socialism",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The rising tide of socialism in Western Europe was another significant factor that influenced the argument for proletariat power in Russia. The spread of these radical ideologies, coupled with the success of labor rights, created a conducive environment for the growth of socialist thought and action in Russia, further fuelling the rise of the Bolsheviks and Mensheviks.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "8829f5c5-aea5-4ad3-878e-6e04d6b73873",
+                                                                                        "node_data": {
+                                                                                            "title": "Worker solidarity across national boundaries",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The concept of worker solidarity across national boundaries was instrumental in the spread of radical ideologies. This international solidarity not only bolstered the argument for proletariat power but also fostered a sense of shared struggle and collective action. The Bolsheviks and Mensheviks harnessed this sentiment to galvanize their own movement and push for significant changes in Russia.",
+                                                                                            "color": "#56EEF4",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "04d1697b-d226-47f3-99b7-9ffa16513054",
+                            "node_data": {
+                                "title": "Economic Mismanagement",
+                                "node_type": "TREE_NODE",
+                                "description": "In the context of political instability and Russia's precarious situation leading up to the Great War, economic mismanagement became a significant issue. The government's lack of fiscal discipline and planning led to severe economic fallout, exacerbating the nation's pre-existing tensions.",
+                                "color": "#6EF9F5",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "e514167b-2f9a-459c-8003-910538747b19",
+                                        "node_data": {
+                                            "title": "Widespread poverty and starvation",
+                                            "node_type": "TREE_NODE",
+                                            "description": "Economic mismanagement resulted in widespread poverty and starvation among the Russian population. The government's failure to address the needs of its citizens, coupled with an economy in decline, created conditions ripe for socio-economic distress. A significant portion of the population lacked access to basic necessities, leading to widespread hunger and dissatisfaction.",
+                                            "color": "#6EF9F5",
+                                            "keywords": [],
+                                            "children": [
+                                                {
+                                                    "id": "a361642a-d0a6-4d3a-bafd-e31417a5b241",
+                                                    "node_data": {
+                                                        "title": "Failure to industrialize effectively",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "",
+                                                        "color": "#6EF9F5",
+                                                        "keywords": [],
+                                                        "children": [
+                                                            {
+                                                                "id": "e09c96d4-f5d4-417f-b515-32cebf6b976e",
+                                                                "node_data": {
+                                                                    "title": "Lack of understanding of war economics",
+                                                                    "node_type": "TREE_NODE",
+                                                                    "description": "In the backdrop of the failure to industrialize, widespread poverty, economic mismanagement, and political instability, Russia's lack of understanding of war economics exacerbated their situation leading up to the Great War. The country's leadership failed to grasp the economic complexities of warfare, leading to a series of strategic missteps that further deepened their crisis.",
+                                                                    "color": "#6EF9F5",
+                                                                    "keywords": [],
+                                                                    "children": [
+                                                                        {
+                                                                            "id": "dab80471-2bd5-43b0-9c97-2335d8ed4588",
+                                                                            "node_data": {
+                                                                                "title": "Inefficiency in budget allocation",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of Russia's inadequate understanding of war economics and industrialization, the inefficiency in budget allocation played a significant role. This involved mismanaging funds meant for industrialization, leading to widespread poverty and starvation, and further political instability. The budget was not used optimally to address the country's needs, adding to the already dire situation leading up to the Great War.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "5078b530-3b5b-4908-8429-e1e1a2213a08",
+                                                                                        "node_data": {
+                                                                                            "title": "Wastage of resources on warfront",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "In line with the mismanagement and negligence, a significant portion of Russia's resources was wasted on the warfront. This further exacerbated the widespread poverty and starvation, as resources that could have been used for industrialization and domestic needs were squandered. This wastage of resources was a key factor in the failure of Russia's war economics.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "3a434c4d-939a-4d23-b387-83e56eb1c7aa",
+                                                                                        "node_data": {
+                                                                                            "title": "Negligence towards domestic needs",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Despite the widespread poverty and starvation, the Russian government continued to neglect the domestic needs of its people. The focus remained on the warfront, with little to no attention given to the growing economic and social problems within the country. This negligence further stoked the flames of political instability, contributing to the volatile situation leading up to the Great War.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "1136f120-56c8-4b57-9469-7993ce0537ca",
+                                                                                        "node_data": {
+                                                                                            "title": "Inability to foresee long-term impacts",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The Russian government's inadequate understanding of war economics extended to an inability to foresee the long-term impacts of their decisions. The misallocation of resources and negligence towards domestic needs had far-reaching consequences, including further economic decline and political upheaval. This short-sighted focus on the warfront, at the expense of domestic stability, was a significant factor in the challenges Russia faced in the lead up to the Great War.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "8c07958f-06d5-4085-afc9-363f6b4829ff",
+                                                                            "node_data": {
+                                                                                "title": "Mismanagement of funds",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the backdrop of a poorly understood war economy and failure to industrialize effectively, the mismanagement of funds became a major issue in Russia. This mismanagement was a result of both systemic corruption and incompetence in financial planning, exacerbating the widespread poverty, starvation, and economic instability of the era.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "d5f934bb-6046-4a58-a08e-76a36e6dbbc0",
+                                                                                        "node_data": {
+                                                                                            "title": "Corruption and misuse of war funds",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The misuse of war funds through rampant corruption was a significant aspect of Russia's economic mismanagement. This corruption further impoverished the masses, diverting resources meant for industrialization and war efforts into the pockets of the corrupt. It significantly impacted Russia's ability to effectively compete in the Great War and maintain domestic stability.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "3886faca-de9c-481b-8858-5a59c86826b8",
+                                                                                        "node_data": {
+                                                                                            "title": "Ineptitude in financial planning",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "In addition to corruption, the systemic ineptitude in financial planning further contributed to Russia's economic woes. Lacking a comprehensive understanding of war economics and the foresight to plan for a post-war economy, the Russian government's ineffective fiscal policies led to inflation, further impoverishing the masses and causing widespread societal unrest.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "e8d92891-30be-4a14-bbad-6ba986af5bd2",
+                                                                                        "node_data": {
+                                                                                            "title": "Failure to consider post-war economy",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The Russian government's failure to consider the post-war economy during their fiscal planning was a major shortcoming. This lack of foresight left the nation unprepared for the economic challenges following the Great War, exacerbating the already prevalent poverty and starvation. It also led to significant political instability, setting the stage for the tumultuous era leading up to the Great War.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "9934b88c-1104-412c-8d1d-92602521932b",
+                                                                            "node_data": {
+                                                                                "title": "Poor understanding of international trade dynamics",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of Russia's economic mismanagement and political instability leading up to the Great War, a poor understanding of international trade dynamics further complicated the country's situation. This lack of comprehension exacerbated the existing economic issues and contributed to the country's failure to effectively industrialize. By failing to grasp the intricacies of international trade, Russia was unable to leverage global markets to its advantage or identify potential economic opportunities.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "2806fb46-cfcf-4445-9791-27bb343a3b91",
+                                                                                        "node_data": {
+                                                                                            "title": "Over reliance on war allies",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The over-reliance on war allies further exposed Russia's poor understanding of international trade dynamics. This dependency, fueled by Russia's inability to industrialize effectively and its economic mismanagement, left the country vulnerable to the whims and fancies of its allies. When resources dwindled and support was withdrawn, Russia was left exposed to the harsh realities of war, contributing to widespread poverty and starvation.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "2475518b-26c8-4904-a5e0-942ce1629bd9",
+                                                                                        "node_data": {
+                                                                                            "title": "Ignoring potential trade opportunities",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Ignorance of potential trade opportunities was another symptom of Russia's poor understanding of war economics. Despite facing widespread poverty and starvation due to economic mismanagement, the country failed to explore possible trade avenues that could have alleviated these issues. This disregard for potential economic gains further deepened Russia's economic woes and set the stage for political instability.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "1bd793f8-2083-4cdd-8de6-7fa8ebbcdb75",
+                                                                                        "node_data": {
+                                                                                            "title": "Detachment from global economic trends",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Russia's detachment from global economic trends further isolated the country in the economic landscape leading up to the Great War. This detachment, driven by a lack of understanding of war economics and failure to industrialize effectively, kept Russia oblivious to new economic opportunities and advancements in other nations. This isolation contributed to Russia's economic mismanagement, political instability, and ultimately, its poor preparation for war.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "2b0cf539-d955-4e28-a210-0d90ce1d13c4",
+                                        "node_data": {
+                                            "title": "Inflation and economic instability",
+                                            "node_type": "TREE_NODE",
+                                            "description": "As a result of economic mismanagement, Russia experienced rampant inflation and economic instability. The government's inability to control the money supply led to the devaluation of the Russian ruble, causing prices to skyrocket. This financial instability further impoverished the Russian people and created a volatile economic environment.",
+                                            "color": "#6EF9F5",
+                                            "keywords": [],
+                                            "children": [
+                                                {
+                                                    "id": "9d428927-5e02-48f8-966a-35891d57cc19",
+                                                    "node_data": {
+                                                        "title": "Hoarding of resources by the wealthy",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "",
+                                                        "color": "#6EF9F5",
+                                                        "keywords": [],
+                                                        "children": [
+                                                            {
+                                                                "id": "aa4c5318-8591-4088-a09f-bd4e1739a883",
+                                                                "node_data": {
+                                                                    "title": "Misuse of war funds",
+                                                                    "node_type": "TREE_NODE",
+                                                                    "description": "Amidst the backdrop of resource hoarding by the wealthy and the resulting economic and political instability, misuse of war funds became a significant issue in Russia during the lead up to the Great War. These funds, which were meant to support the war effort and stabilize the economy, were instead diverted for purposes that did not serve the general public. This misuse of funds further exacerbated the economic challenges and political instability facing the country.",
+                                                                    "color": "#6EF9F5",
+                                                                    "keywords": [],
+                                                                    "children": [
+                                                                        {
+                                                                            "id": "f3fea750-d97f-4c6a-971b-367bd8e21160",
+                                                                            "node_data": {
+                                                                                "title": "Unjust enrichment of the elite",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "Given the backdrop of misuse of war funds, hoarding of resources by the wealthy, and the ensuing economic and political instability, the unjust enrichment of the elite became a crucial issue. The elite class, despite the dire circumstances of the country and the Great War, continued to amass wealth, further exacerbating the economic disparity and social unrest.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "e7555442-cea4-4953-a203-ebd74d719fba",
+                                                                                        "node_data": {
+                                                                                            "title": "Lavish lifestyle while soldiers suffer",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The unjust enrichment of the elite was not just limited to their hoarding of resources; it also manifested in their lavish lifestyles. While soldiers were suffering on the battlefields, deprived of necessary resources and support, the elite class continued to live in opulence. This stark contrast fuelled discontent and resentment among the soldiers and the general populace.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "6610040b-64ae-45b3-a414-6f1a1cefbf9a",
+                                                                                        "node_data": {
+                                                                                            "title": "Money meant for war efforts diverted",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Adding to the economic mismanagement and political instability was the diversion of funds meant for war efforts. Instead of being used to support and equip the soldiers, these funds were being misappropriated by the elite. This not only weakened Russia's position in the Great War but also deepened the economic crisis and societal unrest.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "21db328c-9342-49fc-9f36-572785a0c393",
+                                                                            "node_data": {
+                                                                                "title": "Unexplained expenses and losses",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the backdrop of the misuse of war funds, hoarding of resources by the wealthy, and economic and political instability leading up to the Great War, there were also unexplained expenses and losses. These mysterious expenditures added to the economic instability and created a sense of mistrust and uncertainty among the populace.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "1983a797-f852-4641-a31e-f48a7b77f1aa",
+                                                                                        "node_data": {
+                                                                                            "title": "No clear records of spending",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Amidst the chaos, there were no clear records of spending, further exacerbating the issue of the misuse of war funds. The lack of transparency in financial transactions created an environment ripe for corruption and mismanagement. This not only fueled the economic instability but also undermined public faith in the government.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "d4ce9595-388c-4599-a521-8fa49d421e92",
+                                                                                        "node_data": {
+                                                                                            "title": "Large sums disappearing without reason",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Adding to the financial mismanagement were large sums of money disappearing without reason. These inexplicable losses further deepened the economic crisis, leading to greater inflation and instability. The lack of accountability and transparency in handling these funds further fueled public discontent and mistrust in the government.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "b967387e-054b-4fd3-ad37-927b5428ae2e",
+                                                                            "node_data": {
+                                                                                "title": "Lack of transparency in financial matters",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of misuse of war funds and hoarding of resources by the wealthy, there was a significant lack of transparency in financial matters. This opacity in financial dealings exacerbated the existing economic instability and political turbulence. It led to mistrust among the public and further strained Russia's precarious situation leading up to the Great War.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "daf73469-8731-462e-8d6d-19a960fdff35",
+                                                                                        "node_data": {
+                                                                                            "title": "No public accountability",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The lack of public accountability in Russia during this period was a major contributing factor to the economic and political mismanagement. Despite rampant inflation and economic instability, the wealthy continued to hoard resources without facing any repercussions. The absence of public oversight allowed these secret transactions to continue unabated, deepening the economic divide and social unrest.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "95a30a90-94d5-4b97-a93c-f7bcde2a1949",
+                                                                                        "node_data": {
+                                                                                            "title": "Secret transactions and deals",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The secret transactions and deals that took place during this time further compounded the issues of economic and political instability. These clandestine activities, carried out without public knowledge or accountability, contributed to the already rampant inflation and economic mismanagement. Such secretive deals not only eroded public trust but also fueled resentment among the masses, laying the foundation for the upheavals that marked the Great War.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "575db47e-0766-464b-9ee7-68f9250357f0",
+                                        "node_data": {
+                                            "title": "Inadequate investment in public infrastructure",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The economic mismanagement was further highlighted by the inadequate investment in public infrastructure. Poorly maintained roads, railways, and public utilities exacerbated the people's suffering and hindered economic growth. The lack of investment reflected the government's negligence and further fueled the discontent among the Russian populace.",
+                                            "color": "#6EF9F5",
+                                            "keywords": [],
+                                            "children": [
+                                                {
+                                                    "id": "0fc85c3a-32d1-4702-9167-7d730f1c5e7c",
+                                                    "node_data": {
+                                                        "title": "Poor state of roads and railways",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "",
+                                                        "color": "#6EF9F5",
+                                                        "keywords": [],
+                                                        "children": [
+                                                            {
+                                                                "id": "3fe52fae-dcd3-434c-85e6-e249a260c793",
+                                                                "node_data": {
+                                                                    "title": "Lack of agricultural investment",
+                                                                    "node_type": "TREE_NODE",
+                                                                    "description": "The poor state of roads and railways, coupled with inadequate investment in public infrastructure and economic mismanagement, severely affected Russia's agricultural sector. The lack of investment in agriculture was a major factor contributing to the country's impending crisis at the dawn of the Great War.",
+                                                                    "color": "#6EF9F5",
+                                                                    "keywords": [],
+                                                                    "children": [
+                                                                        {
+                                                                            "id": "0f1de080-fa79-40d9-bcc3-7b2c74354ba0",
+                                                                            "node_data": {
+                                                                                "title": "Absence of modern farming technologies",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of Russia's socioeconomic situation leading up to the Great War, the absence of modern farming technologies was a significant issue. This was primarily due to the lack of agricultural investment, the poor state of roads and railways, and inadequate investment in public infrastructure. This absence of modern technologies further exacerbated the country's economic mismanagement and political instability.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "ef11259e-995a-43b4-a1c5-b181a379ee51",
+                                                                                        "node_data": {
+                                                                                            "title": "Outdated tools and equipment",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The use of outdated tools and equipment was a major factor contributing to the lack of modernization in Russian agriculture. Due to limited investment and economic mismanagement, farmers were unable to upgrade their tools, which further hampered productivity. This served to perpetuate the cycle of poverty and instability in rural communities.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "9f419217-60bb-4062-b6c1-dae6498398e5",
+                                                                                        "node_data": {
+                                                                                            "title": "Lack of knowledge about modern farming techniques",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "A lack of knowledge about modern farming techniques was another significant barrier to agricultural development in Russia during this period. The lack of education and information, combined with the country's economic and political instability, made it difficult for farmers to adopt more productive and sustainable agricultural practices. This not only affected the agricultural sector but also had serious implications for the broader economy.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "2c680f5e-a28a-4a94-b2cc-23e83add8521",
+                                                                                        "node_data": {
+                                                                                            "title": "Absence of support for technological transition",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The absence of support for a technological transition in the farming sector was a critical issue facing Russia. Despite the urgent need for modern agricultural technologies, there was little to no support from the government or private sectors for such a transition. This lack of support further compounded the problems of outdated tools, lack of knowledge, and economic mismanagement, contributing to the overall decline of Russia's agricultural sector.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "86a3c775-9690-47d1-8395-99a625e55cd8",
+                                                                            "node_data": {
+                                                                                "title": "Insufficient irrigation and infrastructure",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "In the context of Russia's economic mismanagement and political instability leading up to the Great War, there was a significant lack of investment in agricultural infrastructure, particularly irrigation systems. The lack of sufficient irrigation facilities hindered crop productivity, contributing to the overall economic distress and food insecurity.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "7cc6792b-cdac-4ca3-85a1-36bccf5c3b4e",
+                                                                                        "node_data": {
+                                                                                            "title": "Poor condition of existing irrigation systems",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The few existing irrigation systems in Russia were in a deplorable state due to economic mismanagement and inadequate investment. These ineffective irrigation systems failed to provide the necessary water supply to the farmlands, resulting in poor agricultural output and exacerbated food shortages.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "1aaabd9d-2cf8-4dde-952a-304b3f61a94c",
+                                                                                        "node_data": {
+                                                                                            "title": "Lack of access to safe and clean water",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "Amidst the widespread economic and political instability, access to safe and clean water was a significant issue in Russia. The insufficient investment in water infrastructure led to inadequate water supply and poor water quality, severely impacting public health and contributing to social unrest.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "f1a48a94-4b6f-4677-843c-b8fd4f9d2f33",
+                                                                                        "node_data": {
+                                                                                            "title": "Inadequate road and transportation networks",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The poor state of roads and railways, attributed to inadequate investment in public infrastructure, severely hampered transportation across the country. This inadequacy not only hindered the distribution of agricultural produce leading to food shortages, but also impeded economic development and contributed to the overall instability leading up to the Great War.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "id": "f39c33c9-30ff-41a1-b1d8-7bd6d3dc0d0a",
+                                                                            "node_data": {
+                                                                                "title": "Inadequate financial support",
+                                                                                "node_type": "TREE_NODE",
+                                                                                "description": "The lack of agricultural investment coupled with poor road and railway infrastructure and economic mismanagement in Russia leading up to the Great War was further exacerbated by inadequate financial support. The Russian government, despite the evident need, failed to provide adequate financial support to the agricultural sector, deepening the crisis.",
+                                                                                "color": "#6EF9F5",
+                                                                                "keywords": [],
+                                                                                "children": [
+                                                                                    {
+                                                                                        "id": "9f4d7ce0-cb11-46f8-8222-46c9288ed7b1",
+                                                                                        "node_data": {
+                                                                                            "title": "Absence of affordable credit facilities",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The lack of affordable credit facilities was a significant contributor to the financial inadequacies faced by Russian farmers. This absence meant that farmers, already grappling with a lack of investment and poor infrastructure, were unable to borrow money at reasonable rates to improve their agricultural practices or weather bad crop years.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "edea8f42-6ffb-4a12-a45d-560df72ee027",
+                                                                                        "node_data": {
+                                                                                            "title": "Insufficient insurance coverage for crop failure",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "The absence of sufficient insurance coverage for crop failure left farmers vulnerable to the vagaries of nature. Without a safety net, a single bad harvest could ruin a farmer, leading to further economic instability and contributing to the overall state of crisis.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "id": "d962ead0-fe0c-424b-85e0-8c3303d46730",
+                                                                                        "node_data": {
+                                                                                            "title": "Disproportionate tax burden on farmers",
+                                                                                            "node_type": "TREE_NODE",
+                                                                                            "description": "On top of all these issues, farmers faced a disproportionate tax burden. This added financial strain further handicapped the agricultural sector, preventing it from reaching its potential, contributing to food shortages, and adding to the political instability leading up to the Great War.",
+                                                                                            "color": "#6EF9F5",
+                                                                                            "keywords": [],
+                                                                                            "children": []
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "e2e5ecbe-5a96-4550-9b57-22286804b7f8",
+                            "node_data": {
+                                "title": "Establishment of Parliamentary Structure",
+                                "node_type": "TREE_NODE",
+                                "description": "In the context of political instability and Russia's precarious situation leading up to the Great War, the establishment of a parliamentary structure became a critical step. It was seen as a move towards a more democratic and balanced governance system, replacing the autocratic Tsarist regime.",
+                                "entity_relations": null,
+                                "concept": null,
+                                "children": [
+                                    {
+                                        "id": "ac0a3b9a-89cd-477e-bc04-0a2ccd0e5a9b",
+                                        "node_data": {
+                                            "title": "Create balanced representation of all factions",
+                                            "node_type": "TREE_NODE",
+                                            "description": "In the wake of political instability and Russia's precarious situation leading up to the Great War, the establishment of a parliamentary structure aimed to create a balanced representation of all factions. This measure was seen as crucial to foster a more democratic and inclusive political environment, and to prevent the concentration of power in the hands of a few.",
+                                            "entity_relations": null,
+                                            "concept": null,
+                                            "children": [
+                                                {
+                                                    "id": "0586eaa1-bf0d-4bb2-bf26-4a7378d97a13",
+                                                    "node_data": {
+                                                        "title": "Ensure Bolsheviks' viewpoints are respected",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "A critical aspect of the parliamentary structure was ensuring that the Bolsheviks' viewpoints were respected. Given their significant role and influence in the political landscape of the time, acknowledging and incorporating their perspectives was vital for maintaining political stability and preventing further violence.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                },
+                                                {
+                                                    "id": "e4489989-b004-4758-aee0-56fd5050c15d",
+                                                    "node_data": {
+                                                        "title": "Mitigate dominance of other factions",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "In parallel with the inclusion of the Bolsheviks, the parliamentary structure aimed to mitigate the dominance of other factions. By ensuring a balanced representation, the political structure sought to prevent any single faction from gaining an overwhelming amount of power, thus promoting a balanced and equitable political landscape.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                },
+                                                {
+                                                    "id": "2363faf8-082c-4ce3-a7ed-a523f27da45a",
+                                                    "node_data": {
+                                                        "title": "Promote democratic decision-making",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "The establishment of a parliamentary structure was a significant step towards promoting democratic decision-making in Russia. By guaranteeing representation for all factions and respecting their viewpoints, the political system aimed to foster a climate of collaboration and consensus-building, which are hallmarks of any democratic society.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "ffd03c65-9464-4f06-b695-78296d59ffc2",
+                                        "node_data": {
+                                            "title": "Implement rules of debate and decision-making",
+                                            "node_type": "TREE_NODE",
+                                            "description": "In the backdrop of parliamentary structure establishment and political instability, the need to implement rules for debate and decision-making became critical. These rules provide a framework that governs the conduct of meetings, ensuring orderly and fair discussions, and ultimately leading to democratic decision-making.",
+                                            "entity_relations": null,
+                                            "concept": null,
+                                            "children": [
+                                                {
+                                                    "id": "3d97115d-f2ba-4827-a1b3-260396f35571",
+                                                    "node_data": {
+                                                        "title": "Define voting procedures",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "As a crucial part of the rules for debate and decision-making, defining voting procedures became important for the parliamentary structure. These procedures dictate how members cast their votes on various matters, such as electing officials or passing legislation. It ensures that every member's voice is heard and contributes to the democratic process.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                },
+                                                {
+                                                    "id": "339c8f46-3022-41e8-8c0f-2ad54ad18a16",
+                                                    "node_data": {
+                                                        "title": "Set rules for proposing legislative changes",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "Another key aspect was setting rules for proposing legislative changes. These rules outline the process for members to propose modifications or new laws, thereby fostering a dynamic and responsive legislative environment. It ensures that the laws remain relevant and effective in addressing Russia's shifting challenges and needs.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                },
+                                                {
+                                                    "id": "5fdbeb9f-5cb9-4e63-8fbc-e58b0f9dd4fd",
+                                                    "node_data": {
+                                                        "title": "Establish rules for parliamentary discourse",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "Establishing rules for parliamentary discourse was an integral part of creating a functional parliamentary structure. These rules lay down the guidelines for communication and discussion among members, promoting respectful and productive conversations. It creates a conducive environment for collaborative decision-making, paving the way for a stable political landscape amidst Russia's pre-war situation.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "id": "e187526d-105b-47c4-8737-7af59bbfed9b",
+                                        "node_data": {
+                                            "title": "Establish agenda setting procedures",
+                                            "node_type": "TREE_NODE",
+                                            "description": "In the wake of political instability and as part of the establishment of a parliamentary structure, Russia embarked on the journey to establish agenda-setting procedures. These procedures were aimed at ensuring a systematic approach to tackling pressing issues and providing a platform for constructive debates.",
+                                            "entity_relations": null,
+                                            "concept": null,
+                                            "children": [
+                                                {
+                                                    "id": "725461a9-4401-4d2f-bf2e-9b9ea4f46b0f",
+                                                    "node_data": {
+                                                        "title": "Regular scheduling of debates",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "One of the key components of the agenda-setting procedures was the regular scheduling of debates. These debates were crucial to the democratic functioning of the parliamentary structure, allowing for the exchange of ideas, identification of potential pitfalls, and collaborative resolution finding. The regular scheduling ensured that all issues received due attention and were not neglected due to the chaotic political environment.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                },
+                                                {
+                                                    "id": "7615aec9-d6e6-4fad-9d72-85c7218591c9",
+                                                    "node_data": {
+                                                        "title": "Allowance for emergency sessions",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "The flexibility of the parliamentary structure was demonstrated by the allowance for emergency sessions. These sessions served as a safety valve in times of crisis, allowing for swift and decisive action when needed. Given the political instability and uncertain times, this provision was of paramount importance.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                },
+                                                {
+                                                    "id": "234614c0-4a2b-451c-aef3-261b0b1c9319",
+                                                    "node_data": {
+                                                        "title": "Transparent process for topic selection",
+                                                        "node_type": "TREE_NODE",
+                                                        "description": "A transparent process for topic selection was also established as part of the procedural framework. This ensured that the selection of topics for debate was not dictated by a single faction or group, but rather was the result of a collective decision-making process. The transparency of the process was a crucial step towards establishing trust and legitimacy in the newly formed parliamentary structure.",
+                                                        "entity_relations": null,
+                                                        "concept": null,
+                                                        "children": []
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "08855025-11f9-4679-84a4-c33940e70c1a",
+                "node_data": {
+                    "title": "Social unrest",
+                    "node_type": "TREE_NODE",
+                    "description": "In the backdrop of Russia's tumultuous situation leading up to the Great War, social unrest was an omnipresent issue. The socio-economic conditions were deteriorating, leading to widespread dissatisfaction and a rise in revolutionary sentiments among the populace.",
+                    "color": "#8A4FFF",
+                    "keywords": [],
+                    "children": [
+                        {
+                            "id": "134452fb-8e20-4da5-86b1-a9b6ad0a8482",
+                            "node_data": {
+                                "title": "Discontent among the working class",
+                                "node_type": "TREE_NODE",
+                                "description": "The social unrest in Russia leading up to the Great War was largely fueled by growing discontent among the working class. They were dissatisfied with their living conditions, low wages, and lack of political representation. This widespread dissatisfaction played a significant role in the destabilization of the Russian government and society.",
+                                "color": "#8A4FFF",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "d5484d61-72b5-4e65-a1ac-0444c0a0eb42",
+                                        "node_data": {
+                                            "title": "Widespread poverty and inequality",
+                                            "node_type": "TREE_NODE",
+                                            "description": "Widespread poverty and inequality were among the main drivers of discontent among Russia's working class. The wealth gap between the rich and the poor was vast, with the majority of the population living in poverty. This pervasive economic inequality led to heightened social tensions and contributed to the widespread unrest and revolutionary sentiment among the working class.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "417a67c5-ce8e-4683-a479-69757394732e",
+                                        "node_data": {
+                                            "title": "Harsh working conditions in factories",
+                                            "node_type": "TREE_NODE",
+                                            "description": "Harsh working conditions in factories further exacerbated the grievances of the working class. Workers were often required to work long hours in unsafe conditions, with little to no job security. This led to widespread discontent, stirring up anger and resentment against the factory owners and the government that allowed such conditions to persist.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "baf3c8cd-e088-4fd3-a393-7440fc63ab74",
+                                        "node_data": {
+                                            "title": "Lack of political representation",
+                                            "node_type": "TREE_NODE",
+                                            "description": "Moreover, the working class was grossly underrepresented in the political domain. They had virtually no say in governmental decisions that directly affected their lives. This lack of political representation further entrenched the economic disparities and shaped the revolutionary ideologies that eventually led to the rise of the Bolsheviks and Mensheviks.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "3916ed01-8905-4d8d-badf-deda760dba6d",
+                            "node_data": {
+                                "title": "Influence of Marxist ideologies",
+                                "node_type": "TREE_NODE",
+                                "description": "Amidst social unrest and a tumultuous pre-war situation in Russia, Marxist ideologies began to gain traction. These ideologies, rooted in class struggle and the desire for a socialist state, resonated with the growing dissatisfaction amongst the working class and the peasantry.",
+                                "color": "#8A4FFF",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "20b6d6ff-31a0-459a-ba35-78c7510b4562",
+                                        "node_data": {
+                                            "title": "Idea of class struggle and revolution",
+                                            "node_type": "TREE_NODE",
+                                            "description": "At the heart of Marxist ideologies is the idea of class struggle and revolution, a concept that found fertile ground in pre-war Russia. The vast disparities between the proletariat and the bourgeoisie, coupled with harsh working conditions and low wages, led to an increasing acceptance of the notion of a proletarian revolution.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "adb024d3-63d3-4444-9e1f-d2472135760f",
+                                        "node_data": {
+                                            "title": "Desire for a socialist state",
+                                            "node_type": "TREE_NODE",
+                                            "description": "Marxism's promise of a socialist state, where the means of production are owned by the working class, appealed to many Russians. This idea promised an end to the exploitation of the working class and suggested a more equitable distribution of wealth and resources, gaining significant support among the discontented populace.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "0b54aaae-55b6-4983-a9f5-a14896cbb5c2",
+                                        "node_data": {
+                                            "title": "Spread of Marxist literature and propaganda",
+                                            "node_type": "TREE_NODE",
+                                            "description": "To further the cause of Marxism, a vast amount of literature and propaganda was disseminated throughout Russia. Pamphlets, books, and speeches espousing the virtues of a socialist state and the need for revolution were widespread. This propaganda played a significant role in influencing public opinion, furthering the desire for change, and laying the groundwork for the eventual Russian Revolution.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "2880ce51-43e6-479a-842f-712abf8def71",
+                            "node_data": {
+                                "title": "Role of the intellectual elite",
+                                "node_type": "TREE_NODE",
+                                "description": "Amidst the social unrest and the tumultuous state of Russia leading up to the Great War, the role of the intellectual elite became increasingly significant. These individuals, often academics, writers, and philosophers, took it upon themselves to articulate the growing discontent within the society and to shape the nation's political consciousness.",
+                                "color": "#8A4FFF",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "795dc272-8957-4380-bc37-6c53175482fe",
+                                        "node_data": {
+                                            "title": "Advocacy for political reform",
+                                            "node_type": "TREE_NODE",
+                                            "description": "A key aspect of the intellectual elite's role was their advocacy for political reform. They argued for a more democratic system, a shift away from the autocratic Tsarist regime. Their efforts played a critical role in nurturing the idea of political reform and fostering a climate conducive to change.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "ceb6a770-c49b-450a-9162-b2b117e9c55d",
+                                        "node_data": {
+                                            "title": "Dissemination of liberal ideas",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The intellectual elite also played a significant role in the dissemination of liberal ideas. They challenged the existing conservative ideologies, encouraged free thought, and fostered a spirit of intellectual awakening. These ideas served as a catalyst for change, encouraging the people to demand their rights and question the status quo.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "657f6bd5-ca49-4ef5-9620-7d8381020554",
+                                        "node_data": {
+                                            "title": "Criticism of the Tsarist regime and war effort",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The intellectual elite were vocal critics of the Tsarist regime and the war effort. They highlighted the regime's inefficiencies, its disregard for civil liberties, and the devastating consequences of the war on Russia's economy and society. Their criticisms further fueled the growing discontent and played a significant role in the ensuing revolution.",
+                                            "color": "#8A4FFF",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "27d787ce-ff10-49dd-a6d4-c0945cecbfae",
+                "node_data": {
+                    "title": "Economic struggles",
+                    "node_type": "TREE_NODE",
+                    "description": "In the lead up to the Great War, Russia faced significant economic challenges. These struggles were largely a result of political mismanagement, a lack of economic modernization, and the mounting costs of maintaining a large, outdated military.",
+                    "color": "#D81159",
+                    "keywords": [],
+                    "children": [
+                        {
+                            "id": "cd6a1f6d-ebd2-473f-ba33-6b549cd6fdec",
+                            "node_data": {
+                                "title": "Industrialization and urbanization",
+                                "node_type": "TREE_NODE",
+                                "description": "Amidst Russia's economic struggles leading up to the Great War, the nation experienced a period of rapid industrialization and urbanization. This shift from an agrarian to an industrial economy brought about significant changes in Russian society.",
+                                "color": "#D81159",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "5c177d83-1e49-48ca-b723-b69dc24167e3",
+                                        "node_data": {
+                                            "title": "Rapid pace of industrial growth",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The industrialization process in Russia was marked by a rapid pace of industrial growth. New factories were cropping up in cities, and the country was witnessing an economic transformation. However, this swift industrial growth was not without its problems.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "d493cbbd-374a-435b-adfe-814f78b55ca1",
+                                        "node_data": {
+                                            "title": "Inadequate housing and working conditions",
+                                            "node_type": "TREE_NODE",
+                                            "description": "As cities grew with the influx of workers drawn by the industrial boom, there was a severe shortage of adequate housing. Working conditions were also largely unsatisfactory, with long working hours, low wages, and unsafe factory environments, leading to widespread discontent among the labor class.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "d83496eb-97f7-49cc-ba04-204830d09002",
+                                        "node_data": {
+                                            "title": "Growing class disparity",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The rapid pace of industrialization also led to an increasing class disparity in Russia. While a small section of society was reaping the benefits of industrialization, the majority of the population, particularly the working class, was left grappling with poverty and harsh living conditions.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "28d886a9-9b3b-476e-8470-9003fbc2d43d",
+                            "node_data": {
+                                "title": "Peasant unrest due to land issues",
+                                "node_type": "TREE_NODE",
+                                "description": "As Russia grappled with economic struggles and the looming Great War, peasant unrest due to land issues became a critical issue. The majority of the population, being peasants, were deeply affected by the agrarian crisis. Their grievances, rooted in long-standing issues related to land ownership and use, were key to fuelling the social unrest that led to the Russian Revolution.",
+                                "color": "#D81159",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "991ee8e8-5501-4898-a8e0-571bb5948195",
+                                        "node_data": {
+                                            "title": "Inequitable land distribution",
+                                            "node_type": "TREE_NODE",
+                                            "description": "One of the main causes of peasant unrest was the inequitable distribution of land. Despite the abolition of serfdom, land ownership remained concentrated in the hands of a small elite, leaving the majority of peasants with small, often unproductive plots. This imbalance fostered resentment and dissatisfaction among the peasantry, contributing to the destabilization of the Russian Empire.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "175ca5be-f9cd-4f8f-8c7d-a47b6d5735f9",
+                                        "node_data": {
+                                            "title": "Lack of agricultural modernization",
+                                            "node_type": "TREE_NODE",
+                                            "description": "A lack of agricultural modernization also contributed to the unrest. Russia's agricultural practices remained outdated and inefficient, lagging far behind those of other European countries. The inability to adopt modern farming techniques resulted in low crop yields and widespread poverty among the rural population, further fuelling discontent.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "6675550e-7875-4270-8e9c-d8f13b4c10e3",
+                                        "node_data": {
+                                            "title": "Escalating rural poverty",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The compound effect of inequitable land distribution and lack of modernization led to escalating rural poverty in Russia. The peasantry, which constituted the majority of the population, struggled to meet their basic needs. This deepening poverty, coupled with the state's inability or unwillingness to address these issues, intensified the social unrest that eventually led to the Great War.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "a09fd831-5b9f-4610-b2f5-8303e2214b4d",
+                            "node_data": {
+                                "title": "Economic strain caused by war",
+                                "node_type": "TREE_NODE",
+                                "description": "The economic struggles Russia faced were greatly exacerbated by the strain caused by the Great War. The financial burden of maintaining a war of such magnitude had a massive impact on the country's economic stability. The drain on resources and manpower affected all aspects of the economy, leading to widespread hardship.",
+                                "color": "#D81159",
+                                "keywords": [],
+                                "children": [
+                                    {
+                                        "id": "141198d5-2482-43f4-ab79-de9f43df34cd",
+                                        "node_data": {
+                                            "title": "High military expenditure",
+                                            "node_type": "TREE_NODE",
+                                            "description": "A significant factor contributing to Russia's economic strain during the war was the high military expenditure. The cost of maintaining a large army, procuring weapons, and other war-related expenses was immense. This substantial drain on the treasury drastically impacted the country's financial stability, further exacerbating the economic struggles.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "d4981834-d650-4cd7-9cca-d2651bd8a22f",
+                                        "node_data": {
+                                            "title": "Depletion of national reserves",
+                                            "node_type": "TREE_NODE",
+                                            "description": "The war led to a rapid depletion of Russia's national reserves. The high military expenditure, combined with reduced revenue from other sectors, resulted in the country's savings being rapidly depleted. The lack of reserves left the country financially vulnerable, further intensifying the economic crisis.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    },
+                                    {
+                                        "id": "bb5ec20a-4085-434a-9287-ffd949203285",
+                                        "node_data": {
+                                            "title": "Widespread inflation and unemployment",
+                                            "node_type": "TREE_NODE",
+                                            "description": "As a result of the war, Russia also experienced widespread inflation and unemployment. The economic strain led to a decrease in production, resulting in job losses. The lack of goods and services, coupled with the rapid depletion of reserves, led to a sharp rise in prices, causing further hardship for the Russian people.",
+                                            "color": "#D81159",
+                                            "keywords": [],
+                                            "children": []
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

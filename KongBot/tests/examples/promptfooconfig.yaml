@@ -1,0 +1,26 @@
+prompts: prompt.txt
+providers:
+- exec:python provider0.py
+- exec:python provider1.py
+- exec:python provider2.py
+tests:
+- vars:
+    question: Test Curriculum;-;0
+- vars:
+    question: Test Curriculum;-;1
+- vars:
+    question: Test Curriculum;-;2
+- vars:
+    question: Test Curriculum;-;3
+- vars:
+    question: Test Curriculum;-;4
+- vars:
+    question: Test Curriculum;-;5
+- vars:
+    question: Test Curriculum;-;6
+- vars:
+    question: Test Curriculum;-;7
+- vars:
+    question: Test Curriculum;-;8
+- vars:
+    question: Test Curriculum;-;9

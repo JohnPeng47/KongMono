@@ -1,0 +1,36 @@
+{
+    "id": "a6fc4477-3fcb-4d35-be44-e24671e053b1",
+    "nodes": [{
+        "title": "Concepts",
+        "data": [{
+                "concept": "Democracy"
+            },
+            {
+                "concept": "Human rights"
+            },
+            {
+                "concept": "Rule of law"
+            }
+        ],
+        "id": "9a48a4c8-7e08-47d2-b0c7-05af03c60c76",
+        "children": [{
+                "title": "Democracy",
+                "data": {},
+                "id": "1c0a4128-8ab9-488c-b200-f8cbc90976ca",
+                "children": []
+            },
+            {
+                "title": "Human rights",
+                "data": {},
+                "id": "babbc756-4952-488f-b84f-4da52e8658a4",
+                "children": []
+            },
+            {
+                "title": "Rule of law",
+                "data": {},
+                "id": "f325aacd-a189-4ef0-8b10-e5ae9c013807",
+                "children": []
+            }
+        ]
+    }]
+}
