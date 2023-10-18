@@ -10,6 +10,8 @@ import {
   CreateEdge,
   CreateNode
 } from "../data/processJson";
+import { createTypeQueryNode } from "typescript";
+import { toHaveAccessibleErrorMessage } from "@testing-library/jest-dom/matchers";
 
 
 /**
@@ -20,11 +22,10 @@ export class GraphUtils {
   private getNodes: () => Node<any>[];
   private getEdges: () => Edge<any>[];
   private X_INTERVAL = 50;
-  private Y_INTERVAL = 50;
+  private Y_INTERVAL = 70;
 
   // Is this consistent with RF getNodes()??
-  public depthNodes: { [NodeID: NodeID] : number };
-  private rootNode: Node<RFNodeData>;
+  private nodeDepth: { [NodeID: NodeID]: number };
 
   public constructor(
     getNodes: () => Node<any>[],
@@ -32,37 +33,28 @@ export class GraphUtils {
 
     this.getNodes = getNodes;
     this.getEdges = getEdges;
-    this.rootNode = this.getNodes()[0];
-    this.depthNodes = {};
+    this.nodeDepth = {};
   }
 
   /**
-   * Takes JSON response from the server and converts it
-   * into RFNode format. 
-   * - initialNodes/initialEdges are pre-existing nodes that have 
-   * attr updated but dont' need to be repositioned
-   * - newNodes/newEdges are new nodes/edges that need to have their
-   * positions updated
+   * Initializes RFNodes attr such as positions from
+   * initial server JSON and keeps track of position and depth
    */
-  public processJson = (
+  public initJson = (
     json: BackendNode,
   ): {
-    updateNodes: Node<RFNodeData>[];
-    updateEdges: any[];
     newNodes: Node<RFNodeData>[];
     newEdges: any[]
   } => {
-    const updateNodes = [];
-    const updateEdges = [];
     const newNodes = [];
     const newEdges = [];
-    let [depth, parentId] = [0, json.id]
+    let [depth, parentId, nodeIndex] = [0, json.id, 0];
 
     const stack: Array<[BackendNode, number, string]> = [[json, depth, parentId]];
 
     // return empty nodes and edges
     if (!json) {
-      return { updateNodes, updateEdges, newNodes, newEdges };
+      return { newNodes, newEdges };
     }
 
     while (stack.length > 0) {
@@ -70,95 +62,174 @@ export class GraphUtils {
       const rfNode = CreateNode(currNode, "Tree");
       const rfEdge = CreateEdge(currNode, parentId, "Tree");
 
-      // node has not been seen by us before
-      if (!this.findNodeDepth(currNode.id)) {
-        newNodes.push(rfNode);
+      // determine initial node position
+      const position = this.nodePosInit(depth, nodeIndex);
+      rfNode.position = position;
 
-        // create a new depth index to hold nodes
-        this.depthNodes[currNode.id] = depth;
+      //node has not been seen by us before
+      newNodes.push(rfNode);
 
-        // all nodes not root
-        if (parentId !== currNode.id)
-          newEdges.push(rfEdge);
-      } else {
-        updateNodes.push(rfNode);
-        updateEdges.push(rfEdge);
-      }
+      // save node positions/depths/order
+      this.nodeDepth[currNode.id] = depth;
+
+      // all nodes not root
+      if (parentId !== currNode.id)
+        newEdges.push(rfEdge);
 
       currNode.data.children.forEach((child) => {
         stack.push([child, depth + 1, currNode.id]);
       })
+
+      nodeIndex += 1;
     }
 
-    return { updateNodes, updateEdges, newNodes, newEdges };
+    return { newNodes, newEdges };
   };
 
-  // public processJson = (
-  //   json: BackendNode,
-  //   opType: GraphType = "ConceptMap"
-  // ): { initialNodes: any[]; initialEdges: any[] } => {
-  //   const initialNodes = [];
-  //   const initialEdges = [];
-  //   const newNodes = [];
-  //   const removedNodes = [];
+  /**
+   * Takes an update to the existing RFNode state initialized by
+   * initJson, and updates position while keeping all the pre-existing
+   * nodes in the same fixed position
+   * 
+   * In the future, support add node with this interface
+   */
+  public updateJson = (
+    parentNode: BackendNode,
+  ): {
+    updateNodes: Node<RFNodeData>[];
+    updateEdges: any[];
+  } => {
+    // return empty nodes and edges
+    if (!parentNode) {
+      return {
+        updateNodes: [],
+        updateEdges: []
+      };
+    }
 
-  //   // only populate nodesPos on initial render
-  //   const initialRender = this.nodesPos.length === 0 ? true : false;
+    const numChildrenBefore = this.getAllChildren(parentNode.id).length
 
-  //   let [depth, count, parentId] = [0, 0, json.id]
+    let numChildren = 0;
+    let nodeIndex = this.getNodeIndex(parentNode.id);
+    // let nodeIndex = lastSibling
+    //   // either last sibling or parent if no sibling
+    //   ? this.getNodeIndex(lastSibling.id)
+    //   : this.getNodeIndex(parentNode.id);
 
-  //   const stack: Array<[BackendNode, number, string]> = [[json, depth, parentId]];
+    console.log("Parent Node: ", parentNode);
+    console.log("Children before: ", numChildrenBefore);
+    console.log("Parent Node: ", this.getAllChildren(parentNode.id));
 
-  //   // return empty nodes and edges
-  //   if (!json) {
-  //     return { initialNodes, initialEdges };
-  //   }
+    if (nodeIndex < 0)
+      throw Error("Missing sibling or parent node");
 
-  //   while (stack.length > 0) {
-  //     const [currNode, depth, parentId] = stack.pop();
-  //     let node = CreateNode(currNode, opType);
+    let depth = this.nodeDepth[parentNode.id];
+    // need to change this if 
+    const stack: Array<[BackendNode, number, string]> = [[parentNode, depth, parentNode.id]];
 
-  //     node.position = this.nodePosition(depth, count);
+    // nodes that came before, not including the parent
+    const oldNodes = this.getNodes().slice(0, nodeIndex);
+    const oldEdges = this.getEdges().slice(0, nodeIndex - 1);
 
-  //     // save list of node ids indexed by depth 
-  //     if (initialRender) {
-  //       if (this.nodesPos.length < depth + 1) {
-  //         this.nodesPos.push([currNode.id])
-  //       }
-  //       else {
-  //         this.nodesPos[depth].push(currNode.id)
-  //       }
-  //     } else {
+    // these are new nodes added from the update
+    const updateNodes = [];
+    const updateEdges = [];
 
-  //     }
+    // nodes that comes after the last children of the parent node
+    let repoNodes = this.getNodes().slice(nodeIndex + numChildrenBefore + 1);
+    let repoEdges = this.getEdges().slice(nodeIndex + numChildrenBefore - 1 + 1);
 
-  //     initialNodes.push(CreateNode(currNode, opType));
+    console.log("RepoNodes: ", "Nodeid: ", repoNodes[0], ", Title: ", repoNodes[0].data.title,
+    "NodeIndex: ", nodeIndex + numChildrenBefore + 1, "End Index: ", nodeIndex + numChildrenBefore + 1 + repoNodes.length);
 
-  //     // all nodes not root
-  //     if (parentId !== currNode.id)
-  //       initialEdges.push(CreateEdge(currNode, parentId, opType));
+    while (stack.length > 0) {
+      const [currNode, depth, parentId] = stack.pop();
 
-  //     currNode.data.children.forEach((child) => {
-  //       stack.push([child, depth + 1, currNode.id]);
-  //     })
+      const rfNode = this.getNodeIndex(currNode.id) < 0
+        ? CreateNode(currNode, "Tree")
+        : this.findNodeRF(currNode.id)
+      const rfEdge = this.getNodeIndex(currNode.id) < 0
+        ? CreateEdge(currNode, parentId, "Tree")
+        : this.findEdge(currNode.id)
 
-  //     count += 1;
-  //   }
+      console.log("Nodeid: ", currNode.id, ", Title: ", currNode.data.title);
+      // determine initial node position
+      const position = this.nodePosInit(depth, nodeIndex);
+      rfNode.position = position;
 
-  //   this.nodesPos.forEach((level, index) => console.log(`Depth {index}: `, level))
+      // save node positions/depths/order
+      this.nodeDepth[currNode.id] = depth;
 
-  //   return { initialNodes, initialEdges };
-  // };
+      updateNodes.push(rfNode);
+      updateEdges.push(rfEdge);
 
+      currNode.data.children.forEach((child) => {
+        stack.push([child, depth + 1, currNode.id]);
+      })
+
+      nodeIndex += 1;
+      numChildren += 1;
+    }
+
+    console.log("UpdateNodes: ");
+    repoNodes.forEach((currNode, index) => {
+      console.log("Nodeid: ", currNode.id, ", Title: ", currNode.data.title,
+        "NodeIndex: ", index + nodeIndex);
+    })
+
+    // shift position
+    repoNodes = repoNodes.map((node) => ({
+      ...node,
+      position: {
+        x: node.position.x,
+        y: node.position.y + (numChildren - numChildrenBefore - 1) * this.Y_INTERVAL
+      }
+    }))
+
+    // that the order of setNodes does not matter
+    return {
+      updateNodes: oldNodes.concat(updateNodes).concat(repoNodes),
+      updateEdges: oldEdges.concat(updateEdges).concat(repoEdges)
+    };
+  };
 
   /**
-   * Calculates the position of a node
+   * Calculates the position of a node during initJson
    */
-  private nodePosition(depth: number, nodeIndex: number): Position {
-    return {
+  private nodePosInit(depth: number, nodeIndex: number): Position {
+    const position = {
       x: this.X_INTERVAL * depth,
       y: this.Y_INTERVAL * nodeIndex
     }
+    console.log("Node: ", nodeIndex, " with position: ", position.x, ", ", position.y);
+    return position;
+  }
+
+  /**
+   * Calculates the position of a node during updateJson
+   * TODO: handle case when update is root node
+   */
+  private updateNodeStats(nodeId: NodeID): Position {
+    const parent = this.parent(nodeId);
+    if (!parent) {
+      throw Error("This node should have a parent");
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns all the nodes that come after the currNode
+   */
+  private nodesAfter(nodeId: NodeID): [NodeID] {
+    return null;
+  }
+
+  /**
+   * Returns all the nodes that come after the currNode
+   */
+  private getNodeIndex(nodeId: NodeID): number {
+    return this.getNodes().findIndex(node => node.id === nodeId);
   }
 
   /**
@@ -182,20 +253,20 @@ export class GraphUtils {
   }
 
   /**
+   * Finds and returns the edge leading to the target node
+   */
+  public findEdge(nodeId: string): Edge | undefined {
+    return this.getEdges()
+      .find((edge) => edge.target === nodeId)
+  }
+
+  /**
    * Returns node by ID using GetNodes
    * Theoretically, both method should be consistent but still
    */
   public findNodeRF(nodeId: string): Node<RFNodeData> | undefined {
     return this.getNodes()
       .find((node) => node.id === nodeId)
-  }
-
-  /**
-   * Returns node by ID using 
-   * Theoretically, both method should be consistent but still
-   */
-  public findNodeDepth(nodeId: string): number | undefined {
-    return this.depthNodes[nodeId];
   }
 
   /**
@@ -225,18 +296,20 @@ export class GraphUtils {
     return node;
   }
 
-  // private mergeUpdateNodePositions(newNodes: Node<RFNodeData>)
+  /**
+  * Returns siblings
+  */
+  public siblings(nodeId: string): Node<RFNodeData>[] {
+    const parentId = this.parent(nodeId).id;
 
-  // public siblings(nodeId: string): Node<RFNodeData>[] {
-  //   const parentId = this.parent(nodeId).id;
-  //   return this.getNodes()
-  //     .filter((node) =>
-  //       this.getEdges()
-  //         .filter((edge) => edge.source === parentId)
-  //         .map((edge) => edge.target)
-  //         .some((id) => id === node.id) && node.id !== nodeId
-  //     )
-  // }
+    return this.getNodes()
+      .filter((node) =>
+        this.getEdges()
+          .filter((edge) => edge.source === parentId)
+          .map((edge) => edge.target)
+          .some((id) => id === node.id) && node.id !== nodeId
+      )
+  }
 
   /**
   * Returns the parent node

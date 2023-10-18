@@ -80,7 +80,7 @@ export const GlobalProvider = memo(
       [addNodeChanges]
     );
 
-    const graph = new GraphUtils(getNodes, getEdges);
+    const graph = useRef(new GraphUtils(getNodes, getEdges)).current;
     const [selecteNodeID, setSelectedNode] = useState<string>("null_user_id");
     
     const downloadGraph = (graphId: string, graphType: GraphType) => {
@@ -88,16 +88,10 @@ export const GlobalProvider = memo(
         backend.downloadGraph(graphId)
           .then((res) => {
             // represents the order of nodes in JSON format
-            let {newNodes, newEdges} = graph.processJson(res.data);
-            newNodes = newNodes.map((node, index) => (
-              {
-                ...node,
-                position: {
-                  x : graph.findNodeDepth(node.id) * 50,
-                  y : index * 74
-                }
-              }
-            ))
+            let {newNodes, newEdges} = graph.initJson(res.data);
+
+            console.log("Edes: ", newEdges.length);
+            console.log("Nodes: ", newNodes.length);
 
             setNodes(newNodes);
             setEdges(newEdges);
@@ -105,24 +99,6 @@ export const GlobalProvider = memo(
       }
       fetchData();
     }
-
-    // TODO: fix this node repositioning
-    // also has to keep track of old position
-    // useEffect(() => {
-    //   let position = 0;
-    //   const newNodes = getNodes().map((node) => {
-    //     const newPos = {
-    //       ...node,
-    //       position: {
-    //         x : node.position.x,
-    //         y : position * 50
-    //       }
-    //     }
-    //     position += 1;
-    //     return newPos;
-    //   })
-    //   setNodes(newNodes);
-    // }, [getNodes, setNodes])
 
     const showHideUnattachedChildren = useCallback(
       (childNodes: Node[]) => {
@@ -191,25 +167,6 @@ export const GlobalProvider = memo(
       [setNodes]
     );
 
-    const addNode = useCallback(
-      (id: string, mapFn: (oldNode: Node<RFNodeData>) => Node<RFNodeData>) => {
-          setNodes((nodes) => {
-              const newNodes: Node<RFNodeData>[] = [];
-              for (const n of nodes) {
-                  if (n.id === id) {
-                      const newNode = mapFn(n);
-                      if (newNode === n) return nodes;
-                      newNodes.push(newNode);
-                  } else {
-                      newNodes.push(n);
-                  }
-              }
-              return newNodes;
-          });
-      },
-      [setNodes]
-    );
-
     const modifyNodeTitle = useCallback(
       (id: string, newTitle: string): void => {
         modifyNode(id, (old) => {
@@ -241,7 +198,7 @@ export const GlobalProvider = memo(
             ...node,
             position: {
               x : node.position.x,
-              y : index * 50
+              y : index * 70
             }
           }
         })
@@ -249,21 +206,6 @@ export const GlobalProvider = memo(
         changeNodes(newNodes);
       }, [changeNodes]
     )
-
-    /**
-     * Add nodes as well as repositioning
-     */
-    // const addNodes = useCallback(
-    //   (nodes: [{child: Node<RFNodeData>, parent: Node<RFNodeData>}]) : void => {
-    //     const newNodes = [];
-    //     for (let node of nodes) {
-    //       const parentNode = 
-          
-    //     }
-    //   }, [changeNodes]
-    // )
-
-
 
     /**
      * Can use this to trigger syncs with the backend
@@ -287,10 +229,13 @@ export const GlobalProvider = memo(
       const subgraph = graph.RFtoJSON(nodeId);
 
       backend.genSubGraph(subgraph).then((res) => {
-        const {newNodes, newEdges} = graph.processJson(res.data);
+        const {
+          updateNodes, 
+          updateEdges
+        } = graph.updateJson(res.data);
 
-        setNodes(newNodes);
-        setEdges(newEdges);
+        setNodes(updateNodes);
+        setEdges(updateEdges);
       })
     } 
 
@@ -300,7 +245,6 @@ export const GlobalProvider = memo(
 
       const updateRoot = graph.RFtoJSON(rootNode);
       backend.saveGraph(updateRoot, title);
-
     }
  
     const globalValue = useMemoObject<Global>({

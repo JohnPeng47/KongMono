@@ -4,16 +4,17 @@ import {
   RFNode,
   RFEdge,
   NodeType,
+  RFNodeData
 } from "../common/common-types";
 
-import { MarkerType } from "reactflow";
+import { MarkerType, Node } from "reactflow";
 
 export type GraphType = "Tree" | "ConceptMap";
 
 export const CreateNode = (
   node: BackendNode,
   opType: GraphType
-): RFNode => {
+): Node<RFNodeData> => {
   // console.log(node.position.x);
   return {
     id: node.id,
