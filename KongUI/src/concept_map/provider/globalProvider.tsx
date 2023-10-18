@@ -85,14 +85,11 @@ export const GlobalProvider = memo(
     
     const downloadGraph = (graphId: string, graphType: GraphType) => {
       async function fetchData() {
+        console.log("Using graphtype: ",graphType);
         backend.downloadGraph(graphId)
           .then((res) => {
             // represents the order of nodes in JSON format
-            let {newNodes, newEdges} = graph.initJson(res.data);
-
-            console.log("Edes: ", newEdges.length);
-            console.log("Nodes: ", newNodes.length);
-
+            let {newNodes, newEdges} = graph.initJson(res.data, graphType);
             setNodes(newNodes);
             setEdges(newEdges);
           })
@@ -215,9 +212,6 @@ export const GlobalProvider = memo(
         return
 
       const rootNode = getNodes()[0];
-      console.log("Children: ", graph.children(rootNode.id));
-      console.log("ROOT NODE: ", rootNode);
-
       const updateRoot = graph.RFtoJSON(rootNode);
       backend.updateGraph(updateRoot);
     }, [nodeChanges])

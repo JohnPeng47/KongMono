@@ -42,10 +42,11 @@ export class GraphUtils {
    */
   public initJson = (
     json: BackendNode,
+    graphType: GraphType
   ): {
-    newNodes: Node<RFNodeData>[];
-    newEdges: any[]
-  } => {
+      newNodes: Node<RFNodeData>[];
+      newEdges: any[]
+    } => {
     const newNodes = [];
     const newEdges = [];
     let [depth, parentId, nodeIndex] = [0, json.id, 0];
@@ -59,8 +60,8 @@ export class GraphUtils {
 
     while (stack.length > 0) {
       const [currNode, depth, parentId] = stack.pop();
-      const rfNode = CreateNode(currNode, "Tree");
-      const rfEdge = CreateEdge(currNode, parentId, "Tree");
+      const rfNode = CreateNode(currNode, graphType);
+      const rfEdge = CreateEdge(currNode, parentId, graphType);
 
       // determine initial node position
       const position = this.nodePosInit(depth, nodeIndex);
@@ -140,7 +141,7 @@ export class GraphUtils {
     let repoEdges = this.getEdges().slice(nodeIndex + numChildrenBefore - 1 + 1);
 
     console.log("RepoNodes: ", "Nodeid: ", repoNodes[0], ", Title: ", repoNodes[0].data.title,
-    "NodeIndex: ", nodeIndex + numChildrenBefore + 1, "End Index: ", nodeIndex + numChildrenBefore + 1 + repoNodes.length);
+      "NodeIndex: ", nodeIndex + numChildrenBefore + 1, "End Index: ", nodeIndex + numChildrenBefore + 1 + repoNodes.length);
 
     while (stack.length > 0) {
       const [currNode, depth, parentId] = stack.pop();
@@ -152,7 +153,6 @@ export class GraphUtils {
         ? CreateEdge(currNode, parentId, "Tree")
         : this.findEdge(currNode.id)
 
-      console.log("Nodeid: ", currNode.id, ", Title: ", currNode.data.title);
       // determine initial node position
       const position = this.nodePosInit(depth, nodeIndex);
       rfNode.position = position;
@@ -170,12 +170,6 @@ export class GraphUtils {
       nodeIndex += 1;
       numChildren += 1;
     }
-
-    console.log("UpdateNodes: ");
-    repoNodes.forEach((currNode, index) => {
-      console.log("Nodeid: ", currNode.id, ", Title: ", currNode.data.title,
-        "NodeIndex: ", index + nodeIndex);
-    })
 
     // shift position
     repoNodes = repoNodes.map((node) => ({
@@ -201,7 +195,6 @@ export class GraphUtils {
       x: this.X_INTERVAL * depth,
       y: this.Y_INTERVAL * nodeIndex
     }
-    console.log("Node: ", nodeIndex, " with position: ", position.x, ", ", position.y);
     return position;
   }
 

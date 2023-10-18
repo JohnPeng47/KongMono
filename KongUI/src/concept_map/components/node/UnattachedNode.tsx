@@ -75,8 +75,17 @@ function UnattachedNode({ data: currData, isConnectable }: UnattachedNodeProps) 
     } , [setEdges, setNodes, siblings, id])
 
     return (
-      <Box className="text-updater-node-unattached" onClick={() => selectCurrNode()}>
-        <div>{currData.title}</div>
+      <Box sx={{
+        opacity: "40%",
+        backgroundColor: "#FFDF64",
+        width: 150,
+        height: 80,
+        display: 'flex',         // <-- set the box to be a flex container
+        flexDirection: 'column', // <-- stack children vertically
+        alignItems: 'center',    // <-- center children horizontally
+        justifyContent: 'center',// <-- center children vertically
+      }} className="text-updater-node-unattached" onClick={() => selectCurrNode()}>
+        <div style={{opacity: "100%"}}>{currData.title}</div>
         <Handle type="target" position={Position.Top} isConnectable={true} />
         <Handle type="source" position={Position.Bottom} isConnectable={true} />
       </Box>
