@@ -1,3 +1,3 @@
 from .llm_tree_json import llm_tree_json_adapter
 from .kg_to_frontend import FrontEndNodeAdapter
-from .ascii_tree_to_kg import ascii_tree_to_kg
+from .ascii_tree_to_kg import ascii_tree_to_kg, ascii_tree_to_kg_v2

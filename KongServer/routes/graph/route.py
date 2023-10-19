@@ -11,7 +11,8 @@ from .utils import merge_tree_ids
 
 from KongBot.bot.base import KnowledgeGraph
 from KongBot.bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
-from KongBot.bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg
+from KongBot.bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg, ascii_tree_to_kg_v2
+from KongBot.bot.base.exceptions import GeneratorException
 
 from typing import List
 import json
@@ -45,11 +46,6 @@ def update_graph(rf_graph: RFNode, request: Request):
     import random    
     kg: KnowledgeGraph = request.app.curr_graph
     
-    test_file = f"test_delete{random.randint(0,155)}.json"
-    print("Writing to: ", test_file)
-    with open(test_file, "w") as test:
-        test.write(json.dumps(rf_graph.dict(), indent=4))
-
     kg_graph = rfnode_to_kgnode(rf_graph)
     kg.add_node(kg_graph, merge=True)
     print(kg.display_tree())
@@ -78,18 +74,24 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
     rf_subgraph_json = rfnode_to_kgnode(rf_subgraph)
 
     kg.add_node(rf_subgraph_json, merge=True)
-    subtree = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
+    tree1, tree2 = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
 
-    print("Subtree to generate: ", subtree)
+    print("Subtree to generate: ", tree1, tree2)
 
     # GENERATE SUBTREE
     subtree = GenSubTreeQueryV2(kg.curriculum,
-                                subtree,
+                                tree1, tree2,
                                 model="gpt3").get_llm_output()
-    subtree_node_new = ascii_tree_to_kg(subtree, rf_subgraph_json)
+    
+    ## RETRY THIS
+    try:
+        parent = kg.parents(rf_subgraph_json["id"])[0]
+        subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, kg.get_node(parent))
+    except GeneratorException as e:
+        print("Print exception: ", e)
+            
     kg.add_node(subtree_node_new, merge=True)
-
     print("New subtree: ", kg.display_tree(rf_subgraph_json["id"]))
 
     ## TODO: consider just returning the subgraph
-    return json.loads(kg.to_json_frontend())
+    return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))    

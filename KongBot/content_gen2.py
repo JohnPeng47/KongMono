@@ -3,7 +3,7 @@ from bot.base import KnowledgeGraph
 from bot.explorationv2 import generate_tree, generate_sub_trees, generate_subtree_descriptions, generate_entity_relations, \
     generate_details_hierarchal
 from bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
-from bot.adapters import ascii_tree_to_kg
+from bot.adapters import ascii_tree_to_kg, ascii_tree_to_kg_v2
 
 context = """
 Generate something about the origin of electronic music. Focus on the history techno
@@ -123,19 +123,16 @@ for i in range(total):
     subtree = GenSubTreeQueryV2(kg.curriculum,
                             tree1 + tree2,
                             model="gpt3").get_llm_output()
+    
     try:
-        subtree_json = ascii_tree_to_kg(subtree, node)
-        print(json.dumps(subtree_json, indent=4))
+        parent = kg.parents(node_id)[0]
+        subtree_json = ascii_tree_to_kg_v2(subtree, node, kg.get_node(parent))
         success += 1
     except Exception:
         error += 1
         continue 
 
 print(f"Error rate: {error}/{total}")
-
-    
-
-
 # # TODO: need to make all of JSON query LLM implement the same DataNode interface
 # # so we can just add one without running the other to graph
 # # TODO: need to use DataNode more

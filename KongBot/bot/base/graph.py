@@ -357,7 +357,7 @@ class KnowledgeGraph(DiGraph):
             entity_relations += node["node_data"]["entity_relations"]
         return entity_relations
         
-    def to_json_frontend(self, show_all: bool = False):
+    def to_json_frontend(self, show_all: bool = False, parent_node: Dict = None):
         """
         Convert Graph to representation for ReactFlow Frontend
         """
@@ -365,7 +365,8 @@ class KnowledgeGraph(DiGraph):
 
         frontend_adapter = FrontEndNodeAdapter(
             knowledgeGraph, show_all=show_all)
-        frontend_json = self.to_json(
+        
+        frontend_json = self.to_json(parent_node=parent_node,
             modify_node=frontend_adapter.kg_node_to_frontend_adapter)
         
         return json.dumps(frontend_json, indent=4)
