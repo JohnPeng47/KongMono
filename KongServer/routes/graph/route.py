@@ -83,12 +83,17 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
                                 tree1, tree2,
                                 model="gpt3").get_llm_output()
     
-    ## RETRY THIS
-    try:
-        parent = kg.parents(rf_subgraph_json["id"])[0]
-        subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, kg.get_node(parent))
-    except GeneratorException as e:
-        print("Print exception: ", e)
+    ## TODO: want to make sure that this error gets logged in our observability stack
+    retry = 3
+    while retry > 0:
+        try:
+            parent = kg.parents(rf_subgraph_json["id"])[0]
+            subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, kg.get_node(parent))
+            break
+        except GeneratorException as e:
+            print("Retrying...")
+            print("Print exception: ", e)
+            continue
             
     kg.add_node(subtree_node_new, merge=True)
     print("New subtree: ", kg.display_tree(rf_subgraph_json["id"]))
