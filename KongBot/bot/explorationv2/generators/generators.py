@@ -187,6 +187,7 @@ def generate_sub_trees(graph: KnowledgeGraph):
 def generate_subtree_descriptions(graph: KnowledgeGraph):
     """
     Only generates descriptions for nodes with subtree_size
+    DONT THINK WE USE THIS ANYMORE
     """
     global_config = graph.config["global"]
     subtree_size = global_config.get("subtree_size", 2)
@@ -253,7 +254,7 @@ def generate_details_hierarchal(graph: KnowledgeGraph):
     global_config = graph.config["global"]
     subtree_size = global_config["subtree_size"]
 
-    config: Dict = graph.config["generate_entity_relations"]
+    config: Dict = graph.config["generate_details_hierarchal"]
     cache_policy = config.get("cache_policy", "default")
     model = config.get("model", "gpt4")
 
@@ -261,9 +262,12 @@ def generate_details_hierarchal(graph: KnowledgeGraph):
     # to type: PARENT_NODE or something
     mt_input_args = {
         node["id"]: {
-            "subtree": graph.display_tree(node["id"], lineage=True, stop_depth=2),
+            "subtree": graph.display_tree(node["id"], lineage=True, stop_depth=subtree_size),
         } for node in graph.filter_nodes({"children": subtree_size})
     }
+
+    for node_id, subtree in mt_input_args.items():
+        print(subtree)
 
     nodes_details_query = GenDetailedDecrSubtreeQuery.mt_init(cache_policy=cache_policy,
                                                               model=model)

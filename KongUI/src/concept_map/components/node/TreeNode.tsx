@@ -56,7 +56,6 @@ function GraphTitlePopup({ title, setTitle, onSave, onCancel }) {
   );
 }
 
-
 function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
   const [showPopup, setShowPopup] = useState(false);
   const [title, setTitle] = useState(data.title);  
@@ -64,9 +63,15 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const titleRef = useRef<string>(data.title);
 
-  const { modifyNodeTitle, genSubGraph, deleteNode, saveGraph } = useContext( GlobalContext );
+  const { 
+    modifyNodeTitle, 
+    genSubGraph, 
+    deleteNode, 
+    saveGraph,
+    genGraphDesc
+  } = useContext( GlobalContext );
 
-  
+
   const { id: currID } = data;
 
   // Why does this miss one character
@@ -80,6 +85,19 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
     console.log(showPopup);
   }
 
+  function GenGraphDescBtn({graphId}) { 
+    return (
+      <Button 
+        sx={{ width: 300, marginLeft: 1 }}
+        variant="contained" 
+        color="success" 
+        onClick={() => genGraphDesc(graphId)}
+      >
+        Generate Graph
+      </Button>
+    );
+  }
+  
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
         <Handle type="target" position={Position.Left} isConnectable={isConnectable} />
@@ -137,6 +155,7 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
                   onCancel={() => setShowPopup(false)}
                 />
               )}
+              <GenGraphDescBtn graphId={data.id} />
             </>
           )
         }

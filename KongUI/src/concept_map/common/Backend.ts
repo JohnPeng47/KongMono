@@ -91,16 +91,16 @@ export class Backend {
     graphId: string): Promise<AxiosResponse> {
     const endpoint = this.url + "/graph/" + graphId;
 
-    return axios.get(endpoint)
-      .then(res => {
-        this.nodes = res.data;
-
-        return res;
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        throw error;
-      });
+    return axios.get(endpoint);
   }
+
+  /**
+   * Downloads graph from server
+   */
+    async genGraphDesc(graphId: string): Promise<AxiosResponse> {
+      const endpoint = this.url + "/graph/generate/" + graphId;
+  
+      return axios.get(endpoint);
+    }
 }
 

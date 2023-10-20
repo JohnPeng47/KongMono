@@ -4,6 +4,7 @@ from .networkx.networkx import DiGraph, shortest_path
 from typing import List, Dict, Callable, Optional
 
 from bot.adapters.kg_to_frontend import FrontEndNodeAdapter
+from bot.base.exceptions import ConfigInitError
 
 from .utils import CustomDict
 from utils import db_conn
@@ -74,9 +75,6 @@ class KnowledgeGraph(DiGraph):
             self.validate_config(config)
             self.config = config
 
-        if len(self.generators) > 0:
-            self.generate_nodes()
-
     @classmethod
     def get_graphs(cls, run_id: str):
         graphs = db_conn.get_collection("graphs").find({
@@ -123,7 +121,9 @@ class KnowledgeGraph(DiGraph):
     def generate_nodes(self):
         """
         This method is for explicitly generating nodes
+        TODO: should add error handling here
         """
+        error = False
         for g in self.generators:
             if iscoroutinefunction(g):
                 asyncio.run(g(self))
@@ -131,7 +131,7 @@ class KnowledgeGraph(DiGraph):
                 g(self)
 
         self.finish_generation = True
-        # self.save_graph()
+        return not error
 
     def add_generators(self, generators: List):
         """
@@ -140,6 +140,7 @@ class KnowledgeGraph(DiGraph):
         self.generators.extend(generators)
 
     def add_config(self, config):
+        self.validate_config(config)
         self.config = config
 
     # TODO: make sure to change to Dict
@@ -430,11 +431,14 @@ class KnowledgeGraph(DiGraph):
         if config == {}:
             print("Empty config")
 
+        print(Config.generators)
+
         for config_k, _ in config.items():
             # check that there is config key for every generator passed in
-            if config_k not in [g.__name__ for g in self.generators]:
-
-                print(f"Generator {config_k} in config not found")
+            # if config_k not in [g.__name__ for g in self.generators]:
+            #     print(f"Generator {config_k} in config not found")
+            if config_k not in Config.generators:
+                raise ConfigInitError(f"Config {config_k} not found")
 
     @cached_property
     def leaves(self):
@@ -654,3 +658,14 @@ Max depth: {max_depth}
         self.call_costs["prompt_tokens"] += call_costs["prompt_tokens"]
         self.call_costs["complete_tokens"] += call_costs["complete_tokens"]
         self.call_costs["total_cost"] += call_costs["total_cost"]
+
+class Config:
+    generators = [
+        "global",
+        "generate_tree",
+        "generate_tree_details",
+        "generate_sub_trees",
+        "generate_subtree_descriptions",
+        "generate_entity_relations",
+        "generate_details_hierarchal"
+    ]    

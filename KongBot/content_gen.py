@@ -69,7 +69,7 @@ config = {
 }
 
 # # for ctxt in [context, context2, context3, context4]:
-kg = KnowledgeGraph.load_graph("ee49828e-c8f3-43bf-8c9a-eded928d6d86")
+kg = KnowledgeGraph.load_graph("63ac2243-d204-4c3e-aa0f-e9265afdf1b9")
 kg.add_config(config)
 kg.add_generators([
     generate_tree,
@@ -79,6 +79,6 @@ kg.add_generators([
     # generate_details_hierarchal
 ])
 kg.generate_nodes()
-print(kg.display_tree(inheritance=True))
+print(kg.display_tree())
 
 

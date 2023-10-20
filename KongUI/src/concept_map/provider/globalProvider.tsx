@@ -25,10 +25,10 @@ import {
 } from '../common/hooks/useChangeCounter';
 
 import { SetState } from "../common/common-types";
-import { generateUUID } from "../common/utils";
 
 import { GraphType } from "../data/processJson";
 import { BackendContext } from "./backendProvider";
+import { AxiosResponse } from "axios";
 
 interface Global {
   //TODO: figure out what this does
@@ -40,6 +40,8 @@ interface Global {
   modifyNodeTitle: (nodeId: string, newTitle: string) => void;
   deleteNode: (nodeId: string) => void;
   saveGraph: (title: string) => void;
+
+  genGraphDesc: (graphId: string) => Promise<AxiosResponse>;
 }
 
 interface GlobalVolatile {
@@ -84,17 +86,17 @@ export const GlobalProvider = memo(
     const [selecteNodeID, setSelectedNode] = useState<string>("null_user_id");
     
     const downloadGraph = (graphId: string, graphType: GraphType) => {
-      async function fetchData() {
-        console.log("Using graphtype: ",graphType);
-        backend.downloadGraph(graphId)
-          .then((res) => {
-            // represents the order of nodes in JSON format
-            let {newNodes, newEdges} = graph.initJson(res.data, graphType);
-            setNodes(newNodes);
-            setEdges(newEdges);
-          })
-      }
-      fetchData();
+      backend.downloadGraph(graphId)
+        .then((res) => {
+          // represents the order of nodes in JSON format
+          let {newNodes, newEdges} = graph.initJson(res.data, graphType);
+          setNodes(newNodes);
+          setEdges(newEdges);
+        })
+        .catch(error => {
+          console.error("Error fetching graph error: ", error);
+          throw error;
+        })
     }
 
     const showHideUnattachedChildren = useCallback(
@@ -233,6 +235,14 @@ export const GlobalProvider = memo(
       })
     } 
 
+    /**
+     * Generate graph description
+     */
+    const genGraphDesc = (graphId: string): Promise<AxiosResponse> => {
+      console.log("Generating graph: ", graphId);
+      return backend.genGraphDesc(graphId);
+    } 
+    
     const saveGraph = (title: string): void => {
       const rootNode = getNodes()[0];
       console.log("Saving graph: ", rootNode);
@@ -249,7 +259,8 @@ export const GlobalProvider = memo(
       genSubGraph,
       deleteNode,
       modifyNodeTitle,
-      saveGraph
+      saveGraph,
+      genGraphDesc
     });
 
     const globalVolatileValue = useMemoObject({

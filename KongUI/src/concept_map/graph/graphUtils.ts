@@ -115,8 +115,8 @@ export class GraphUtils {
     //   : this.getNodeIndex(parentNode.id);
 
     console.log("Parent Node: ", parentNode);
-    console.log("Children before: ", numChildrenBefore);
-    console.log("Parent Node: ", this.getAllChildren(parentNode.id));
+    console.log("Num children: ", numChildrenBefore);
+    console.log("Children: ", this.getAllChildren(parentNode.id));
 
     if (nodeIndex < 0)
       throw Error("Missing sibling or parent node");
@@ -137,8 +137,9 @@ export class GraphUtils {
     let repoNodes = this.getNodes().slice(nodeIndex + numChildrenBefore + 1);
     let repoEdges = this.getEdges().slice(nodeIndex + numChildrenBefore - 1 + 1);
 
-    console.log("RepoNodes: ", "Nodeid: ", repoNodes[0], ", Title: ", repoNodes[0].data.title,
-      "NodeIndex: ", nodeIndex + numChildrenBefore + 1, "End Index: ", nodeIndex + numChildrenBefore + 1 + repoNodes.length);
+    // source of error when repo nodes length is zero
+    // console.log("RepoNodes: ", "Nodeid: ", repoNodes[0], ", Title: ", repoNodes[0].data.title,
+    //   "NodeIndex: ", nodeIndex + numChildrenBefore + 1, "End Index: ", nodeIndex + numChildrenBefore + 1 + repoNodes.length);
 
     while (stack.length > 0) {
       const [currNode, depth, parentId] = stack.pop();

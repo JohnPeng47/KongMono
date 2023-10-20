@@ -12,6 +12,7 @@ from .utils import merge_tree_ids
 from KongBot.bot.base import KnowledgeGraph
 from KongBot.bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
 from KongBot.bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg, ascii_tree_to_kg_v2
+from KongBot.bot.explorationv2 import generate_details_hierarchal
 from KongBot.bot.base.exceptions import GeneratorException
 
 from typing import List
@@ -20,7 +21,6 @@ import json
 from langchain import LLMChain, PromptTemplate, OpenAI
 
 router = APIRouter()
-
 
 @router.get("/metadata/", response_model=List[GraphMetadataResp])
 def get_graph_metadata():
@@ -34,12 +34,37 @@ def get_graph_metadata():
 
 @router.get("/graph/{graph_id}", response_model=GraphNode)
 def get_graph(graph_id: str, request: Request):
+    """
+    This should be the 
+    """
     if not request.app.curr_graph or request.app.curr_graph != graph_id:
+        print("Loading graph: ", graph_id)
         request.app.curr_graph = KnowledgeGraph.load_graph(graph_id)
 
     kg: KnowledgeGraph = request.app.curr_graph
     
     return json.loads(kg.to_json_frontend())
+
+@router.get("/graph/generate/{graph_id}")
+def generate_graph(graph_id: str, request: Request):
+    kg: KnowledgeGraph = request.app.curr_graph
+    config = {
+        "global": {
+            "subtree_size": 2
+        },
+        "generate_details_hierarchal": {
+            "cache_policy": "default",
+            "model": "gpt4",
+        }
+    }
+    kg.add_config(config=config)
+    kg.add_generators([
+        generate_details_hierarchal
+    ])
+    success = kg.generate_nodes()
+    kg.save_graph()
+
+    return success
 
 @router.post("/graph/update")
 def update_graph(rf_graph: RFNode, request: Request):
@@ -50,6 +75,8 @@ def update_graph(rf_graph: RFNode, request: Request):
     kg.add_node(kg_graph, merge=True)
     print(kg.display_tree())
 
+# TODO: Remove graph_id from this function and move delete button on UI to
+# treeNode page once the graph has been selected
 @router.get("/graph/delete/{graph_id}")
 def delete_graph(graph_id: str, request: Request):
     delete_graph_db(graph_id)
@@ -81,7 +108,7 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
     # GENERATE SUBTREE
     subtree = GenSubTreeQueryV2(kg.curriculum,
                                 tree1, tree2,
-                                model="gpt3").get_llm_output()
+                                model="gpt4").get_llm_output()
     
     ## TODO: want to make sure that this error gets logged in our observability stack
     retry = 3
