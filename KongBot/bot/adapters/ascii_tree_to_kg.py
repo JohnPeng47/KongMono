@@ -97,8 +97,8 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
             #     error_file.write(error)
             raise GeneratorException("NO MATCH!")
             
-    # the case where we have multiple roots
-    if roots > 1:
+    # the case where we have multiple roots and subtree_og has a parent (ie. not the root node)
+    if roots > 1 and not parent_node:
         root_id, root_title = parent_node["id"], parent_node["node_data"]["title"]
     else:
         # this effectively handles both case where LLM generated tree starts at 1 or 0
@@ -110,7 +110,7 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
         # need to realign depths so they all start at zero because we rely on strict 0-based
         # array indexing to determine depth level
         for i, (depth, title) in enumerate(data):
-            print(depth, title)
+            # print(depth, title)
             data[i] = (depth - 1, title)
             if depth - 1 < 0:
                 # error = "BELOW ZERO: \n"

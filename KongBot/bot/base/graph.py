@@ -237,10 +237,14 @@ class KnowledgeGraph(DiGraph):
         self._validate_node(child_node)
             
         child_id, node_data = child_node["id"], child_node["node_data"]
+
         # delete children to save space
         # children = node_data.pop("children", [])
 
         if merge:
+            if child_id == self.get_root()["id"]:
+                node_data["node_type"] = "ROOT"
+
             # TODO: we cant assume only one parent for graph
             # assume its one parent for tree
             grandparent_id = self.parents(child_id, tree=True)                
@@ -253,7 +257,9 @@ class KnowledgeGraph(DiGraph):
                 super().add_edge(grandparent_id, child_id)
         else:
             super().add_node(child_id, node_data=node_data)
-            if parent_node != {}:
+            if parent_node == {}:
+                node_data["node_type"] = "ROOT"
+            else:
                 super().add_edge(parent_node["id"], child_id)
 
         for c in node_data["children"]:
@@ -320,7 +326,7 @@ class KnowledgeGraph(DiGraph):
             return ancestors
 
         ancestors: List = self.ancestors(parent_id, ancestors=ancestors)
-        ancestors.insert(0, parent_id)
+        ancestors.append(parent_id)
         return ancestors
 
     # TODO: make sure this returns dict
@@ -412,9 +418,6 @@ class KnowledgeGraph(DiGraph):
         if json_data.get("_id", None):
             del json_data["_id"]
 
-        # if json_data.get("data", False):
-        #     json_data["node_data"] = json_data["data"]
-
         root_node = self.get_root()
         if root_node != {}:
             super().remove_node(root_node["id"])
@@ -494,7 +497,7 @@ class KnowledgeGraph(DiGraph):
         ancestors_tree, tree_tree = "", ""
         node = self.get_node(node_id) if node_id else self.get_root()
         ancestors = [self.get_node(id) for id in self.ancestors(node_id)] if node_id else []
-        ancestors.reverse()
+        # ancestors.reverse()
 
         ancestors_tree += "ANCESTORS\n--------\n" if node["node_data"]["node_type"] != "ROOT" else ""
 
@@ -562,46 +565,7 @@ class KnowledgeGraph(DiGraph):
                 # increment stop_depth by ancestors_depth to match depth
                 stop_depth=stop_depth + ancestors_depth if stop_depth else 100000000) for child_id in self.children(node_id)
         ])
-
-    # directly modifying nodes for now
-    # but think about how to apply transform later
-    # map transforms to node_id and apply using the modify_nodes callback in to_json?
-    def get_layout_coords(self, node_id: str):
-        X_INTERVAL = 50
-        Y_INTERVAL = 50
-        # 1. get all the sibling nodes that came before current node
-        level = 0
-        siblings = [node["id"] for node in self.filter_nodes({"depth": level})]
-
-        # TODO: pretty dumb way, should do len of path to root
-        while node_id not in siblings:
-            if level > self.max_depth():
-                # TODO: random nodes not in graph
-                print("Reached max depth and node is not in graph: ", self.get_node(node_id)["node_data"]["title"], "|| ID: ", node_id)
-                return 0,0
-                # raise Exception("Reached max depth and node is not in graph")
-            level += 1
-            siblings = [node["id"]
-                        for node in self.filter_nodes({"depth": level})]
-
-        x = level * X_INTERVAL
-        # get all nodes
-        preceding_nodes = list(self.nodes)[:list(self.nodes).index(node_id)]
-        preceding_nodes = len(preceding_nodes)
-
-        y = preceding_nodes * Y_INTERVAL
-        return x, y
         
-    def get_node_depth(self, node_id: str):
-        depth = 0
-        while (depth < 10000):
-            curr_depth_node_ids = [node["id"] for node in self.get_nodes_from_depth(depth)]
-            if node_id in curr_depth_node_ids:
-                return depth
-            depth += 1
-
-        return -1
-
     def get_nodes_from_depth(self, depth: int, node_id: str = "root") -> List[Dict]:
         """
         Get nodes at depth n away from the node at id
