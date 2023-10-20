@@ -91,7 +91,15 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
         sx={{ width: 300, marginLeft: 1 }}
         variant="contained" 
         color="success" 
-        onClick={() => genGraphDesc(graphId)}
+        onClick={() => {
+          console.log("Sending generate graph request to server, awaiting response...");
+          genGraphDesc(graphId).then(res => {
+            if (res)
+              console.log("Graph is finished generating");
+          }).catch(err => {
+            console.log("Something went wrong :(")
+          })
+        }}
       >
         Generate Graph
       </Button>
