@@ -25,8 +25,6 @@ import TreeNode from "../concept_map/components/node/TreeNode";
 import useCytoScapeLayout from "../concept_map/layout/CytoscapeLayout";
 import { ConceptMapProvider, ConceptMapContext } from "../concept_map/provider/ConceptMapProvider";
 
-// let {initialEdges, initialNodes} = processJsonEntities(entity_relations);
-
 const nodeTypes = {
   attachedNode: AttachedNode,
   unattachedNode: UnattachedNode,

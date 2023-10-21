@@ -9,7 +9,7 @@ import {
   GraphType,
   CreateEdge,
   CreateNode
-} from "../data/processJson";
+} from "../data/processNodes";
 
 /**
  * Utility functions for read-only graph level functions

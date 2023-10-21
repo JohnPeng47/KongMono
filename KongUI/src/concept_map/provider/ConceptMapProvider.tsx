@@ -12,7 +12,7 @@ import React, {
   } from "reactflow";
   import { NodeType } from "../common/common-types";
   import { GraphUtils } from "../graph/graphUtils";
-  import { GraphType } from "../data/processJson";
+  import { GraphType } from "../data/processNodes";
   import { BackendContext } from "./backendProvider";
   
   interface ConceptMap {

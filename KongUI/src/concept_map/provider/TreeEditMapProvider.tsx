@@ -23,7 +23,7 @@ import React, {
   
   import { SetState } from "../common/common-types";
   
-  import { GraphType } from "../data/processJson";
+  import { GraphType } from "../data/processNodes";
   import { BackendContext } from "./backendProvider";
   import { AxiosResponse } from "axios";
   
