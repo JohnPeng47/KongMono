@@ -83,7 +83,7 @@ function AttachedNode({ data, isConnectable }: AttachedNodeProps) {
         }}
       >
         <div>
-          <div>{data.title}</div>
+          <div><strong>{data.title}</strong></div>
           <button onClick={() => setDropdown(!dropdown)}>Description</button>
           <button onClick={() => showHideUnattachedChildren(children)}>
             {" "}
