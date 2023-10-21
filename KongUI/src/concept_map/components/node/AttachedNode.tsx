@@ -1,16 +1,12 @@
 import React, { useCallback } from "react";
-
 import { useState, useMemo } from "react";
-
 import { useContext } from "use-context-selector";
-
 import { Handle, Position, useReactFlow } from "reactflow";
-
 import { GlobalVolatileContext } from "../../provider/globalProvider";
 import { GlobalContext } from "../../provider/globalProvider";
+import { ConceptMapContext } from "../../provider/ConceptMapProvider";
 import { RFNodeData } from "../../common/common-types";
 import ToggleOnceCheckbox from "./ToggleOnceCheckbox";
-
 import { POSTTrackingDataRequest } from "../../../api/tracking";
 
 import Box from "@mui/material/Box";
@@ -33,8 +29,7 @@ function AttachedNode({ data, isConnectable }: AttachedNodeProps) {
   // think the reason we put this in global context was because calling setNodes
   // right here within a ReactNode component triggered an infinite loop since
   // this component gets re-rendered whenever setNodes is called
-  const { showHideUnattachedChildren } = useContext(GlobalContext);
-  const { selecteNodeID } = useContext(GlobalVolatileContext);
+  const { showHideUnattachedChildren } = useContext(ConceptMapContext);
 
   const outEdges = useMemo(() => {
     return getEdges().filter((edge) => edge.source === nodeID);

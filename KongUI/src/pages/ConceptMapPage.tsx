@@ -12,16 +12,19 @@ import ReactFlow, {
   OnEdgesChange,
 } from "reactflow";
 import { useContext } from "use-context-selector";
-import { GlobalContext, GlobalProvider } from "./provider/globalProvider";
-import AttachedNode from "./components/node/AttachedNode";
-import UnattachedNode from "./components/node/UnattachedNode";
-import useForceLayout from "./layout/useForceLayout";
-import { getColors } from "./common/common-types";
+import { GlobalContext, GlobalProvider } from "../concept_map/provider/globalProvider";
+import AttachedNode from "../concept_map/components/node/AttachedNode";
+import UnattachedNode from "../concept_map/components/node/UnattachedNode";
+import useForceLayout from "../concept_map/layout/useForceLayout";
+import { getColors } from "../concept_map/common/common-types";
 
 import { useParams } from "react-router-dom";
 
 import "reactflow/dist/style.css";
-import TreeNode from "./components/node/TreeNode";
+import TreeNode from "../concept_map/components/node/TreeNode";
+
+import useCytoScapeLayout from "../concept_map/layout/CytoscapeLayout";
+import { ConceptMapProvider, ConceptMapContext } from "../concept_map/provider/ConceptMapProvider";
 
 // let {initialEdges, initialNodes} = processJsonEntities(entity_relations);
 
@@ -38,7 +41,7 @@ const ConceptMapPage = () => {
   const { mapId } = useParams();
   const [ initialized, setInitialized ] = useState<boolean>(false);
 
-  const { setSelectedNode, downloadGraph} = useContext(GlobalContext);
+  const { setSelectedNode, downloadGraph } = useContext(ConceptMapContext);
 
   // const [dataFetched, setDataFetched] = useState(false);
 
@@ -49,7 +52,8 @@ const ConceptMapPage = () => {
     downloadGraph(mapId, "ConceptMap")
 
   // useAutoLayout({direction:"TB"});
-  useForceLayout({ strength: -1, distance: 150 });
+  // useForceLayout({ strength: -1, distance: 150 });
+  useCytoScapeLayout();
 
   if (!initialized && initialNodes.length > 0) {
     const rootNode = nodes[0];
@@ -90,18 +94,20 @@ const ConceptMapPage = () => {
   if (!initialized) setInitialized(true);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      nodeTypes={nodeTypes}
-      fitView
-    >
-      <Panel position="top-right">
-        {/* <button onClick={onLayout}>layout</button> */}
-      </Panel>
-    </ReactFlow>
+    <ConceptMapProvider>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        fitView
+      >
+        <Panel position="top-right">
+          {/* <button onClick={onLayout}>layout</button> */}
+        </Panel>
+      </ReactFlow>
+    </ConceptMapProvider>
   );
 };
 
@@ -109,6 +115,8 @@ const ConceptMapPage = () => {
 
 export default function () {
   return (
-    <ConceptMapPage />
+    <ConceptMapProvider>
+      <ConceptMapPage />
+    </ConceptMapProvider>
   );
 }

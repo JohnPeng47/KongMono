@@ -18,7 +18,6 @@ import { useContext } from "use-context-selector";
 import { GlobalContext } from "../concept_map/provider/globalProvider";
 import { BackendContext } from "../concept_map/provider/backendProvider";
 
-
 function HomePage() {
   const navigate = useNavigate();
   // modify this to use an array of booleans
@@ -37,6 +36,8 @@ function HomePage() {
     }
   }
   
+  // console.log(getLayout());
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -54,6 +55,8 @@ function HomePage() {
   };
   
   return (
+    <>
+    {/* <MyCytoscapeComponent></MyCytoscapeComponent> */}
     <Grid container spacing={3}>
       {metadataList.map((item, index) => (
         <Grid item xs={4} key={index}>
@@ -86,6 +89,8 @@ function HomePage() {
         </Grid>
       ))}
     </Grid>
+    </>
+
   );
 }
 

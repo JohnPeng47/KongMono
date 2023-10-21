@@ -5,9 +5,9 @@ import { CircularProgress } from "@mui/material";
 
 import { BaseHTTPRequest } from "./api/common";
 import HomePage from "./homepage/HomePage";
-import ConceptMapPage from "./concept_map/ConceptMapPage";
+import ConceptMapPage from "./pages/ConceptMapPage";
 import LoginPage from "./authentication/Login";
-import TreeEditMapPage from "./concept_map/TreeEditMapPage";
+import TreeEditMapPage from "./pages/TreeEditMapPage";
 
 import { ReactFlowProvider } from "reactflow";
 import { GlobalProvider } from "./concept_map/provider/globalProvider";
@@ -37,14 +37,12 @@ function App() {
   return (
     <BackendProvider url={ENDPOINT}>
       <ReactFlowProvider>
-        <GlobalProvider reactFlowWrapper={"hello"}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/map/:mapId" element={<ConceptMapPage />} />
-            <Route path="/tree/:mapId" element={<TreeEditMapPage />} />
-            <Route path="/login" element={<LoginPage />} />
-          </Routes>
-        </GlobalProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/map/:mapId" element={<ConceptMapPage />} />
+          <Route path="/tree/:mapId" element={<TreeEditMapPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
       </ReactFlowProvider>
     </BackendProvider>
   );

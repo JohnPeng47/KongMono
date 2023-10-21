@@ -8,6 +8,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { GlobalContext } from '../../provider/globalProvider';
+import { TreeEditMapContext } from '../../provider/TreeEditMapProvider';
 import { useContext } from 'use-context-selector';
 
 import '../../../index.css'
@@ -69,7 +70,7 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
     deleteNode, 
     saveGraph,
     genGraphDesc
-  } = useContext( GlobalContext );
+  } = useContext( TreeEditMapContext );
 
 
   const { id: currID } = data;

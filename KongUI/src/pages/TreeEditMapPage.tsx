@@ -9,9 +9,11 @@ import ReactFlow, {
 } from "reactflow";
 import axios from "axios";
 import { GRAPH_ENDPOINT } from "../api/api";
-import { GlobalContext, GlobalProvider } from "./provider/globalProvider";
+import { GlobalContext, GlobalProvider } from "../concept_map/provider/globalProvider";
 import { useParams } from "react-router-dom";
-import TreeNode from "./components/node/TreeNode";
+import TreeNode from "../concept_map/components/node/TreeNode";
+
+import { TreeEditMapProvider } from "../concept_map/provider/TreeEditMapProvider";
 
 const nodeTypes = {
   treeNode : TreeNode
@@ -64,6 +66,8 @@ function TreeEditMapPage() {
   
 export default function () {
   return (
-    <TreeEditMapPage />
+    <TreeEditMapProvider>
+      <TreeEditMapPage />
+    </TreeEditMapProvider>
   );
 }
