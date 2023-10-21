@@ -12,7 +12,6 @@ import ReactFlow, {
   OnEdgesChange,
 } from "reactflow";
 import { useContext } from "use-context-selector";
-import { GlobalContext, GlobalProvider } from "../concept_map/provider/globalProvider";
 import AttachedNode from "../concept_map/components/node/AttachedNode";
 import UnattachedNode from "../concept_map/components/node/UnattachedNode";
 import useForceLayout from "../concept_map/layout/useForceLayout";

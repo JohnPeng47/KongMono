@@ -10,7 +10,6 @@ import LoginPage from "./authentication/Login";
 import TreeEditMapPage from "./pages/TreeEditMapPage";
 
 import { ReactFlowProvider } from "reactflow";
-import { GlobalProvider } from "./concept_map/provider/globalProvider";
 import { BackendProvider } from "./concept_map/provider/backendProvider";
 
 import { ENDPOINT } from "./api/common";

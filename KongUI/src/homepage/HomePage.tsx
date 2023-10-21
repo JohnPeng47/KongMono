@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useContext } from "use-context-selector";
-import { GlobalContext } from "../concept_map/provider/globalProvider";
 import { BackendContext } from "../concept_map/provider/backendProvider";
 
 function HomePage() {

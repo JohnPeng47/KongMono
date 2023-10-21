@@ -7,13 +7,10 @@ import ReactFlow, {
     useNodesState,
     useEdgesState
 } from "reactflow";
-import axios from "axios";
-import { GRAPH_ENDPOINT } from "../api/api";
-import { GlobalContext, GlobalProvider } from "../concept_map/provider/globalProvider";
 import { useParams } from "react-router-dom";
 import TreeNode from "../concept_map/components/node/TreeNode";
 
-import { TreeEditMapProvider } from "../concept_map/provider/TreeEditMapProvider";
+import { TreeEditMapContext, TreeEditMapProvider } from "../concept_map/provider/TreeEditMapProvider";
 
 const nodeTypes = {
   treeNode : TreeNode
@@ -30,7 +27,7 @@ function TreeEditMapPage() {
 
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
-  const { downloadGraph } = useContext(GlobalContext);
+  const { downloadGraph } = useContext(TreeEditMapContext);
 
   if (!initialized) {
     downloadGraph(mapId, "Tree");

@@ -2,8 +2,6 @@ import React, { useCallback } from "react";
 import { useState, useMemo } from "react";
 import { useContext } from "use-context-selector";
 import { Handle, Position, useReactFlow } from "reactflow";
-import { GlobalVolatileContext } from "../../provider/globalProvider";
-import { GlobalContext } from "../../provider/globalProvider";
 import { ConceptMapContext } from "../../provider/ConceptMapProvider";
 import { RFNodeData } from "../../common/common-types";
 import ToggleOnceCheckbox from "./ToggleOnceCheckbox";

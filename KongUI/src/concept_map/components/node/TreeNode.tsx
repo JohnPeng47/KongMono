@@ -7,13 +7,10 @@ import {
   Button,
   CircularProgress
 } from '@mui/material';
-import { GlobalContext } from '../../provider/globalProvider';
 import { TreeEditMapContext } from '../../provider/TreeEditMapProvider';
 import { useContext } from 'use-context-selector';
 
 import '../../../index.css'
-import { Backend } from '../../common/Backend';
-import { BackendContext } from '../../provider/backendProvider';
 
 const handleStyle = { left: 10 };
 
