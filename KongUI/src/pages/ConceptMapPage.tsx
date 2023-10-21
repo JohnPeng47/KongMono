@@ -50,7 +50,6 @@ const ConceptMapPage = () => {
 
   // useAutoLayout({direction:"TB"});
   // useForceLayout({ strength: -1, distance: 150 });
-  useCytoScapeLayout();
 
   if (!initialized && initialNodes.length > 0) {
     const rootNode = nodes[0];
