@@ -84,13 +84,17 @@ def delete_graph(graph_id: str, request: Request):
 
 @router.post("/graph/save")
 def update_graph(save_req: SaveGraphReq, request: Request):
+    curr_kg: KnowledgeGraph = request.app.curr_graph
+
     rf_graph, title = save_req.graph, save_req.title
+    
 
     kg_graph = rfnode_to_kgnode(rf_graph)
     # assign different ID so it gets saved as a new graph
     kg_graph["id"] = str(uuid.uuid4())
 
-    new_kg: KnowledgeGraph = KnowledgeGraph("test")
+    curriculum = curr_kg.curriculum
+    new_kg: KnowledgeGraph = KnowledgeGraph(curriculum)
     new_kg.from_json(kg_graph)
     new_kg.save_graph(title = title)
 
@@ -107,15 +111,16 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
 
     # GENERATE SUBTREE
     subtree = GenSubTreeQueryV2(kg.curriculum,
-                                tree1, tree2,
+                                tree1 + tree2,
                                 model="gpt4").get_llm_output()
     
     ## TODO: want to make sure that this error gets logged in our observability stack
     retry = 3
     while retry > 0:
         try:
-            parent = kg.parents(rf_subgraph_json["id"])[0]
-            subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, kg.get_node(parent))
+            parent_ids = kg.parents(rf_subgraph_json["id"])
+            parent = kg.get_node(parent_ids[0]) if len(parent_ids) > 0 else {}
+            subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, parent)
             break
         except GeneratorException as e:
             print("Retrying...")
@@ -124,6 +129,6 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
             
     kg.add_node(subtree_node_new, merge=True)
     print("New subtree: ", kg.display_tree(rf_subgraph_json["id"]))
-
+    print(json.dumps(subtree_node_new, indent=4))
     ## TODO: consider just returning the subgraph
     return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))    
