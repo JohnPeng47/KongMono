@@ -60,3 +60,6 @@ db.sqlite3
 
 # IDEs
 .idea/
+
+# Ignore dynaconf secret files
+.secrets.*

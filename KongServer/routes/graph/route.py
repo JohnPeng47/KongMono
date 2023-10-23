@@ -48,6 +48,8 @@ def get_graph(graph_id: str, request: Request):
 @router.get("/graph/generate/{graph_id}")
 def generate_graph(graph_id: str, request: Request):
     kg: KnowledgeGraph = request.app.curr_graph
+    title = kg.get_root()["node_data"]["title"]
+
     config = {
         "global": {
             "subtree_size": 2
@@ -62,7 +64,7 @@ def generate_graph(graph_id: str, request: Request):
         generate_details_hierarchal
     ])
     success = kg.generate_nodes()
-    kg.save_graph()
+    kg.save_graph(title=title)
 
     return success
 

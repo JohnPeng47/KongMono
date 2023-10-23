@@ -1,10 +1,10 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from typing import Dict, List
-
+from config import settings
 
 class DBConnection:
-    def __init__(self, host='18.191.159.163', port=27017, username=None, password=None):
+    def __init__(self, host=settings.DB_HOST, port=27017, username=None, password=None):
     # def __init__(self, host='localhost', port=8081, username=None, password=None):
         self.host = host
         self.port = port

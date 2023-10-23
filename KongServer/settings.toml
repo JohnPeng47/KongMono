@@ -1,3 +1,4 @@
+HELLOWORLD = "hellowld"
 [development]
 DB_HOST = "18.191.159.163"
 API_ENDPOINT = "http://localhost:8000"

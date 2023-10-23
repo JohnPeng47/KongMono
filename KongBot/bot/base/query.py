@@ -2,7 +2,8 @@ from typing import Dict
 from bot.base import BaseLLM
 import concurrent.futures
 
-from bot.explorationv2.generators.types import MTLLMArg
+# circular import
+# from bot.explorationv2.generators.types import MTLLMArg
 
 
 class BaseLLMQuery(BaseLLM):
