@@ -1,39 +1,42 @@
 import { BackendNode } from "../common/common-types";
 import { Node } from "reactflow";
-import { 
+import {
   RFNodeData,
-  RFEdge 
+  RFEdge,
+  RFNode
 } from "../common/common-types";
 import {
+  ConvertNode as ConvertTreeNode,
+  ConvertEdge as ConvertTreeEdge,
   CreateNode as CreateTreeNode,
   CreateEdge as CreateTreeEdge
 } from "./processTree";
 import {
-  CreateNode as CreateMapNode,
-  CreateEdge as CreateMapEdge
+  ConvertNode as ConvertMapNode,
+  ConvertEdge as ConvertMapEdge
 } from "./processMap";
 
 export type GraphType = "Tree" | "ConceptMap";
 
-export const CreateNode = (
+export const ConvertNode = (
   node: BackendNode,
   opType: GraphType
 ): Node<RFNodeData> => {
   if (opType === "Tree") {
-    return CreateTreeNode(node);
+    return ConvertTreeNode(node);
   } else if (opType === "ConceptMap") {
-    return CreateMapNode(node);
+    return ConvertMapNode(node);
   }
 }
 
-export const CreateEdge = (
+export const ConvertEdge = (
   node: BackendNode,
   parentId: string,
   opType: GraphType
 ): RFEdge => {
   if (opType === "Tree") {
-    return CreateTreeEdge(node, parentId);
+    return ConvertTreeEdge(node, parentId);
   } else if (opType === "ConceptMap") {
-    return CreateMapEdge(node, parentId);
+    return ConvertMapEdge(node, parentId);
   }
 }

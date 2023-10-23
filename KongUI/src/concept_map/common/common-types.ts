@@ -29,7 +29,7 @@ export type BackendNode = {
 
 export type BackendNodeData = {
   title: string;
-  node_type: string;
+  node_type?: string;
   children?: BackendNode[];
   concept?: string;
   description?: string;
@@ -39,14 +39,14 @@ export type BackendNodeData = {
 
 // Used for reactFlow nodes
 export type RFNodeData = BackendNodeData & {
-  id: string,
+  id?: string,
 };
 
 // This is only used in initial conversion from the backend
 export type RFNode = {
   id: string;
   data: RFNodeData,
-  type: string;
+  type: NodeType;
   position?: {
     x: number;
     y: number;

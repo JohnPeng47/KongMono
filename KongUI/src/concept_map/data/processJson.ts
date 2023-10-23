@@ -171,8 +171,7 @@ function generateRandomString(length = 4) {
 //           const target_nodeid = addNode(target_label);
 //           const source_nodeid = addNode(source_label);
 //           addEdge(source_nodeid, target_nodeid, relation_label);
-//         } else if (!targetNode && sourceNode) {
-//           const target_nodeid = addNode(target_label);
+//         } else if (!targedeid = addNode(target_label);
 //           addEdge(sourceNode.id, target_nodeid, relation_label);
 //         } else if (targetNode && !sourceNode) {
 //           const source_nodeid = addNode(source_label);
@@ -192,4 +191,5 @@ function generateRandomString(length = 4) {
 
 //   traverse(json);
 //   return { initialNodes, initialEdges };
-// };
+// };tNode && sourceNode) {
+//           const target_no

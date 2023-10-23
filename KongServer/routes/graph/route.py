@@ -128,7 +128,5 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
             continue
             
     kg.add_node(subtree_node_new, merge=True)
-    print("New subtree: ", kg.display_tree(rf_subgraph_json["id"]))
-    print(json.dumps(subtree_node_new, indent=4))
     ## TODO: consider just returning the subgraph
     return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))    

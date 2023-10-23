@@ -11,7 +11,7 @@ import { MarkerType, Node } from "reactflow";
 
 export type GraphType = "Tree" | "ConceptMap";
 
-export const CreateNode = (
+export const ConvertNode = (
   node: BackendNode,
 ): Node<RFNodeData> => {
   // console.log(node.position.x);
@@ -39,7 +39,7 @@ export const CreateNode = (
   }
 }
 
-export const CreateEdge = (
+export const ConvertEdge = (
   rfNode: any,
   parentId: string,
 ): RFEdge => {

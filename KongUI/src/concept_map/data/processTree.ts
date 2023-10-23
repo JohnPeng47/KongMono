@@ -8,9 +8,10 @@ import {
 } from "../common/common-types";
 
 import { MarkerType, Node } from "reactflow";
-export type GraphType = "Tree" | "ConceptMap";
+import { generateUUID } from "../common/utils";
 
-export const CreateNode = (
+export type GraphType = "Tree" | "ConceptMap";
+export const ConvertNode = (
   node: BackendNode,
 ): Node<RFNodeData> => {
   // console.log(node.position.x);
@@ -39,7 +40,7 @@ export const CreateNode = (
   }
 }
 
-export const CreateEdge = (
+export const ConvertEdge = (
   rfNode: any,
   parentId: string,
 ): RFEdge => {
@@ -55,4 +56,37 @@ export const CreateEdge = (
       strokeWidth: 1,
     },
   };
+}
+
+type CreateNodeArg = Omit<RFNode, "id">;
+export const CreateNode = (
+  rfNode: CreateNodeArg
+): RFNode => {
+  const id = generateUUID();
+  console.log("Generating node with id: ", id);
+  return {
+    ...rfNode,
+    id: id,
+    data: {
+      ...rfNode.data,
+      node_type: "treeNode",
+      id: id
+    }
+  }
+}
+
+type CreateEdgeArg = Omit<RFEdge, "id">
+export const CreateEdge = (
+  rfEdge: CreateEdgeArg
+): RFEdge => {
+  return {
+    ...rfEdge,
+    id: generateUUID(),
+    type: "step",
+    style: {
+      stroke: "black",
+      strokeDasharray: "5,5",
+      strokeWidth: 1,
+    },
+  }
 }

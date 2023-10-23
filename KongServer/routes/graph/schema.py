@@ -5,6 +5,7 @@ from typing import Optional, List, Dict
 class Position(BaseModel):
     x: int
     y: int
+    
 class GraphNodeData(BaseModel):
     title: str
     node_type: str

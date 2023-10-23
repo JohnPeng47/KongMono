@@ -66,9 +66,10 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
     genSubGraph, 
     deleteNode, 
     saveGraph,
-    genGraphDesc
+    genGraphDesc,
+    collapseNodes,
+    addNode
   } = useContext( TreeEditMapContext );
-
 
   const { id: currID } = data;
 
@@ -146,6 +147,28 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
         }>
           DELETE
         </Button>
+
+        <Button sx={{
+          width: 100,            // Set a specific width for the button
+          marginLeft: 1            // Optional: add a little spacing between the TextField and Button
+        }} variant="contained" color="primary" onClick={() =>  {
+            console.log("collapsing node: ", data.title);
+            collapseNodes(currID);
+          }
+        }>
+          Collapse
+        </Button>
+        <Button sx={{
+          width: 100,            // Set a specific width for the button
+          marginLeft: 1            // Optional: add a little spacing between the TextField and Button
+        }} variant="contained" color="primary" onClick={() =>  {
+            console.log("Adding node: ", data.title);
+            addNode(data.id);
+          }
+        }>
+          Add
+        </Button>
+
         {
           data.node_type === "ROOT" && (
             <>
