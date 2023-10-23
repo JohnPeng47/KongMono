@@ -36,7 +36,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "clean": "rimraf ../src/build",
-    "postbuild": "npm run clean && ncp build/ ../src/build",
+    "postbuild": "npm run clean && ncp build/ ../KongServer/build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
