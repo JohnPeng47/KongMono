@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const ENDPOINT = "http://localhost:8000";
+export const ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 const AUTHENTICATE_ENDPOINT = ENDPOINT + "/authenticate";
 
 type AuthenticateRequest = {
