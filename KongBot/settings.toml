@@ -1,7 +1,5 @@
 [development]
 DB_HOST = "18.191.159.163"
-API_ENDPOINT = "http://localhost:8000"
 
 [production]
 DB_HOST = "172.31.34.171"
-API_ENDPOINT = "http://18.221.129.100:8000"

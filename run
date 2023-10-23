@@ -1,0 +1,4 @@
+#!/bin/sh
+export ENV_FOR_DYNACONF=production
+export REACT_APP_API_ENDPOINT=http://172.31.34.171:8000
+cd KongUI && npm run build && cd ../KongServer && python3 app.py

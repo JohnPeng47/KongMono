@@ -14,6 +14,7 @@ from routes.auth.route import router as auth_router
 from routes.events.route import router as events_router
 from routes.static.route import router as static_router
 
+from config import settings
 from common.message_queue.queue import KafkaQueue
 
 app = FastAPI()
@@ -54,5 +55,7 @@ app.queue = KafkaQueue()
 # realistically, needs to be a dictionary keyed by user IDs
 app.curr_graph = None
 
+print(settings.API_HOST)
+print(settings.API_PORT)
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=settings.API_PORT, reload=True)
