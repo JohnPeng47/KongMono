@@ -2,9 +2,12 @@ from ..llm import GenSubTreeQuery, Tree2FlatJSONQuery, SubtreeSingleLineDescJSON
     GenTreeQuery, GenTreeQueryV2, SubtreeDescriptionMultiQuery, GenEntityRelationsJSONQuery, \
     GenDetailedDecrSubtreeQuery
 
+from networkx.algorithms.traversal.depth_first_search import dfs_tree
 from bot.base import KnowledgeGraph
 from .utils import convert_tree_to_json
 from typing import Dict, List
+
+from .types import MTLLMArg 
 
 import logging
 
@@ -251,6 +254,7 @@ def generate_entity_relations(graph: KnowledgeGraph):
 
 
 def generate_details_hierarchal(graph: KnowledgeGraph):
+
     global_config = graph.config["global"]
     subtree_size = global_config["subtree_size"]
 
@@ -258,22 +262,17 @@ def generate_details_hierarchal(graph: KnowledgeGraph):
     cache_policy = config.get("cache_policy", "default")
     model = config.get("model", "gpt4")
 
-    # TODO: should probably make this more robust ie. changing the type of node
-    # to type: PARENT_NODE or something
     mt_input_args = {
-        node["id"]: {
-            "subtree": graph.display_tree(node["id"], lineage=True, stop_depth=subtree_size),
-        } for node in graph.filter_nodes({"children": subtree_size})
+        node_id: {
+            "subtree": graph.display_tree(node_id, lineage=True, stop_depth=subtree_size),
+        } for node_id in graph.nodes
     }
-
-    for node_id, subtree in mt_input_args.items():
-        print(subtree)
 
     nodes_details_query = GenDetailedDecrSubtreeQuery.mt_init(cache_policy=cache_policy,
                                                               model=model)
 
     results = nodes_details_query.mt_get_llm_output(mt_input_args)
-
+    
     for node_id, details in results:
         for title, detailed_description in details.items():
             print("Title: ", title, "\nDetailed description: ",
@@ -287,3 +286,53 @@ def generate_details_hierarchal(graph: KnowledgeGraph):
                 graph.modify_node(target_node["id"], {
                                   "description": detailed_description})
                 print(graph.__str__())
+
+# def generate_details_hierarchal(graph: KnowledgeGraph):
+#     from collections import Counter
+
+#     global_config = graph.config["global"]
+#     subtree_size = global_config["subtree_size"]
+
+#     config: Dict = graph.config["generate_details_hierarchal"]
+#     cache_policy = config.get("cache_policy", "default")
+#     model = config.get("model", "gpt4")
+
+#     # TODO: should probably make this more robust ie. changing the type of node
+#     # to type: PARENT_NODE or something
+#     counter = Counter()
+#     nodes = graph.filter_nodes({"children": subtree_size})
+#     for node in nodes:
+#         tree = dfs_tree(graph, node["id"])
+#         counter.update(tree)
+
+#     print(counter)
+
+    
+    # mt_input_args = {
+    #     node["id"]: {
+    #         "subtree": graph.display_tree(node["id"], lineage=True, stop_depth=subtree_size),
+    #     } for node in graph.filter_nodes({"children": subtree_size})
+    # }
+
+    # print("Subtrees >>>")
+    # for node_id, subtree in mt_input_args.items():
+    #     print(subtree)
+
+    # nodes_details_query = GenDetailedDecrSubtreeQuery.mt_init(cache_policy=cache_policy,
+    #                                                           model=model)
+
+    # results = nodes_details_query.mt_get_llm_output(mt_input_args)
+
+    # for node_id, details in results:
+    #     for title, detailed_description in details.items():
+    #         print("Title: ", title, "\nDetailed description: ",
+    #               detailed_description)
+    #         target_node = graph.filter_nodes({"title": title})
+    #         if target_node:
+    #             target_node = target_node[0]
+    #             # ids are different here
+    #             print("Modifying node_id: ",
+    #                   target_node["id"], detailed_description)
+    #             graph.modify_node(target_node["id"], {
+    #                               "description": detailed_description})
+    #             print(graph.__str__())

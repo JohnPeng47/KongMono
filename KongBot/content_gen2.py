@@ -68,7 +68,10 @@ config = {
     "generate_entity_relations": {
         "cache_policy": "default",
         "model": "gpt4",
-
+    },
+    "generate_details_hierarchal":{
+        "cache_policy": "default",
+        "model": "gpt4",
     }
 }
 
@@ -97,49 +100,11 @@ config = {
 # tree_parents, tree_tree = kg.display_tree_v2_lineage(node_id)
 # print(tree_parents, tree_tree)
 
-import random
 
-def find_id(node, title: str):
-    if node["node_data"]["title"] == title:
-        return node["id"]
-    
-    for child in node["node_data"]["children"]:
-        id = find_id(child, title)
-        if id:
-            return id
-        
-    return None
-
-kg = KnowledgeGraph.load_graph("e45cd912-37a7-4eb4-9c72-c24345f07f2f")
-root1 = kg.get_root()
-r
-# error, success, total = 0, 0, 20
-# for i in range(total):
-#     # node_id = random.choice(list(kg.nodes()))
-#     node = kg.get_root()
-#     node_id = kg.get_root()["id"]
-
-
-#     tree1, tree2 = kg.display_tree_v2_lineage(node_id)
-
-#     print(tree1 + tree2)
-#     subtree = GenSubTreeQueryV2(kg.curriculum,
-#                             tree1 + tree2,
-#                             model="gpt3").get_llm_output()
-    
-#     # try:
-#     # parent = kg.parents(node_id)
-#     subtree_json = ascii_tree_to_kg_v2(subtree, node, {})
-#     print(json.dumps(subtree_json, indent=4))
-#     success += 1
-#     # except Exception:
-#     #     error += 1
-#     #     continue 
-
-# print(f"Error rate: {error}/{total}")
-# # TODO: need to make all of JSON query LLM implement the same DataNode interface
-# # so we can just add one without running the other to graph
-# # TODO: need to use DataNode more
-# subtree_node_new = Tree2FlatJSONQuery(subtree,
-#                                     model="gpt4").get_llm_output()
-
+kg = KnowledgeGraph.load_graph("f110ccd3-3dcc-4078-be35-dff094494a90")
+kg.add_config(config)
+kg.add_generators([
+    generate_details_hierarchal
+])
+kg.generate_nodes()
+print(json.dumps(kg.to_json(), indent=4))

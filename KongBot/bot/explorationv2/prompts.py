@@ -241,7 +241,6 @@ Do this:
 }}
 """
 
-
 SUBTREE_DETAILED_DESCRIPTION_SCHEMA = """
 You are given a tree, and a general description of the tree. Using the general description
 as the background context, generate a 4-5 sentence description for each subitem in the tree.
@@ -264,6 +263,44 @@ The following JSON is generated:
   "Germany's Peace Offer": "In the context of international pressure and the formation of the Provisional Government, Germany extended a pivotal peace offer. This proposal aimed to bring an end to hostilities with Russia and was instrumental in shaping the geopolitical landscape of the time.",
   "Terms of Brest-Litovsk Treaty": "The heart of Germany's peace offer was encapsulated in the Treaty of Brest-Litovsk, signed on March 3, 1918. This treaty, signed between the new Bolshevik government of Soviet Russia and the Central Powers, marked the end of Russia's involvement in World War I. Unfortunately for Russia, the treaty's terms were quite severe, requiring them to cede vast territories such as Ukraine, Belarus, and the Baltic states.",
   "Impact on Domestic Politics": "Following the signing of the Brest-Litovsk Treaty, Russia's domestic politics underwent tremendous upheaval. The treaty's stringent conditions led to an eruption of dissatisfaction and criticism amongst the Russian people and various political groups. The Bolsheviks, once advocates for peace, saw a decline in their popularity because of the treaty's harsh terms, laying the groundwork for political turbulence like the Russian Civil War.",
+  "Consequences on Economy and Society": "Economically, the Treaty of Brest-Litovsk was a devastating blow to Russia. With the loss of crucial territories and resources, the country faced an acute economic decline. Ukraine's loss, often referred to as Russia's 'breadbasket', triggered food scarcities and famines. The societal repercussions were just as profound, with massive population displacements, widespread dissatisfaction, and unrest destabilizing an already fragile societal structure."
+}}
+
+Here is the tree:
+{subtree}
+
+The JSON generated should conform to this jsonschema:
+{{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "additionalProperties": {{
+        "type": "string"
+    }}
+}}
+
+Now, output the JSON, and only the JSON (do NOT include the schema or anything else but the JSON):
+"""
+
+
+SUBTREE_DETAILED_DESCRIPTION_SINGLE = """
+You are given a tree, and a general description of the tree. Using the general description
+as the background context, generate a 4-5 sentence description for each subitem in the tree.
+The subitems are the tree branches below the SEPARATOR. 
+Return your response in a JSON array, where each key is the subtree branch and the value is 
+the description generated. 
+
+For example, give the following tree:
+> International Pressure
+--> Formation of the Provisional Government
+----> Historical Background Leading Up to Current Events
+=========SEPARATOR=========
+------> Germany's Peace Offer
+--------> Terms of Brest-Litovsk Treaty
+--------> Impact on Domestic Politics
+--------> Consequences on Economy and Society
+
+The following JSON is generated: 
+{{
   "Consequences on Economy and Society": "Economically, the Treaty of Brest-Litovsk was a devastating blow to Russia. With the loss of crucial territories and resources, the country faced an acute economic decline. Ukraine's loss, often referred to as Russia's 'breadbasket', triggered food scarcities and famines. The societal repercussions were just as profound, with massive population displacements, widespread dissatisfaction, and unrest destabilizing an already fragile societal structure."
 }}
 

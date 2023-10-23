@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from .networkx.networkx import DiGraph, shortest_path
+from networkx.classes import DiGraph
+from networkx.algorithms.shortest_paths.generic import shortest_path
+
 from typing import List, Dict, Callable, Optional
 
 from bot.adapters.kg_to_frontend import FrontEndNodeAdapter

@@ -310,13 +310,13 @@ export class GraphUtils {
   public getNodeDepth(nodeId: NodeID): number {
     const rootNode = this.root();
     const traverseNodes = this.DFS(rootNode.id);
-    
+
     const depth = traverseNodes
       .find(dfs => dfs.node.id === nodeId)?.depth;
-    
-    if (depth) 
+
+    if (depth)
       return depth;
-    
+
     throw Error(`Depth for node: ${nodeId} not found`);
   }
 
