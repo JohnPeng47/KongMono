@@ -1,10 +1,10 @@
-from typing import Dict
+from typing import Dict, List
 from bot.base import BaseLLM
+from bot.base.types import GeneratorArg, GeneratorResult
 import concurrent.futures
 
 # circular import
 # from bot.explorationv2.generators.types import MTLLMArg
-
 
 class BaseLLMQuery(BaseLLM):
     def __init__(self, 
@@ -75,6 +75,77 @@ class BaseLLMQuery(BaseLLM):
         num_threads = 10
         node_ids = input_args.keys()
         prompt_args = input_args.values()
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+            results_list = list(executor.map(self.mt_task, 
+                                             node_ids, 
+                                             prompt_args
+                                            ))
+        return results_list
+    
+class BaseLLMQueryV2(BaseLLM):
+    finished_tasks = 0
+    total_tasks = 0
+
+    def __init__(self, 
+                 model: str = "gpt3", 
+                 cache_policy: str = "default",
+                 json_output: bool = False,
+                 evaluate: bool = True
+                ):
+        self.evaluate = evaluate
+        super().__init__(model, cache_policy, json_output)
+
+    @classmethod
+    def mt_init(cls,
+                model: str = "gpt3", 
+                cache_policy: str = "default",
+                json_output: bool = False,
+                ):
+        """
+        Only difference is the lack of prompt arg arguments during intialization
+        """
+        # TODO: hacky. Currently only supports single args. Need to change manually for cache
+        # level2 hack: use inspect to figure out the number of positional args, so as to support 
+        # it for multiple args
+        # This calls the __init__ defined by the children, FYI
+        return cls("placeholder1", cache_policy=cache_policy, model=model)
+    
+    def init_prompt(self, prompt_template, **prompt_args):
+        self.prompt_template = prompt_template
+        super().init_prompt(prompt_template, **prompt_args)
+
+        # trigger eval flow
+        # if self.evaluate:
+        #     logger.debug("Hello world")
+        #     logger.debug(self.prompt_template)
+        #     # this will call the child 
+        #     logger.debug(self.get_llm_output())
+
+    def eval_prompt(self):
+        pass
+
+    # TODO: does it make sense to put cost update here as well?
+
+    def update_task(self):
+        self.finished_tasks += 1
+        print(f"Progress: {self.finished_tasks}/{self.total_tasks}")
+
+    def mt_task(self, node_id: str, prompt_args: Dict):
+        print("EXECUTING WITH: ", prompt_args)
+        result = super().get_llm_output(prompt_args)
+        self.update_task()
+        return GeneratorResult(node_id = node_id, data = result)
+
+    def mt_get_llm_output(self, args: List[GeneratorArg]):
+        """
+        Multi-threaded get_llm_output
+        """
+        num_threads = 10
+        node_ids = [arg.node_id for arg in args]
+        prompt_args = [arg.data for arg in args]
+
+        self.total_tasks = len(args)
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
             results_list = list(executor.map(self.mt_task, 

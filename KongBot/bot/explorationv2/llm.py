@@ -4,10 +4,11 @@ from typing import Dict
 
 from .prompts import CONVERT_TO_JSON, ADD_ROOT_TO_JSON, TREE, TREE_V2, \
 SUBTREE, SUBTREE_DESCRIPTION_MULTI, SUBTREE_DESCRIPTION_SINGLE, ENTITY_RELATIONS, \
-SUBTREE_DETAILED_DESCRIPTION, SUBTREE_DETAILED_DESCRIPTION_SCHEMA, SUBTREE_V2
+SUBTREE_DETAILED_DESCRIPTION, SUBTREE_DETAILED_DESCRIPTION_SCHEMA, SUBTREE_V2, SUBTREE_DETAILED_TEXTBOOK_SINGLE, \
+KEYWORD_EXTRACTION, SUBTREE_DETAILED_DESCRIPTION_SINGLE_V1
 
 from bot.adapters import llm_tree_json_adapter
-from bot.base.query import BaseLLMQuery
+from bot.base.query import BaseLLMQuery, BaseLLMQueryV2
 
 import json
 import logging
@@ -16,6 +17,7 @@ logger = logging.getLogger("logger")
     
 class GenTreeQuery(BaseLLMQuery):
     def __init__(self, context: str, cache_policy: str = "default", model: str = "gpt4"):
+        print("INitlaiizng tree with cache_pouc", cache_policy)
         super().__init__(cache_policy=cache_policy, model=model)
         super().init_prompt(TREE, context=context)
 
@@ -84,7 +86,7 @@ class SubtreeDescriptionMultiQuery(BaseLLMQuery):
         super().__init__(cache_policy=cache_policy, model=model, json_output=False)
         super().init_prompt(SUBTREE_DESCRIPTION_MULTI, subtree=subtree)
     
-class GenEntityRelationsJSONQuery(BaseLLMQuery):    
+class GenEntityRelationsJSONQuery(BaseLLMQueryV2):    
     """
     Generate a entity relations JSON graph from a long detailed subtree description
     """
@@ -98,7 +100,7 @@ class GenEntityRelationsJSONQuery(BaseLLMQuery):
 # Idea: we can take a related prompt (as determined by shared entities in the ER graph) and 
 # use a single prompt to generate a detailed description of their connection
 # This would allows us to use the shared context
-class GenDetailedDecrSubtreeQuery(BaseLLMQuery):
+class GenDetailedDecrSubtreeQuery(BaseLLMQueryV2):
     """
     Generates a detailed description that takes a subtree and generates a full text
     description for it
@@ -107,5 +109,27 @@ class GenDetailedDecrSubtreeQuery(BaseLLMQuery):
                  subtree: str,
                  cache_policy: str = "default",
                  model: str = "gpt4"):        
-        super().__init__(cache_policy=cache_policy, model=model, json_output=True)
-        super().init_prompt(SUBTREE_DETAILED_DESCRIPTION_SCHEMA, subtree=subtree)
+        super().__init__(cache_policy=cache_policy, model=model, json_output=False)
+        super().init_prompt(SUBTREE_DETAILED_DESCRIPTION_SINGLE_V1, subtree=subtree)
+
+class GenExpandedTextDescription(BaseLLMQueryV2):
+    """
+    Generates a long textbook level explanation
+    """
+    def __init__(self,
+                 subtree: str,
+                 cache_policy: str = "default",
+                 model: str = "gpt4"):
+        super().__init__(cache_policy=cache_policy, model=model, json_output=False)
+        super().init_prompt(SUBTREE_DETAILED_TEXTBOOK_SINGLE, subtree=subtree)
+
+class GenerateKeywords(BaseLLMQueryV2):
+    """
+    Generate keywords from long text description
+    """
+    def __init__(self,
+                 long_description: str,
+                 cache_policy: str = "default",
+                 model: str = "gpt4"):
+        super().__init__(cache_policy=cache_policy, model=model, json_output=False)
+        super().init_prompt(KEYWORD_EXTRACTION, long_description=long_description)

@@ -18,7 +18,7 @@ def create_logger():
                                         maxBytes=10*1024*1024, 
                                         backupCount=5)
     file_handler.setFormatter(
-        logging.Formatter("[%(asctime)s] %(module)s:%(funcName)s => %(message)s")
+        logging.Formatter("HELLWOORLD[%(asctime)s] %(module)s:%(funcName)s => %(message)s")
     )
 
     logger.addHandler(console_handler)

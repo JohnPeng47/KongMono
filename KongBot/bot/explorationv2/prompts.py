@@ -318,3 +318,67 @@ The JSON generated should conform to this jsonschema:
 
 Now, output the JSON, and only the JSON (do NOT include the schema or anything else but the JSON):
 """
+
+SUBTREE_DETAILED_DESCRIPTION_SINGLE_V1 = """
+You are given a tree, and a general description of the tree. Using the general description
+as the background context, generate a 4-5 sentence description for each subitem in the tree.
+The subitems are the tree branches below the SEPARATOR. 
+
+For example, give the following tree:
+> International Pressure
+--> Formation of the Provisional Government
+----> Historical Background Leading Up to Current Events
+=========SEPARATOR=========
+------> Germany's Peace Offer
+--------> Terms of Brest-Litovsk Treaty
+--------> Impact on Domestic Politics
+--------> Consequences on Economy and Society
+
+Economically, the Treaty of Brest-Litovsk was a devastating blow to Russia. With
+the loss of crucial territories and resources, the country faced an acute
+economic decline. Ukraine's loss, often referred to as Russia's 'breadbasket',
+triggered food scarcities and famines. The societal repercussions were just as
+profound, with massive population displacements, widespread dissatisfaction, and
+unrest destabilizing an already fragile societal structure.
+
+Here is the tree:
+{subtree}
+"""
+
+SUBTREE_DETAILED_DESCRIPTION_SINGLE_V2 = """
+You are given a tree, and a general description of the tree. Using the general description
+as the background context, generate a text book entry with the following attributes:
+- Dense Historical Facts: Should contain explicit references to maximum facts
+- Terse: Prose terse, like history professor
+- No Section headings
+- Focus on subitem below SEPARATOR. Items above are for context only
+- Generated entry should 4-5 sentences long
+- No adjectives
+
+{subtree}
+"""
+
+
+
+SUBTREE_DETAILED_TEXTBOOK_SINGLE = """
+You are given a tree, and a general description of the tree. Using the general description
+as the background context, generate a text book entry with the following attributes:
+- Dense Historical Facts: Should contain explicit references to maximum facts
+- Terse: Prose terse, like history professor
+- No Section headings
+- Focus on subitem below SEPARATOR. Items above are for context only
+- Generated entry should be as long as possible
+- No adjectives
+
+{subtree}
+"""
+
+KEYWORD_EXTRACTION = """
+Given the following text, extract the keywords from the text:
+{long_description}
+
+Give your output as a JSON array value to a key called "keywords":
+{{
+  "keywords": []
+}}
+"""

@@ -1,5 +1,6 @@
 [development]
 DB_HOST = "18.191.159.163"
+ERROR_LOG = "../error.log"
 
 [production]
 DB_HOST = "172.31.34.171"

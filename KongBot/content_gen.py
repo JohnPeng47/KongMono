@@ -1,7 +1,7 @@
 from bot.explorationv2.llm import Tree2FlatJSONQuery
 import json
 from bot.base import KnowledgeGraph
-from bot.explorationv2 import generate_tree, generate_sub_trees, generate_subtree_descriptions, generate_entity_relations, generate_details_hierarchal
+from bot.explorationv2 import generate_tree, generate_sub_trees, generate_subtree_descriptions, generate_entity_relations, generate_long_details
 
 context = """
 You are a member of the Russian Provisional Government under the faction of the Bolsheviks

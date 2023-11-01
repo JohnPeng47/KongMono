@@ -629,9 +629,9 @@ class Config:
     generators = [
         "global",
         "generate_tree",
-        "generate_tree_details",
         "generate_sub_trees",
         "generate_subtree_descriptions",
         "generate_entity_relations",
-        "generate_details_hierarchal"
+        "generate_short_description",
+        "generate_long_description"
     ]    

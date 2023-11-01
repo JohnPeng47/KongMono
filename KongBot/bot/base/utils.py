@@ -24,6 +24,9 @@ class CustomDict(json.JSONEncoder):
     def values(self):
         return self.data.values()
     
+    def get(self, key, default = None):
+        return self.data.get(key, default if default else None)
+
     ## correct this!!
     def default(self, obj):
         return obj.data

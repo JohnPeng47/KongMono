@@ -11,8 +11,8 @@ from .utils import merge_tree_ids
 
 from KongBot.bot.base import KnowledgeGraph
 from KongBot.bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
-from KongBot.bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg, ascii_tree_to_kg_v2
-from KongBot.bot.explorationv2 import generate_details_hierarchal
+from KongBot.bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg_v2
+from KongBot.bot.explorationv2 import generate_short_description
 from KongBot.bot.base.exceptions import GeneratorException
 
 from typing import List
@@ -61,7 +61,7 @@ def generate_graph(graph_id: str, request: Request):
     }
     kg.add_config(config=config)
     kg.add_generators([
-        generate_details_hierarchal
+        generate_short_description
     ])
     success = kg.generate_nodes()
     kg.save_graph(title=title)

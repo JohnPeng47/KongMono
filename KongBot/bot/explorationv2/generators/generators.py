@@ -1,13 +1,15 @@
 from ..llm import GenSubTreeQuery, Tree2FlatJSONQuery, SubtreeSingleLineDescJSONQuery, \
     GenTreeQuery, GenTreeQueryV2, SubtreeDescriptionMultiQuery, GenEntityRelationsJSONQuery, \
-    GenDetailedDecrSubtreeQuery
+    GenDetailedDecrSubtreeQuery, GenExpandedTextDescription, GenSubTreeQueryV2, GenerateKeywords
 
 from networkx.algorithms.traversal.depth_first_search import dfs_tree
 from bot.base import KnowledgeGraph
 from .utils import convert_tree_to_json
 from typing import Dict, List
 
-from .types import MTLLMArg 
+from bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg_v2
+import random
+
 
 import logging
 
@@ -18,35 +20,8 @@ logger = logging.getLogger("logger")
 # from generate_nodes method from KG
 
 
-def generate_tree(graph: KnowledgeGraph):
-    config: Dict = graph.config["generate_tree"]
-    cache_policy = config.get("cache_policy", "default")
-    model = config.get("model", "gpt4")
-
-    tree_query = GenTreeQuery(graph.curriculum,
-                              cache_policy=cache_policy,
-                              model=model)
-    tree: str = tree_query.get_llm_output()
-
-    # tree_json_query = Tree2FlatJSONQuery(tree,
-    #                                cache_policy=cache_policy,
-    #                                model=model)
-    # tree_json: Dict = tree_json_query.get_llm_output()
-
-    tree_json = convert_tree_to_json(tree, cache_policy, model)
-
-    # TODO: move cost updates to inside BaseLLMQuery
-    # graph.update_call_costs(tree_query.get_llm_call_costs())
-    # graph.update_call_costs(tree_json_query.get_llm_call_costs())
-
-    graph.from_json(tree_json)
-    # print(graph.display_tree())
-
-# we will modify this later
-# going to have a recursive generation model that is going to be controlled
-# from generate_nodes method from KG
-
-
+# TODO: to make this comply with the GeneratorArg interface, first add a root node
+# use that as the GeneratorArg into the graph
 def generate_treev2(graph: KnowledgeGraph):
     config: Dict = graph.config["generate_treev2"]
     cache_policy = config.get("cache_policy", "default")
@@ -70,54 +45,31 @@ def generate_treev2(graph: KnowledgeGraph):
     graph.from_json(tree_json)
     print(graph.display_tree())
 
-
-def generate_tree_details(graph: KnowledgeGraph):
-    config: Dict = graph.config["generate_tree_details"]
+### REFACTORED GENERATORS
+# TODO:
+# Consider: moving the config interface out to BaseLLMQuery
+from bot.base.types import GeneratorArg, GeneratorResult
+def generate_tree(graph: KnowledgeGraph):
+    config: Dict = graph.config["generate_tree"]
     cache_policy = config.get("cache_policy", "default")
     model = config.get("model", "gpt4")
 
-    tree = graph.display_tree()
-    node_details_query = SubtreeSingleLineDescJSONQuery(tree,
-                                                        cache_policy=cache_policy,
-                                                        model=model)
-    node_details: Dict = node_details_query.get_llm_output()
-    graph.update_call_costs(node_details_query.get_llm_call_costs())
+    tree_query = GenTreeQuery(graph.curriculum,
+                              cache_policy=cache_policy,
+                              model=model)
+    tree: str = tree_query.get_llm_output()
 
-    for node_title, generated_desc in node_details.items():
-        try:
-            target_node = graph.filter_nodes_single({"title": node_title})
-            target_id = target_node["id"]
+    # tree_json_query = Tree2FlatJSONQuery(tree,
+    #                                cache_policy=cache_policy,
+    #                                model=model)
+    # tree_json: Dict = tree_json_query.get_llm_output()
 
-            graph.modify_node(target_id, {"description": generated_desc})
-        except:
-            continue
+    tree_json = convert_tree_to_json(tree, cache_policy, model)
+    # TODO: move cost updates to inside BaseLLMQuery
+    # graph.update_call_costs(tree_query.get_llm_call_costs())
+    # graph.update_call_costs(tree_json_query.get_llm_call_costs())
+    graph.from_json(tree_json)
 
-# merge ids
-def merge_tree_ids(subtree_node, tree_node):
-    def find_node_with_value(node: Dict, field, val):
-        if node["node_data"][field] == val:
-            return node
-        for child in node["node_data"]["children"]:
-            node = find_node_with_value(child, field, val)
-            if node:
-                return node
-        return None
-        
-    stack = [subtree_node]
-    while stack:
-        curr_node = stack.pop()
-        print(curr_node)
-        curr_id, curr_title = curr_node["id"], curr_node["node_data"]["title"]
-
-        node = find_node_with_value(tree_node, "title", curr_title)
-        if node:
-            node["id"] = curr_id
-
-        stack.extend(curr_node["node_data"]["children"])
-        
-# TODO: make a multithreaded version of this to generate nodes in parallel
-# but to do so, we need to modify prompt to accept number of nodes to generate
-# so we dont overshoot the config
 def generate_sub_trees(graph: KnowledgeGraph):
     global_config: Dict = graph.config["global"]
     config: Dict = graph.config["generate_sub_trees"]
@@ -128,106 +80,98 @@ def generate_sub_trees(graph: KnowledgeGraph):
     depth = config.get("depth", graph.max_depth() - 1)
 
     curr_num_nodes = graph.stats()["num_nodes"]
-
-    # generate subtrees for all nodes at the same depth first
-    # before updating max_depth aka. breadth first vs. depth first
-    # NOTE: it still is uneven because initial generation is uneven
-    # possibly could enforce this constraints during tree generation phase
-    # but also, maybe preferrable to let GPT do its thing
-    curr_depth_nodes = (graph.get_nodes_from_depth(depth))
-
-    print("Before: ", graph.display_tree())
+    curr_depth_nodes = [node for node in graph.get_nodes_from_depth(depth)]
 
     while curr_num_nodes < target_num_nodes:
         if not curr_depth_nodes:
+            # update depth to move one down
             depth = graph.max_depth() - 1
-            curr_depth_nodes = (graph.get_nodes_from_depth(depth))
+            curr_depth_nodes = [node for node in graph.get_nodes_from_depth(depth)]
 
-        # node_index = random.randint(0, len(curr_depth_nodes) - 1)
-        node_index = 0
-
+        node_index = random.randint(0, len(curr_depth_nodes) - 1)
         subtree_root = curr_depth_nodes.pop(node_index)
         subtree_id = subtree_root["id"]
-
-        subtree_node = graph.get_node(subtree_id)
         subtree = graph.display_tree(subtree_id)
-
-        subtree = GenSubTreeQuery(graph.curriculum,
+        subtree = GenSubTreeQueryV2(graph.curriculum,
                                   subtree,
                                   cache_policy=cache_policy,
                                   model=model).get_llm_output()
-
-        # TODO: need to make all of JSON query LLM implement the same DataNode interface
-        # so we can just add one without running the other to graph
-        # TODO: need to use DataNode more
-        new_subtree_node = Tree2FlatJSONQuery(subtree,
-                                          cache_policy=cache_policy,
-                                          model=model).get_llm_output()
         
-        # need this to match titles to ids in the newly generated subtree
-        merge_tree_ids(subtree_node, new_subtree_node)
-        graph.add_node(new_subtree_node, merge=True)
+        # if no parent, means we are the root of the tree
+        parent = graph.parents(subtree_id)[0] if graph.parents(subtree_id) else subtree_root
+        retry = 3
+        while retry > 0:
+            try:
+                subtree_node_new = ascii_tree_to_kg_v2(subtree, subtree_root, parent)
+                break
+            except Exception as e:
+                retry -= 1
+                logger.error("Generate subtree exception: ", e)
+                logger.error("Retrying...")
+                continue
 
-        # subtree_detailed = GenDetailedDescriptionJSONQuery(subtree,
-        #                                                    cache_policy=cache_policy,
-        #                                                    model=model).get_llm_output()
-        # for node_title, generated_desc in subtree_detailed.items():
-        #     try:
-        #         target_node = graph.filter_nodes_single({"title": node_title})
-        #         target_id = target_node["id"]
-
-        #         graph.modify_node(target_id, {"description": generated_desc})
-        #     except:
-        #         continue
-
+        graph.add_node(subtree_node_new, merge=True)
         print(
             f"#Nodes before: {curr_num_nodes}, #Num nodes now: {graph.stats()['num_nodes']}")
         curr_num_nodes = graph.stats()["num_nodes"]
 
-                
 
-# FOr now we are only targetting subtrees with two or more children
-def generate_subtree_descriptions(graph: KnowledgeGraph):
-    """
-    Only generates descriptions for nodes with subtree_size
-    DONT THINK WE USE THIS ANYMORE
-    """
+def generate_long_description(graph: KnowledgeGraph):
     global_config = graph.config["global"]
-    subtree_size = global_config.get("subtree_size", 2)
+    subtree_size = global_config["subtree_size"]
 
-    config: Dict = graph.config["generate_subtree_descriptions"]
+    config: Dict = graph.config["generate_long_description"]
     cache_policy = config.get("cache_policy", "default")
     model = config.get("model", "gpt4")
 
-    node_ids = [node["id"]
-                for node in graph.filter_nodes({"children": subtree_size})]
-    subtrees = [
-        graph.display_tree(node_id, stop_depth=2, lineage=True) for node_id in node_ids
+    mt_input_args = [
+        GeneratorArg(
+            node_id = node_id, 
+            data = {
+                "subtree": graph.display_tree(node_id, lineage=True, stop_depth=subtree_size)
+            }
+        ) for node_id in list(graph.nodes)[:1]
+        if not graph.get_node(node_id)["node_data"].get("long_description")
     ]
 
-    for subtree in subtrees:
-        print(subtree)
+    nodes_details_query = GenExpandedTextDescription.mt_init(cache_policy=cache_policy, model=model)
+    results: List[GeneratorResult] = nodes_details_query.mt_get_llm_output(mt_input_args)
+    
+    # this should probably be a return
+    for res in results:
+        node_id = res.node_id
+        description = res.data
+        graph.modify_node(node_id, {
+                            "long_description": description})
 
-    mt_input_args = {
-        node_id: {
-            "subtree": subtree,
-        } for node_id, subtree in zip(
-            node_ids,
-            subtrees
-        )
-    }
+def generate_short_description(graph: KnowledgeGraph):
+    global_config = graph.config["global"]
+    subtree_size = global_config["subtree_size"]
 
-    node_details_query = SubtreeDescriptionMultiQuery(subtrees[0],
-                                                      cache_policy=cache_policy,
-                                                      model=model)
-    results = node_details_query.mt_get_llm_output(mt_input_args)
+    config: Dict = graph.config["generate_short_description"]
+    cache_policy = config.get("cache_policy", "default")
+    model = config.get("model", "gpt4")
+    
+    mt_input_args = [
+        GeneratorArg(
+            node_id = node_id,
+            data = {
+                    "subtree": graph.display_tree(node_id, lineage=True, stop_depth=subtree_size),
+                }
+        ) for node_id in list(graph.nodes)[:1]
+        if not graph.get_node(node_id)["node_data"].get("description")
+    ]    
 
-    for node_id, description in results:
-        print("DESCRIPTION: ", description)
-        graph.modify_node(node_id, {"description": description})
+    nodes_details_query = GenDetailedDecrSubtreeQuery.mt_init(cache_policy=cache_policy,
+                                                              model=model)
 
-    print(graph.__str__())
+    results: List[GeneratorResult] = nodes_details_query.mt_get_llm_output(mt_input_args)
 
+    for res in results:
+        node_id = res.node_id
+        description = res.data
+        graph.modify_node(node_id, {
+                            "description": description})
 
 def generate_entity_relations(graph: KnowledgeGraph):
     global_config = graph.config["global"]
@@ -237,12 +181,16 @@ def generate_entity_relations(graph: KnowledgeGraph):
     cache_policy = config.get("cache_policy", "default")
     model = config.get("model", "gpt4")
 
-    mt_input_args = {
-        node["id"]: {
-            "text": node["node_data"]["description"],
-            # we are filtering for the
-        } for node in graph.filter_nodes({"children": subtree_size})
-    }
+    mt_input_args = [
+        GeneratorArg(
+            node_id = node_id, 
+            data = {
+                "text": graph.get_node(node_id)["node_data"]["description"],
+                # we are filtering for the
+            }
+        ) for node_id in list(graph.nodes)[:1]
+        if graph.get_node(node_id)["node_data"].get("description")
+    ]
 
     entity_relations_query = GenEntityRelationsJSONQuery.mt_init(cache_policy=cache_policy,
                                                                  model=model)
@@ -253,86 +201,24 @@ def generate_entity_relations(graph: KnowledgeGraph):
         graph.modify_node(node_id, {"entity_relations": entity_relation_json})
 
 
-def generate_details_hierarchal(graph: KnowledgeGraph):
+# def generate_keywords(graph: KnowledgeGraph):
+#     mt_input_args = [
+#         GeneratorArg(
+#             node_id = node_id, 
+#             data = {
+#                 "long_description": graph.get_node(node_id)["node_data"]["long_description"]
+#             }
+#         ) for node_id in list(graph.nodes)[:1] if graph.get_node(node_id)["node_data"].get("long_description")
+#     ]
 
-    global_config = graph.config["global"]
-    subtree_size = global_config["subtree_size"]
+#     keywords_query = GenerateKeywords.mt_init()
+#     results: List[GeneratorResult] = keywords_query.mt_get_llm_output(mt_input_args)
 
-    config: Dict = graph.config["generate_details_hierarchal"]
-    cache_policy = config.get("cache_policy", "default")
-    model = config.get("model", "gpt4")
+#     for res in results:
+#         node_id = res.node_id
+#         keywords = res.data
+#         print("Keywords: ", keywords)
+#         graph.modify_node(node_id, {
+#                             "keywords": description})
+        
 
-    mt_input_args = {
-        node_id: {
-            "subtree": graph.display_tree(node_id, lineage=True, stop_depth=subtree_size),
-        } for node_id in graph.nodes
-    }
-
-    nodes_details_query = GenDetailedDecrSubtreeQuery.mt_init(cache_policy=cache_policy,
-                                                              model=model)
-
-    results = nodes_details_query.mt_get_llm_output(mt_input_args)
-    
-    for node_id, details in results:
-        for title, detailed_description in details.items():
-            print("Title: ", title, "\nDetailed description: ",
-                  detailed_description)
-            target_node = graph.filter_nodes({"title": title})
-            if target_node:
-                target_node = target_node[0]
-                # ids are different here
-                print("Modifying node_id: ",
-                      target_node["id"], detailed_description)
-                graph.modify_node(target_node["id"], {
-                                  "description": detailed_description})
-                print(graph.__str__())
-
-# def generate_details_hierarchal(graph: KnowledgeGraph):
-#     from collections import Counter
-
-#     global_config = graph.config["global"]
-#     subtree_size = global_config["subtree_size"]
-
-#     config: Dict = graph.config["generate_details_hierarchal"]
-#     cache_policy = config.get("cache_policy", "default")
-#     model = config.get("model", "gpt4")
-
-#     # TODO: should probably make this more robust ie. changing the type of node
-#     # to type: PARENT_NODE or something
-#     counter = Counter()
-#     nodes = graph.filter_nodes({"children": subtree_size})
-#     for node in nodes:
-#         tree = dfs_tree(graph, node["id"])
-#         counter.update(tree)
-
-#     print(counter)
-
-    
-    # mt_input_args = {
-    #     node["id"]: {
-    #         "subtree": graph.display_tree(node["id"], lineage=True, stop_depth=subtree_size),
-    #     } for node in graph.filter_nodes({"children": subtree_size})
-    # }
-
-    # print("Subtrees >>>")
-    # for node_id, subtree in mt_input_args.items():
-    #     print(subtree)
-
-    # nodes_details_query = GenDetailedDecrSubtreeQuery.mt_init(cache_policy=cache_policy,
-    #                                                           model=model)
-
-    # results = nodes_details_query.mt_get_llm_output(mt_input_args)
-
-    # for node_id, details in results:
-    #     for title, detailed_description in details.items():
-    #         print("Title: ", title, "\nDetailed description: ",
-    #               detailed_description)
-    #         target_node = graph.filter_nodes({"title": title})
-    #         if target_node:
-    #             target_node = target_node[0]
-    #             # ids are different here
-    #             print("Modifying node_id: ",
-    #                   target_node["id"], detailed_description)
-    #             graph.modify_node(target_node["id"], {
-    #                               "description": detailed_description})
-    #             print(graph.__str__())

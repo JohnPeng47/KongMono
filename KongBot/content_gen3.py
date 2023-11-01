@@ -1,26 +1,91 @@
+import json
 from bot.base import KnowledgeGraph
-from bot.explorationv2 import generate_treev2, generate_tree_details, generate_sub_trees
+import bot.explorationv2.generators.generators as GENERATORS
+# from bot.explorationv2 import generate_tree, generate_sub_trees_v2, generate_subtree_descriptions, generate_entity_relations, \
+#     generate_details_hierarchal, generate_keywords
+from bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
+from bot.adapters import ascii_tree_to_kg
 
-with open("saved_graphs.txt", "r") as graph_ids:
-    graph_ids = graph_ids.read().split("\n")
-    for graph_id in graph_ids:
-        if graph_id:
-            print(graph_id)
-            # try:
-            #     kg = KnowledgeGraph(graph_id=graph_id)
-            #     print(kg.curriculum)
-            # except Exception as e:
-            #     print(e)
+context = """
+Generate something about the origin of electronic music. Focus on the history techno
+"""
+context2 = """
+Generate a text about ray peat's views on energy and metabolism
+"""
+context3 = """
+Generate a lesson about effective project management
+"""
+context4 = """
+Generate text that focuses on modern psychology. Focus on:
+- psychoanalysis
+- cognitive science
+"""
 
-# kg = KnowledgeGraph(context, generators=[
-#     generate_treev2,
-#     generate_tree_details,
-#     generate_sub_trees
-# ], config = config)
-# kg.save_graph()
-# print(kg.display_llm_call_costs())
 
-# # kg = KnowledgeGraph("context", graph_id="a6de2871-27fe-4869-b42b-f7f5c010be9c")
-# s = kg.to_json_frontend()
-# kg.write_graph()
-# # print(s)
+russia_context = """
+You are a member of the Russian Provisional Government under the faction of the Bolsheviks
+
+The setting is pre-revolution Russia, when the Tsar has just abdicated the throne and the Russian Provisional government has just been
+assembled. You are about to engage in parliamentary debates with the other factions to push across your legislative agenda on issue of:
+Russia's Participation in the Great War
+
+Create a briefing that will prepare your members for the debate
+"""
+
+goal = """
+"""
+
+# NOTES:
+# Subtree breadth/depth
+# - theoretically, a subtree can be arbitrarily deep or wide, but subtrees that are too wide
+# might affect generation quality since the number of subtopics to generate for can be too much
+config = {
+    "global": {
+        "nodes": 100,
+        # currently only used to control the selection size of subtrees for
+        # generation steps, but in future, could also be used to hard cap the
+        # the size of the generated subtrees
+        "subtree_size": 2
+    },
+    "generate_tree": {
+        "cache_policy": "CACHE",
+        "goal": goal,
+        "model": "gpt4"
+    },
+    "generate_short_description":{
+        "cache_policy": "default",
+        "model": "gpt4",
+    },
+    "generate_entity_relations":{
+        "cache_policy": "default",
+        "model": "gpt4",
+    },
+    "generate_long_description":{
+        "cache_policy": "default",
+        "model": "gpt4",
+    },
+    "generate_sub_trees" : {
+        "cache_policy": "default",
+        "model": "gpt3",
+    }
+}
+
+import uuid
+# kg = KnowledgeGraph.load_graph("f3444cd4-3186-4931-80e2-689531326899")
+kg = KnowledgeGraph("Russia")
+kg.add_node({
+    "id": str(uuid.uuid4()),
+    "node_data" : {
+        "title": "Russian revolution",
+        "children": [],
+        "node_type": "TREE_NODE"    
+    }
+})
+kg.add_config(config)
+kg.add_generators([
+    GENERATORS.generate_sub_trees,
+    # generate_details_hierarchal
+])
+kg.generate_nodes()
+print(kg.display_tree())
+# # kg.save_graph()
