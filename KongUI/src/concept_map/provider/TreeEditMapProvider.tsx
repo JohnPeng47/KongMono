@@ -65,6 +65,7 @@ export const TreeEditMapProvider = memo(
   const setNodesRef = useRef<SetState<Node<any>[]>>(setNodes);
   const setEdgeRef = useRef<SetState<Edge<any>[]>>(setEdges);
 
+  console.log("Nodes: ", getNodes().length);
 
   const changeNodes = useMemo(
     () => wrapRefChanges(setNodesRef, addNodeChanges),
@@ -207,7 +208,7 @@ export const TreeEditMapProvider = memo(
       const newNodes = beforeNodes
         // we want to swap the order of the nodes
         .concat(insertNode)
-        .concat(currNode)
+        // .concat(currNode)
         .concat(afterNodes)
         .map((node, index) => ({
           ...node,
@@ -277,15 +278,23 @@ export const TreeEditMapProvider = memo(
     const subgraph = graph.RFtoJSON(nodeId);
     console.log("Subgraph: ", subgraph);
 
-    backend.genSubGraph(subgraph).then((res) => {
-      const {
-        updateNodes, 
-        updateEdges
-      } = graph.updateSubtreeJson(res.data);
+    backend.genSubGraph(subgraph)
+      .then((res) => {
+        const {
+          updateNodes, 
+          updateEdges
+        } = graph.updateSubtreeJson(res.data);
 
-      setNodes(updateNodes);
-      setEdges(updateEdges);
-    })
+        // TODO: figure out why using this works but using setNodes does not
+        changeNodes(updateNodes);
+        changeEdges(updateEdges);
+      })
+      // TODO: add alert box here
+      // fyi also catches non-server errors in genSUBGRAPH
+      .catch((err) => {
+        console.error("Error from server: ", err)
+      });
+    
   } 
 
   /**

@@ -5,6 +5,8 @@ from .schema import GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_t
 from .db import get_graph_metadata_db, get_graph_db, delete_graph_db, delete_graph_metadata_db 
 
 from fastapi.requests import Request
+from fastapi import HTTPException
+
 import uuid
 
 from .utils import merge_tree_ids
@@ -13,7 +15,11 @@ from KongBot.bot.base import KnowledgeGraph
 from KongBot.bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
 from KongBot.bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg_v2
 from KongBot.bot.explorationv2 import generate_short_description
-from KongBot.bot.base.exceptions import GeneratorException
+
+# from KongBot.bot.base.exceptions import GeneratorException
+# TODO: have to import exceptions from here or else they conflict
+# need to fix Python module setup
+from bot.base.exceptions import GeneratorException
 
 from typing import List
 import json
@@ -110,25 +116,29 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
     tree1, tree2 = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
 
     print("Subtree to generate: ", tree1, tree2)
-
-    # GENERATE SUBTREE
-    subtree = GenSubTreeQueryV2(kg.curriculum,
-                                tree1 + tree2,
-                                model="gpt3").get_llm_output()
     
     ## TODO: want to make sure that this error gets logged in our observability stack
-    retry = 3
+    retry = 6
+    default_model = "gpt3"
     while retry > 0:
         try:
+            subtree = GenSubTreeQueryV2(kg.curriculum,
+                            tree1 + tree2,
+                            cache_policy="default",
+                            model=default_model).get_llm_output()
+            
             parent_ids = kg.parents(rf_subgraph_json["id"])
             parent = kg.get_node(parent_ids[0]) if len(parent_ids) > 0 else {}
             subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, parent)
-            break
+            kg.add_node(subtree_node_new, merge=True)
+            ## TODO: consider just returning the subgraph
+            return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))
         except GeneratorException as e:
+            retry -= 1
+            if retry <= 3:
+                default_model = "gpt4"
             print("Retrying...")
             print("Print exception: ", e)
             continue
-            
-    kg.add_node(subtree_node_new, merge=True)
-    ## TODO: consider just returning the subgraph
-    return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))    
+    
+    raise HTTPException(status_code=500, detail = "Internal server error")

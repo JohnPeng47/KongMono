@@ -144,17 +144,10 @@ export class GraphUtils {
       };
     }
     const numChildrenBefore = this.getAllChildren(parentNode.id).length
+    console.log("New nodes: ", this.numNewNodes(parentNode));
 
     let numChildren = 0;
     let nodeIndex = this.getNodeIndex(parentNode.id);
-    // let nodeIndex = lastSibling
-    //   // either last sibling or parent if no sibling
-    //   ? this.getNodeIndex(lastSibling.id)
-    //   : this.getNodeIndex(parentNode.id);
-
-    console.log("Parent Node: ", parentNode);
-    console.log("Num children: ", numChildrenBefore);
-    console.log("Children: ", this.getAllChildren(parentNode.id));
 
     if (nodeIndex < 0)
       throw Error("Missing sibling or parent node");
@@ -185,7 +178,6 @@ export class GraphUtils {
         ? ConvertEdge(currNode, parentId, "Tree")
         : this.findEdge(currNode.id)
 
-      console.log("Adding node: ", currNode.data.title);
       // determine initial node position
       const position = this.nodePosInit(depth, nodeIndex);
       rfNode.position = position;
@@ -246,6 +238,18 @@ export class GraphUtils {
     }
   }
 
+  /**
+   * Finds the new nodes being added recursively
+   */
+  private numNewNodes(newNode: BackendNode): number {
+    let newNodes = 0;
+    for (let dfs of this.DFS(newNode)) {
+      if (!this.findNodeRF(dfs.node.id))
+        newNodes += 1;
+    }
+
+    return newNodes;
+  } 
 
   /**
    * Adds node at the same level, before the current node
@@ -286,7 +290,6 @@ export class GraphUtils {
       x: this.X_INTERVAL * depth,
       y: this.Y_INTERVAL * nodeIndex
     }
-    console.log("Position: ", position.x, ",", position.y)
     return position;
   }
 
@@ -310,15 +313,17 @@ export class GraphUtils {
   public getNodeDepth(nodeId: NodeID): number {
     const rootNode = this.root();
     const traverseNodes = this.DFS(rootNode);
-  
+
+    // console.log(traverseNodes);
     for (let dfs of traverseNodes) {
+      console.log("t node: ", dfs.node.data.title);
       if (dfs.node.id === nodeId)
         return dfs.depth
     }
 
+    // TODO: figure out why this code below yields an error for below
     // const depth = traverseNodes
     //   .find(dfs => dfs.node.id === nodeId)?.depth;
-
     // if (depth)
     //   return depth;
 
