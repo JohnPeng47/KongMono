@@ -3,8 +3,14 @@ from bot.base import BaseLLM
 from bot.base.types import GeneratorArg, GeneratorResult
 import concurrent.futures
 
+import json
+
+import logging
 # circular import
 # from bot.explorationv2.generators.types import MTLLMArg
+
+base_logger = logging.getLogger("base")
+llm_logger = logging.getLogger("llm")
 
 class BaseLLMQuery(BaseLLM):
     def __init__(self, 
@@ -129,11 +135,14 @@ class BaseLLMQueryV2(BaseLLM):
 
     def update_task(self):
         self.finished_tasks += 1
-        print(f"Progress: {self.finished_tasks}/{self.total_tasks}")
+        base_logger.info(f"Progress: {self.finished_tasks}/{self.total_tasks}")
 
     def mt_task(self, node_id: str, prompt_args: Dict):
-        print("EXECUTING WITH: ", prompt_args)
         result = super().get_llm_output(prompt_args)
+
+        llm_logger.info(f"Args: {prompt_args}, \
+                         Result: {result if isinstance(result, str) else json.dumps(result, indent=4)}")
+
         self.update_task()
         return GeneratorResult(node_id = node_id, data = result)
 
@@ -141,7 +150,7 @@ class BaseLLMQueryV2(BaseLLM):
         """
         Multi-threaded get_llm_output
         """
-        num_threads = 10
+        num_threads = 5
         node_ids = [arg.node_id for arg in args]
         prompt_args = [arg.data for arg in args]
 

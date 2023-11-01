@@ -15,7 +15,7 @@ from inspect import iscoroutinefunction
 import asyncio
 import logging
 
-from utils.logger import create_logger
+from utils.logger import initialize_logging
 
 import json
 import os
@@ -28,7 +28,7 @@ import warnings
 warnings.filterwarnings("ignore", message="Numerical issues were encountered ")
 
 # initialize the logger
-logger = create_logger()
+initialize_logging()
 
 # Considerations and TODOs:
 # 1. Currently the node object uses the self.node dictionary representation used
@@ -47,8 +47,7 @@ class KnowledgeGraph(DiGraph):
                  graph_id: str = None,
                  config: Dict = {},
                  log_lvl: int = logging.DEBUG
-                 ):
-
+                 ):        
         seed = os.environ.get("RANDOM_SEED", None)
         if seed:
             random.seed(int(seed))

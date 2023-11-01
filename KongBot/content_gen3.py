@@ -73,19 +73,19 @@ config = {
 import uuid
 # kg = KnowledgeGraph.load_graph("f3444cd4-3186-4931-80e2-689531326899")
 kg = KnowledgeGraph("Russia")
-kg.add_node({
-    "id": str(uuid.uuid4()),
-    "node_data" : {
-        "title": "Russian revolution",
-        "children": [],
-        "node_type": "TREE_NODE"    
-    }
-})
-kg.add_config(config)
-kg.add_generators([
-    GENERATORS.generate_sub_trees,
-    # generate_details_hierarchal
-])
-kg.generate_nodes()
-print(kg.display_tree())
-# # kg.save_graph()
+# kg.add_node({
+#     "id": str(uuid.uuid4()),
+#     "node_data" : {
+#         "title": "Russian revolution",
+#         "children": [],
+#         "node_type": "TREE_NODE"    
+#     }
+# })
+# kg.add_config(config)
+# kg.add_generators([
+#     GENERATORS.generate_sub_trees,
+#     # generate_details_hierarchal
+# ])
+# kg.generate_nodes()
+# print(kg.display_tree())
+# # # kg.save_graph()

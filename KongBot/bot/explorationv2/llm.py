@@ -12,8 +12,6 @@ from bot.base.query import BaseLLMQuery, BaseLLMQueryV2
 
 import json
 import logging
-
-logger = logging.getLogger("logger")
     
 class GenTreeQuery(BaseLLMQuery):
     def __init__(self, context: str, cache_policy: str = "default", model: str = "gpt4"):

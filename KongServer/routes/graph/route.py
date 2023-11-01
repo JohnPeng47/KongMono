@@ -54,9 +54,9 @@ def generate_graph(graph_id: str, request: Request):
         "global": {
             "subtree_size": 2
         },
-        "generate_details_hierarchal": {
+        "generate_short_description": {
             "cache_policy": "default",
-            "model": "gpt4",
+            "model": "gpt3",
         }
     }
     kg.add_config(config=config)
@@ -114,7 +114,7 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
     # GENERATE SUBTREE
     subtree = GenSubTreeQueryV2(kg.curriculum,
                                 tree1 + tree2,
-                                model="gpt4").get_llm_output()
+                                model="gpt3").get_llm_output()
     
     ## TODO: want to make sure that this error gets logged in our observability stack
     retry = 3

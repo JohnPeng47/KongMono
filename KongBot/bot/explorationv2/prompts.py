@@ -322,7 +322,9 @@ Now, output the JSON, and only the JSON (do NOT include the schema or anything e
 SUBTREE_DETAILED_DESCRIPTION_SINGLE_V1 = """
 You are given a tree, and a general description of the tree. Using the general description
 as the background context, generate a 4-5 sentence description for each subitem in the tree.
-The subitems are the tree branches below the SEPARATOR. 
+The subitems are the tree branches below the SEPARATOR.
+
+Dont include the SEPARATOR in your output
 
 For example, give the following tree:
 > International Pressure

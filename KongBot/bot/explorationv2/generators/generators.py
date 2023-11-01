@@ -13,7 +13,7 @@ import random
 
 import logging
 
-logger = logging.getLogger("logger")
+logger = logging.getLogger("base")
 
 # we will modify this later
 # going to have a recursive generation model that is going to be controlled
@@ -130,10 +130,12 @@ def generate_long_description(graph: KnowledgeGraph):
             data = {
                 "subtree": graph.display_tree(node_id, lineage=True, stop_depth=subtree_size)
             }
-        ) for node_id in list(graph.nodes)[:1]
+        ) for node_id in list(graph.nodes)
         if not graph.get_node(node_id)["node_data"].get("long_description")
     ]
 
+    logger.debug(f"Generating {len(mt_input_args)} short descriptions")
+    
     nodes_details_query = GenExpandedTextDescription.mt_init(cache_policy=cache_policy, model=model)
     results: List[GeneratorResult] = nodes_details_query.mt_get_llm_output(mt_input_args)
     
@@ -158,7 +160,7 @@ def generate_short_description(graph: KnowledgeGraph):
             data = {
                     "subtree": graph.display_tree(node_id, lineage=True, stop_depth=subtree_size),
                 }
-        ) for node_id in list(graph.nodes)[:1]
+        ) for node_id in list(graph.nodes)
         if not graph.get_node(node_id)["node_data"].get("description")
     ]    
 
@@ -188,7 +190,7 @@ def generate_entity_relations(graph: KnowledgeGraph):
                 "text": graph.get_node(node_id)["node_data"]["description"],
                 # we are filtering for the
             }
-        ) for node_id in list(graph.nodes)[:1]
+        ) for node_id in list(graph.nodes)
         if graph.get_node(node_id)["node_data"].get("description")
     ]
 
@@ -203,7 +205,7 @@ def generate_entity_relations(graph: KnowledgeGraph):
 
 # def generate_keywords(graph: KnowledgeGraph):
 #     mt_input_args = [
-#         GeneratorArg(
+#         GeneratorArg(     
 #             node_id = node_id, 
 #             data = {
 #                 "long_description": graph.get_node(node_id)["node_data"]["long_description"]

@@ -47,7 +47,7 @@ export class GraphUtils {
    * DFS implementation
    */
   private DFS(root: any): DFSNode[] {
-    let nodeIndex = this.getNodeIndex(root);
+    let nodeIndex = this.getNodeIndex(root.id);
 
     let traversalOrder: DFSNode[] = [];
     let stack = [[root, 0, root.id]]; // Assuming root is the starting node, at depth 0 with no parent.
@@ -309,13 +309,18 @@ export class GraphUtils {
    */
   public getNodeDepth(nodeId: NodeID): number {
     const rootNode = this.root();
-    const traverseNodes = this.DFS(rootNode.id);
+    const traverseNodes = this.DFS(rootNode);
+  
+    for (let dfs of traverseNodes) {
+      if (dfs.node.id === nodeId)
+        return dfs.depth
+    }
 
-    const depth = traverseNodes
-      .find(dfs => dfs.node.id === nodeId)?.depth;
+    // const depth = traverseNodes
+    //   .find(dfs => dfs.node.id === nodeId)?.depth;
 
-    if (depth)
-      return depth;
+    // if (depth)
+    //   return depth;
 
     throw Error(`Depth for node: ${nodeId} not found`);
   }
