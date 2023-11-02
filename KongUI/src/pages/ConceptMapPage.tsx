@@ -15,7 +15,7 @@ import { useContext } from "use-context-selector";
 import AttachedNode from "../concept_map/components/node/AttachedNode";
 import UnattachedNode from "../concept_map/components/node/UnattachedNode";
 import useForceLayout from "../concept_map/layout/useForceLayout";
-import { getColors } from "../concept_map/common/common-types";
+import { getColors } from "../common/common-types";
 
 import { useParams } from "react-router-dom";
 

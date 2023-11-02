@@ -5,7 +5,7 @@ import {
   RFEdge,
   NodeType,
   RFNodeData
-} from "../common/common-types";
+} from "../../common/common-types";
 
 import { MarkerType, Node } from "reactflow";
 

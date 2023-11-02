@@ -6,7 +6,7 @@ import React, {
     useMemo
   } from "react";
 import { createContext, useContext } from "use-context-selector";
-import { useMemoObject } from "../hooks/useMemo";
+import { useMemoObject } from "../../common/hooks/useMemo";
 import { 
   useReactFlow, 
   Node,
@@ -16,16 +16,16 @@ import { GraphUtils } from "../graph/graphUtils";
 import { 
   RFNodeData,
   NodeType
-} from "../common/common-types";
+} from "../../common/common-types";
 
 import {
   ChangeCounter,
   nextChangeCount,
   useChangeCounter,
   wrapRefChanges,
-} from '../common/hooks/useChangeCounter';
+} from '../../common/hooks/useChangeCounter';
 
-import { SetState } from "../common/common-types";
+import { SetState } from "../../common/common-types";
 
 import { GraphType } from "../data/processNodes";
 import { BackendContext } from "./backendProvider";
@@ -36,7 +36,7 @@ import { AxiosResponse } from "axios";
 import { CreateNode, CreateEdge } from "../data/processTree";
 interface TreeEditMap {
   downloadGraph: (graphID: string, graphType: GraphType) => void;
-  genSubGraph: (nodeId: string) => void;
+  genSubGraph: (nodeId: string) => Promise<AxiosResponse>;
   modifyNodeTitle: (nodeId: string, newTitle: string) => void;
   deleteNode: (nodeId: string) => void;
   saveGraph: (title: string) => void;
@@ -274,47 +274,29 @@ export const TreeEditMapProvider = memo(
   /**
    * Syncs graph with updated node 
    */
-  const genSubGraph = (nodeId: string): void => {
-    const subgraph = graph.RFtoJSON(nodeId);
-    console.log("Subgraph: ", subgraph);
-
-    backend.genSubGraph(subgraph)
-      .then((res) => {
-        const {
-          updateNodes, 
-          updateEdges
-        } = graph.updateSubtreeJson(res.data);
-
-        // TODO: figure out why using this works but using setNodes does not
-        changeNodes(updateNodes);
-        changeEdges(updateEdges);
-      })
-      // TODO: add alert box here
-      // fyi also catches non-server errors in genSUBGRAPH
-      .catch((err) => {
-        console.error("Error from server: ", err)
-      });
-    
-  } 
-
-  /**
-   * Syncs graph with updated node 
-   */
-  // const addChildNode = (parentNode: string): void => {
-  //   const subgraph = graph.RFtoJSON(parentNode.id);
-
-  //   backend.genSubGraph(subgraph).then((res) => {
-  //     const {
-  //       updateNodes, 
-  //       updateEdges
-  //     } = graph.updateJson(res.data);
-
-  //     setNodes(updateNodes);
-  //     setEdges(updateEdges);
-  //   })
-  // } 
+  const genSubGraph = (nodeId: string): Promise<AxiosResponse> => {
+    return new Promise((resolve, reject) => {
+      const subgraph = graph.RFtoJSON(nodeId);
+      console.log("Subgraph: ", subgraph);
   
-
+      backend.genSubGraph(subgraph)
+        .then((res) => {
+          const {
+            updateNodes, 
+            updateEdges
+          } = graph.updateSubtreeJson(res.data);
+  
+          changeNodes(updateNodes);
+          changeEdges(updateEdges);
+          resolve(res.data);
+        })
+        .catch((err) => {
+          console.error("Error from server: ", err);
+          reject(err);
+        });
+    });
+  };
+  
   /**
    * Generate graph description
    */

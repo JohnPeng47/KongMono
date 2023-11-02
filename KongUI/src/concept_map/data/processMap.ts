@@ -5,7 +5,7 @@ import {
   RFEdge,
   NodeType,
   RFNodeData
-} from "../common/common-types";
+} from "../../common/common-types";
 
 import { MarkerType, Node } from "reactflow";
 
@@ -24,7 +24,7 @@ export const ConvertNode = (
       // TODO: id is repeated here but kinda need it for the custom node which only takes
       // the data argument
       id: node.id,
-      color:  node.data.color,
+      color: node.data.color,
       children: node.data.children
     },
     position: {

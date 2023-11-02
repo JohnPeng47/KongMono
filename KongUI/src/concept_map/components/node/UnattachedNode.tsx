@@ -16,7 +16,7 @@ import {
 import { 
   RFNodeData,
   NodeType
-} from "../../common/common-types";
+} from "../../../common/common-types";
 
 import Box from '@mui/material/Box';
 

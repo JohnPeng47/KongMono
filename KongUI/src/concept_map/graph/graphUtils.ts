@@ -5,7 +5,7 @@ import {
   Position,
   NodeID,
   RFNode
-} from "../common/common-types"
+} from "../../common/common-types"
 import {
   GraphType,
   ConvertNode,
@@ -249,7 +249,7 @@ export class GraphUtils {
     }
 
     return newNodes;
-  } 
+  }
 
   /**
    * Adds node at the same level, before the current node

@@ -5,12 +5,12 @@ import React, {
   useRef,
 } from "react";
 import { createContext, useContext } from "use-context-selector";
-import { useMemoObject } from "../hooks/useMemo";
+import { useMemoObject } from "../../common/hooks/useMemo";
 import { 
   useReactFlow, 
   Node,
 } from "reactflow";
-import { NodeType } from "../common/common-types";
+import { NodeType } from "../../common/common-types";
 import { GraphUtils } from "../graph/graphUtils";
 import { GraphType } from "../data/processNodes";
 import { BackendContext } from "./backendProvider";

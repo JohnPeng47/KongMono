@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import { useContext } from "use-context-selector";
 import { Handle, Position, useReactFlow } from "reactflow";
 import { ConceptMapContext } from "../../provider/ConceptMapProvider";
-import { RFNodeData } from "../../common/common-types";
+import { RFNodeData } from "../../../common/common-types";
 import ToggleOnceCheckbox from "./ToggleOnceCheckbox";
 import { POSTTrackingDataRequest } from "../../../api/tracking";
 

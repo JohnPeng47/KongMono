@@ -1,10 +1,10 @@
-import { Backend, getBackend} from "../common/Backend"
+import { Backend, getBackend} from "../../common/Backend"
 import { createContext } from 'use-context-selector';
 import React, { memo } from "react";
-import { useMemoObject } from "../hooks/useMemo";
+import { useMemoObject } from "../../common/hooks/useMemo";
 
 import { Node } from "reactflow";
-import { RFNodeData } from "../common/common-types";
+import { RFNodeData } from "../../common/common-types";
 import { AxiosResponse } from "axios";
 
 // WHy do we have this separately from backend file again???

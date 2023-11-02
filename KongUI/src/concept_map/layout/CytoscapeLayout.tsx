@@ -7,8 +7,8 @@ import {
     Node,
 		Edge
 } from 'reactflow';
-import { RFNodeData } from '../common/common-types';
-import { NodeType } from '../common/common-types';
+import { RFNodeData } from '../../common/common-types';
+import { NodeType } from '../../common/common-types';
 
 type CytoNode = {
 	data: {

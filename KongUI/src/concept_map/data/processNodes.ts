@@ -1,10 +1,10 @@
-import { BackendNode } from "../common/common-types";
+import { BackendNode } from "../../common/common-types";
 import { Node } from "reactflow";
 import {
   RFNodeData,
   RFEdge,
   RFNode
-} from "../common/common-types";
+} from "../../common/common-types";
 import {
   ConvertNode as ConvertTreeNode,
   ConvertEdge as ConvertTreeEdge,

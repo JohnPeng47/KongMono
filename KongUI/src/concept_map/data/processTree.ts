@@ -5,10 +5,10 @@ import {
   RFEdge,
   NodeType,
   RFNodeData
-} from "../common/common-types";
+} from "../../common/common-types";
 
 import { MarkerType, Node } from "reactflow";
-import { generateUUID } from "../common/utils";
+import { generateUUID } from "../../common/utils";
 
 export type GraphType = "Tree" | "ConceptMap";
 export const ConvertNode = (

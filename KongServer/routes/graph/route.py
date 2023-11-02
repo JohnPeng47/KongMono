@@ -131,6 +131,7 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
             parent = kg.get_node(parent_ids[0]) if len(parent_ids) > 0 else {}
             subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, parent)
             kg.add_node(subtree_node_new, merge=True)
+            
             ## TODO: consider just returning the subgraph
             return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))
         except GeneratorException as e:
