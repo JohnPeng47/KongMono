@@ -23,8 +23,9 @@ from bot.base.exceptions import GeneratorException
 
 from typing import List
 import json
+from logging import getLogger
 
-from langchain import LLMChain, PromptTemplate, OpenAI
+logger = getLogger("base")
 
 router = APIRouter()
 
@@ -113,33 +114,31 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
     rf_subgraph_json = rfnode_to_kgnode(rf_subgraph)
 
     kg.add_node(rf_subgraph_json, merge=True)
-    tree1, tree2 = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
-
-    print("Subtree to generate: ", tree1, tree2)
+    tree1, tree2, _ = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
     
-    ## TODO: want to make sure that this error gets logged in our observability stack
-    retry = 6
+    retry, success = 6, False
     default_model = "gpt3"
-    while retry > 0:
+    while retry > 0 and not success:
         try:
             subtree = GenSubTreeQueryV2(kg.curriculum,
                             tree1 + tree2,
                             cache_policy="default",
                             model=default_model).get_llm_output()
-            
+
             parent_ids = kg.parents(rf_subgraph_json["id"])
             parent = kg.get_node(parent_ids[0]) if len(parent_ids) > 0 else {}
             subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, parent)
+
             kg.add_node(subtree_node_new, merge=True)
-            
             ## TODO: consider just returning the subgraph
             return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))
         except GeneratorException as e:
+            # to increment it by one
+            logger.error(
+                f"Retry attempt {6 - retry + 1}, use model: {default_model}, error: {e}")
             retry -= 1
             if retry <= 3:
                 default_model = "gpt4"
-            print("Retrying...")
-            print("Print exception: ", e)
             continue
-    
+        
     raise HTTPException(status_code=500, detail = "Internal server error")

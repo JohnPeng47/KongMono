@@ -4,6 +4,7 @@ import uuid
 from typing import Dict
 from bot.base.exceptions import GeneratorException
 
+
 def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
     pattern = re.compile(r'\[(\d+)\] (.*)')
     lines = tree.split('\n')
@@ -20,16 +21,11 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
             if int(depth) == 0:
                 roots += 1
             data.append((int(depth), title))
-            
+
         except Exception:
-            # error = "NO MATCH ERROR: \n"
-            # error += "ORIGINAL:\n"
-            # error += "\n".join(lines)
-            # error += "\n_________________________________ \n"
-            # with open("error.txt", "a") as error_file:
-            #     error_file.write(error)
-            raise GeneratorException("NO MATCH!")
-            
+            raise GeneratorException(
+                f"Subtree title not matched in generated results: {title}")
+
     # the case where we have multiple roots and subtree_og has a parent (ie. not the root node)
     if roots > 1 and not parent_node:
         root_id, root_title = parent_node["id"], parent_node["node_data"]["title"]
@@ -46,21 +42,15 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
             # print(depth, title)
             data[i] = (depth - 1, title)
             if depth - 1 < 0:
-                # error = "BELOW ZERO: \n"
-                # error += "ORIGINAL:\n"
-                # error += "\n".join(lines)
-                # error += "\n_________________________________ \n"
-                # with open("error.txt", "a") as error_file:
-                #     error_file.write(error)
-                raise GeneratorException("Error index is below zero")
-
+                raise GeneratorException(
+                    f"Index below zero after re-align: {tree}")
 
     root_node = {
-        "id": root_id, 
+        "id": root_id,
         "node_data": {
-            "title" : root_title,
-            "children" : [],
-            "node_type" : "TREE_NODE",
+            "title": root_title,
+            "children": [],
+            "node_type": "TREE_NODE",
             "description": ""
         }
     }
@@ -72,15 +62,15 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
             node_id = str(uuid.uuid4())
 
         node = {
-            "id": node_id, 
+            "id": node_id,
             "node_data": {
-                "title" : title,
-                "children" : [],
-                "node_type" : "TREE_NODE",
+                "title": title,
+                "children": [],
+                "node_type": "TREE_NODE",
                 "description": ""
             }
         }
-        
+
         # Add the new node to the appropriate parent's children
         level_index[depth].append(node)
 
@@ -90,17 +80,17 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
             level_index[depth + 1] = node["node_data"]["children"]
         else:
             level_index.append(node["node_data"]["children"])
-    
+
     return root_node
+
 
 def find_id(node: Dict, title: str):
     if node["node_data"]["title"] == title:
         return node["id"]
-    
+
     for child in node["node_data"]["children"]:
         id = find_id(child, title)
         if id:
             return id
-        
-    return None
 
+    return None
