@@ -11,6 +11,7 @@ import TreeEditMapPage from "./pages/TreeEditMapPage";
 
 import { ReactFlowProvider } from "reactflow";
 import { BackendProvider } from "./concept_map/provider/backendProvider";
+import { AlertBoxProvider } from "./common/provider/AlertBoxProvider";
 
 import { ENDPOINT } from "./api/common";
 
@@ -36,12 +37,14 @@ function App() {
   return (
     <BackendProvider url={ENDPOINT}>
       <ReactFlowProvider>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/map/:mapId" element={<ConceptMapPage />} />
-          <Route path="/tree/:mapId" element={<TreeEditMapPage />} />
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
+        <AlertBoxProvider>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/map/:mapId" element={<ConceptMapPage />} />
+            <Route path="/tree/:mapId" element={<TreeEditMapPage />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </AlertBoxProvider>
       </ReactFlowProvider>
     </BackendProvider>
   );

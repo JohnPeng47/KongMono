@@ -11,6 +11,7 @@ import { TreeEditMapContext } from '../../provider/TreeEditMapProvider';
 import { useContext } from 'use-context-selector';
 
 import '../../../index.css'
+import { AlertBoxContext } from '../../../common/provider/AlertBoxProvider';
 
 const handleStyle = { left: 10 };
 
@@ -71,6 +72,10 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
     addNode
   } = useContext( TreeEditMapContext );
 
+  const {
+    sendToast 
+  } = useContext( AlertBoxContext );
+
   const { id: currID } = data;
 
   // Why does this miss one character
@@ -94,7 +99,15 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
           console.log("Sending generate graph request to server, awaiting response...");
           genGraphDesc(graphId).then(res => {
             if (res)
-              console.log("Graph is finished generating");
+              sendToast({
+                message: "Subgraph generated!",
+                type: "success",
+                position: {
+                  vertical: "bottom",
+                  horizontal: "right"
+                },
+                duration: 3000
+              })
           }).catch(err => {
             console.log("Something went wrong :(")
           })
