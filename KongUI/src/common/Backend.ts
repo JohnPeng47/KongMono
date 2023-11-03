@@ -5,6 +5,8 @@ import {
   BackendNode,
 } from "./common-types";
 import { Node } from "reactflow";
+import { useNavigate } from "react-router-dom";
+
 // import { mergeOverwite } from "./utils";
 
 const backendCache = new Map<string, Backend>();
@@ -25,14 +27,19 @@ export const getBackend = (url: string): Backend => {
 
 export class Backend {
   readonly url: string
-  // stores nodes with only child ids
+  private token: string | null = null;
   private nodes: BackendNode;
-  private readonly mergeFields: string[] = [
-    "title"
-  ]
 
   constructor(url: string) {
     this.url = url;
+  }
+
+  private getToken() {
+    const storedToken = localStorage.getItem("kong-token");
+    // assume first time user
+    if (!storedToken) {
+      // window.location("/login");
+    }
   }
 
   /**
@@ -97,10 +104,10 @@ export class Backend {
   /**
    * Downloads graph from server
    */
-    async genGraphDesc(graphId: string): Promise<AxiosResponse> {
-      const endpoint = this.url + "/graph/generate/" + graphId;
-  
-      return axios.get(endpoint);
-    }
+  async genGraphDesc(graphId: string): Promise<AxiosResponse> {
+    const endpoint = this.url + "/graph/generate/" + graphId;
+
+    return axios.get(endpoint);
+  }
 }
 

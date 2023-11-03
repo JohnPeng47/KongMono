@@ -24,7 +24,6 @@ origins = [
     "http://localhost:3000",  # Allow requests from your local frontend
     "http://localhost:5900",
     "http://localhost:10559"
-    # Add any other origins (frontend URLs) you want to allow
 ]
 
 app.add_middleware(
@@ -55,7 +54,5 @@ app.queue = KafkaQueue()
 # realistically, needs to be a dictionary keyed by user IDs
 app.curr_graph = None
 
-print(settings.API_HOST)
-print(settings.API_PORT)
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=settings.API_PORT, reload=True)

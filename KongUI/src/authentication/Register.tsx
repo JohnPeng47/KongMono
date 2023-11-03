@@ -8,12 +8,9 @@ import {
     Link,
     Typography
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
   
-function LoginPage() {
+function RegistrationPage() {
     const [metadataList, setMetadataList] = useState([]);
-    const navigate = useNavigate();
-    
     return (
         <Box display="flex"
             flexDirection="column"
@@ -56,26 +53,12 @@ function LoginPage() {
                     }}
                 />
 
-                {/* <Box display="flex" justifyContent="space-between" width="100%" marginY={2}>
-                    <FormControlLabel
-                        control={<Checkbox color="primary" />}
-                        label="Remember me"
-                    />
-                    <Link href="#" variant="body2">
-                        Forgot Password?
-                    </Link>
-                </Box> */}
-                
                 <Button variant="contained" color="primary" fullWidth>
-                    Login
+                    Register
                 </Button>
-                <Typography variant="body2" align="center" marginTop={2}>
-                    Don't have an Account? <Link href="/register" onClick={() => navigate("/register") }>Register</Link>
-                </Typography>
             </Box>
-
         </Box>
     );
 }
 
-export default LoginPage;
+export default RegistrationPage;

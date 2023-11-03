@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 // import axios from "axios";
 import { GETMetadataRequest } from "../api/api";
@@ -25,6 +25,14 @@ function HomePage() {
   const [expanded, setExpanded] = useState(false);
   const [metadataList, setMetadataList] = useState([]);
   const { backend } = useContext(BackendContext);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+    // check if this actually affects useEffect execution
+  }, [navigate]);
 
   async function fetchData() {
     try {
