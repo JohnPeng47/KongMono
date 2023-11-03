@@ -4,6 +4,9 @@ import uuid
 from typing import Dict
 from bot.base.exceptions import GeneratorException
 
+from logging import getLogger
+
+logger = getLogger()
 
 def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
     pattern = re.compile(r'\[(\d+)\] (.*)')
@@ -27,8 +30,13 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
                 f"Subtree title not matched in generated results: {title}")
 
     # the case where we have multiple roots and subtree_og has a parent (ie. not the root node)
-    if roots > 1 and not parent_node:
-        root_id, root_title = parent_node["id"], parent_node["node_data"]["title"]
+    if roots > 1:
+        if parent_node:
+            root_id, root_title = parent_node["id"], parent_node["node_data"]["title"]
+        else:
+            raise GeneratorException(
+                f"No parent but generated multiple parents, tree: {tree}"
+            )
     else:
         # this effectively handles both case where LLM generated tree starts at 1 or 0
         root_id, root_title = subtree_og["id"], subtree_og["node_data"]["title"]
@@ -80,7 +88,6 @@ def ascii_tree_to_kg_v2(tree: str, subtree_og: Dict, parent_node: Dict):
             level_index[depth + 1] = node["node_data"]["children"]
         else:
             level_index.append(node["node_data"]["children"])
-
     return root_node
 
 

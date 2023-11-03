@@ -134,8 +134,8 @@ def generate_long_description(graph: KnowledgeGraph):
         if not graph.get_node(node_id)["node_data"].get("long_description")
     ]
 
-    logger.debug(f"Generating {len(mt_input_args)} short descriptions")
-    
+    logger.info(f"Generating {len(mt_input_args)} long descriptions")
+
     nodes_details_query = GenExpandedTextDescription.mt_init(cache_policy=cache_policy, model=model)
     results: List[GeneratorResult] = nodes_details_query.mt_get_llm_output(mt_input_args)
     
@@ -162,16 +162,18 @@ def generate_short_description(graph: KnowledgeGraph):
                 }
         ) for node_id in list(graph.nodes)
         if not graph.get_node(node_id)["node_data"].get("description")
-    ]    
+    ]
+    
+    logger.debug(f"Generating {len(mt_input_args)} short descriptions")
 
     nodes_details_query = GenDetailedDecrSubtreeQuery.mt_init(cache_policy=cache_policy,
                                                               model=model)
-
     results: List[GeneratorResult] = nodes_details_query.mt_get_llm_output(mt_input_args)
 
-    for res in results:
+    for i, res in enumerate(results):
         node_id = res.node_id
         description = res.data
+        logger.debug(f"Modifying node {i}: {description}")
         graph.modify_node(node_id, {
                             "description": description})
 

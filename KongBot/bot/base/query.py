@@ -132,7 +132,6 @@ class BaseLLMQueryV2(BaseLLM):
         pass
 
     # TODO: does it make sense to put cost update here as well?
-
     def update_task(self):
         self.finished_tasks += 1
         base_logger.info(f"Progress: {self.finished_tasks}/{self.total_tasks}")

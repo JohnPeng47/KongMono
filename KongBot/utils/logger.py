@@ -2,8 +2,6 @@ import logging
 from logging.handlers import RotatingFileHandler
 from config import settings
 
-LOG_LEVEL = settings.LOG_LEVEL
-
 def initialize_logging():
     create_base_logger()
     create_llm_logger()
@@ -13,7 +11,6 @@ def create_base_logger():
     Base logger
     """
     logger = logging.getLogger("base")
-    logger.setLevel(LOG_LEVEL)
 
     # configure for console logging
     console_handler = logging.StreamHandler()
@@ -29,16 +26,20 @@ def create_base_logger():
         logging.Formatter("[%(asctime)s] %(module)s:%(funcName)s => %(message)s")
     )
 
+    logger.setLevel(settings.LOG_LEVEL)
+    file_handler.setLevel(settings.LOG_LEVEL)
+    console_handler.setLevel(settings.LOG_LEVEL)
+
+    logger.propagate = False
+
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
-
 
 def create_llm_logger():
     """
     Logging LLM output
     """
     logger = logging.getLogger("llm")
-    logger.setLevel(LOG_LEVEL)
 
     # file handler
     file_handler = RotatingFileHandler(settings.LLM_LOG_FILE,
@@ -48,4 +49,6 @@ def create_llm_logger():
         logging.Formatter("[%(asctime)s] %(module)s:%(funcName)s => %(message)s")
     )
 
+    logger.setLevel(settings.LOG_LEVEL)
+    file_handler.setLevel(settings.LOG_LEVEL)
     logger.addHandler(file_handler)

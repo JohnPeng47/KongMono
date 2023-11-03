@@ -73,12 +73,11 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
   } = useContext( TreeEditMapContext );
 
   const {
-    sendToast 
+    sendToast
   } = useContext( AlertBoxContext );
 
   const { id: currID } = data;
 
-  // Why does this miss one character
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     titleRef.current = event.target.value;
     modifyNodeTitle(currID, titleRef.current);
@@ -96,20 +95,12 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
         variant="contained" 
         color="success" 
         onClick={() => {
-          console.log("Sending generate graph request to server, awaiting response...");
+          sendToast("Started generating graph descriptions, please wait..", "info");
           genGraphDesc(graphId).then(res => {
             if (res)
-              sendToast({
-                message: "Subgraph generated!",
-                type: "success",
-                position: {
-                  vertical: "bottom",
-                  horizontal: "right"
-                },
-                duration: 3000
-              })
+              sendToast("Finished updating graph!", "success")
           }).catch(err => {
-            console.log("Something went wrong :(")
+            sendToast("Something went wrong..", "error");
           })
         }}
       >
@@ -151,9 +142,9 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
           }} variant="contained" color="primary" onClick={() =>  {
               setLoading(true);
               genSubGraph(currID).then((_) => {
-                // Success
+                sendToast("Finished generating!", "success");
               }).catch((err) => {
-                console.log("Something wrong")
+                sendToast(`Server error: ${err}`, "success");
                 // Success
               }).finally(() => {
                 setLoading(false);

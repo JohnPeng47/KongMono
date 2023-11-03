@@ -88,11 +88,10 @@ class KnowledgeGraph(DiGraph):
 
     @classmethod
     def load_graph(cls, id) -> KnowledgeGraph:
-        graph = db_conn.get_collection("graphs").find_one({
-            "id": id
-        })
-        curriculum = graph["curriculum"]
-        
+        graph = db_conn.find_graph(id)
+        metadata = db_conn.get_graph_metadata(id)
+
+        curriculum = metadata["metadata"]["curriculum"]
         new_graph = cls(curriculum)
         new_graph.from_json(graph)
         
@@ -391,10 +390,10 @@ class KnowledgeGraph(DiGraph):
         """
         if not parent_node:
             parent_node = self.get_root()
-            parent_node["curriculum"] = self.curriculum
             
             # delete mongo UUID
             if parent_node.get("_id", None):
+                raise Exception("Why????")
                 del parent_node["_id"]
 
             # no root node
@@ -415,9 +414,10 @@ class KnowledgeGraph(DiGraph):
         """
         Creates a completely new graph from JSON
         """
+        # BAD, need to be decoupled from Mongo
         # delete mongo UUID
-        if json_data.get("_id", None):
-            del json_data["_id"]
+        # if json_data.get("_id", None):
+        #     del json_data["_id"]
 
         root_node = self.get_root()
         if root_node != {}:

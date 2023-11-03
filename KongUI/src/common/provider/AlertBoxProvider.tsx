@@ -2,12 +2,11 @@ import {
   Alert,
   Snackbar,
   AlertColor,
-  SnackbarOrigin,
-  SnackbarCloseReason
+  SnackbarOrigin
 } from '@mui/material';
 import { createContext } from 'use-context-selector';
 import { useMemoObject } from '../hooks/useMemo';
-import React, { SyntheticEvent, memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
 export type AlertId = number & { __alertId: never };
 
@@ -19,7 +18,7 @@ export type ToastOptions = {
 };
 
 interface AlertBoxContext {
-  sendToast: (options: ToastOptions) => void;
+  sendToast: (message: string, type: AlertColor) => void;
 }
 
 export const AlertBoxContext = createContext<Readonly<AlertBoxContext>>({} as AlertBoxContext);
@@ -35,13 +34,16 @@ export const AlertBoxProvider = memo(({ children }: React.PropsWithChildren<unkn
     } as SnackbarOrigin
   });
 
-  const sendToast = useCallback((options: ToastOptions) => {
+  const sendToast = useCallback((message: string, type: AlertColor) => {
     setToast({
       open: true,
-      message: options.message,
-      type: options.type,
-      duration: options.duration ? options.duration : 3000,
-      position: options.position
+      message: message,
+      type: type,
+      duration: 3000,
+      position: {
+        vertical: "bottom",
+        horizontal: "right"
+      }
     });
   }, []);
 

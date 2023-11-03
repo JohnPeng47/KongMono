@@ -84,7 +84,10 @@ function AttachedNode({ data, isConnectable }: AttachedNodeProps) {
       >
         <div>
           <div><strong>{data.title}</strong></div>
-          <button onClick={() => setDropdown(!dropdown)}>Description</button>
+          <button onClick={() => {
+            console.log(data.id);
+            setDropdown(!dropdown);
+          }}>Description</button>
           <button onClick={() => showHideUnattachedChildren(children)}>
             {" "}
             Open connections

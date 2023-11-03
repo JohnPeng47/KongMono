@@ -51,15 +51,15 @@ config = {
         "goal": goal,
         "model": "gpt4"
     },
-    "generate_short_description":{
+    "generate_short_description": {
+        "cache_policy": "default",
+        "model": "gpt3",
+    },
+    "generate_entity_relations": {
         "cache_policy": "default",
         "model": "gpt4",
     },
-    "generate_entity_relations":{
-        "cache_policy": "default",
-        "model": "gpt4",
-    },
-    "generate_long_description":{
+    "generate_long_description": {
         "cache_policy": "default",
         "model": "gpt4",
     }
@@ -68,12 +68,24 @@ config = {
 # contexts = [context, context2, context3, context4]
 # ids = []
 # for ctx in contexts:
-kg = KnowledgeGraph(russia_context, config=config)
+# kg = KnowledgeGraph(russia_context, config=config)
+# kg.add_generators([
+#     GENERATORS.generate_tree,
+#     # GENERATORS.generate_long_description,
+#     # GENERATORS.generate_short_description,
+#     GENERATORS.generate_entity_relations
+# ])
+# kg.generate_nodes()
+
+kg = KnowledgeGraph.load_graph("aa082f23-23fb-4e45-a8b9-8651bee3ec95")
+kg.add_config(config)
 kg.add_generators([
-    GENERATORS.generate_tree,
+    # GENERATORS.generate_tree,
     # GENERATORS.generate_long_description,
-    # GENERATORS.generate_short_description,
-    GENERATORS.generate_entity_relations
+    GENERATORS.generate_short_description,
+    # GENERATORS.generate_entity_relations
 ])
 kg.generate_nodes()
+kg.save_graph(title="Helloworld Ray")
 
+print(json.dumps(kg.to_json(), indent=4))

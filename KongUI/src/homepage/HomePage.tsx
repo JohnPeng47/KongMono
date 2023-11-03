@@ -9,11 +9,12 @@ import {
   Typography,
   CardActions,
   IconButton,
-  Collapse,
+  Box,
+  Fab
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddIcon from "@mui/icons-material/Add";
 import { useContext } from "use-context-selector";
 import { BackendContext } from "../concept_map/provider/backendProvider";
 
@@ -54,43 +55,50 @@ function HomePage() {
   };
   
   return (
-    <>
-    {/* <MyCytoscapeComponent></MyCytoscapeComponent> */}
-    <Grid container spacing={3}>
-      {metadataList.map((item, index) => (
-        <Grid item xs={4} key={index}>
-          <Card>
-            <CardContent onClick={() => navToGraph(item.id)}>
-              <Typography variant="h5" component="div">
-                {item.metadata.title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Curriculum: {item.metadata.curriculum}
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <IconButton
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
+    <Box>
+      <Grid container spacing={3}>
+        {metadataList.map((item, index) => (
+          <Grid item xs={4} key={index}>
+            <Card>
+              <CardContent onClick={() => navToGraph(item.id)}>
+                <Typography variant="h5" component="div">
+                  {item.metadata.title}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Curriculum: {item.metadata.curriculum}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <IconButton
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </CardActions>
 
-            <button onClick={() => navToTree(item.id)}>Tree View</button>
-            <button onClick={() => {
-              backend.deleteGraph(item.id);
-              fetchData();
-            }}>Delete</button>
-
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
-    </>
-
+              <button onClick={() => navToTree(item.id)}>Tree View</button>
+              <button onClick={() => {
+                backend.deleteGraph(item.id);
+                fetchData();
+              }}>Delete</button>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <Fab color="primary" aria-label="add" 
+        sx={{
+         position: 'fixed', 
+         bottom: 100, 
+         right: 70,
+        }}>
+        <AddIcon />
+      </Fab>
+    </Box>
   );
 }
 
 export default HomePage;
+
+

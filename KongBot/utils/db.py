@@ -126,8 +126,15 @@ class DBConnection:
             },
             upsert=True)
 
-    def get_graph_metadata(self, pagination=10):
+    def get_graph_metadata_all(self, pagination=10):
         return db_conn.get_collection("graph_metadata").find({}).sort("timestamp", -1).limit(pagination)
+
+    def get_graph_metadata(self, graph_id):
+        return db_conn.get_collection("graph_metadata").find_one(
+            {
+                "id" : graph_id
+            }
+        )
 
     def load_most_recent_graph(self) -> Dict:
         # Get all graphs

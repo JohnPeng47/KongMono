@@ -8,7 +8,7 @@ from .schema import GraphMetadata
 # want to grab the metadata
 
 
-def insert_graph_metadata_db(graph_id: str, metadata: GraphMetadata):
+def insert_graph_metadata(graph_id: str, metadata: GraphMetadata):
     return db_conn.get_collection("graph_metadata").update_one(
         {
             "id": graph_id,
@@ -20,11 +20,17 @@ def insert_graph_metadata_db(graph_id: str, metadata: GraphMetadata):
         upsert=True)
 
 
-def get_graph_metadata_db(pagination=10):
-    return db_conn.get_collection("graph_metadata").find({}).sort("timestamp", -1).limit(pagination)
+def list_graphs_metadata():
+    return db_conn.get_collection("graph_metadata").find({}).sort("timestamp", -1)
 
+def get_graph_metadata(graph_id: str):
+    return db_conn.get_collection("graph_metadata").find_one(
+        {
+            "id" : graph_id
+        }
+    )
 
-def get_graph_db(graph_id: str):
+def get_graph(graph_id: str):
     return db_conn.get_collection("graphs").find_one({
         "id": graph_id,
     })
@@ -35,7 +41,7 @@ def delete_graph_db(graph_id: str):
         "id": graph_id,
     })
 
-def delete_graph_metadata_db(graph_id: str):
+def delete_graph_metadata(graph_id: str):
     return db_conn.get_collection("graph_metadata").delete_one({
         "id": graph_id
     })
