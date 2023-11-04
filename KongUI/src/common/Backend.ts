@@ -109,5 +109,18 @@ export class Backend {
 
     return axios.get(endpoint);
   }
+
+  /**
+   * Downloads graph from server
+   */
+  async login(email: string, password: string): Promise<AxiosResponse> {
+    const endpoint = this.url + "/authenticate";
+    const data = {
+      email: email,
+      password: password
+    }
+
+    return axios.post(endpoint, data);
+  }
 }
 

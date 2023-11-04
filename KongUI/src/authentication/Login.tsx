@@ -1,18 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { useContext } from "use-context-selector";
 import {
     Box,
     TextField,
     Button,
-    FormControlLabel,
-    Checkbox,
     Link,
     Typography
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { BackendContext } from "../concept_map/provider/backendProvider";
+import { AlertBoxContext } from "../common/provider/AlertBoxProvider";
   
 function LoginPage() {
-    const [metadataList, setMetadataList] = useState([]);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     const navigate = useNavigate();
+    const handleChangeEvent = (event, setVal) => {
+        setVal(event.target.value);
+    } 
+
+    const { sendToast } = useContext(AlertBoxContext);
+    const { backend } = useContext(BackendContext);
+
+    const Login = (email: string, password: string): void => {
+        backend.login(email, password)
+            .then((res) => {
+                localStorage.setItem("token", res.data.token);
+                navigate("/");
+            })
+            .catch((err) => {
+                sendToast(err, "error");
+            })
+    } 
     
     return (
         <Box display="flex"
@@ -40,8 +60,9 @@ function LoginPage() {
                     variant="outlined"
                     margin="normal"
                     fullWidth
-                    label="User name"
-                    placeholder="Enter your user name"
+                    label="Email"
+                    placeholder="Enter your email"
+                    onChange={(e) => handleChangeEvent(e, setEmail)}
                 />
                 
                 <TextField
@@ -54,6 +75,7 @@ function LoginPage() {
                     InputProps={{
                         endAdornment: <span>👁️</span> // This can be replaced with a proper icon component
                     }}
+                    onChange={(e) => handleChangeEvent(e, setPassword)}
                 />
 
                 {/* <Box display="flex" justifyContent="space-between" width="100%" marginY={2}>
@@ -66,16 +88,23 @@ function LoginPage() {
                     </Link>
                 </Box> */}
                 
-                <Button variant="contained" color="primary" fullWidth>
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    fullWidth 
+                    onClick={(_) => Login(email, password)}>
                     Login
                 </Button>
                 <Typography variant="body2" align="center" marginTop={2}>
-                    Don't have an Account? <Link href="/register" onClick={() => navigate("/register") }>Register</Link>
+                    Dont have an Account? 
+                    <Link href="/register" 
+                        onClick={() => navigate("/register")}>Register</Link>
                 </Typography>
             </Box>
 
         </Box>
     );
 }
+
 
 export default LoginPage;

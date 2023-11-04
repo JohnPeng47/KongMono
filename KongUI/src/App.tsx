@@ -1,9 +1,5 @@
-import React, { memo, useState, useEffect } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
-
-import { BaseHTTPRequest } from "./api/common";
 import HomePage from "./homepage/HomePage";
 import ConceptMapPage from "./pages/ConceptMapPage";
 import LoginPage from "./authentication/Login";
@@ -15,6 +11,7 @@ import { BackendProvider } from "./concept_map/provider/backendProvider";
 import { AlertBoxProvider } from "./common/provider/AlertBoxProvider";
 
 import { ENDPOINT } from "./api/common";
+import { AlertBoxProvider } from "./common/provider/AlertBoxProvider";
 
 function App() {  
   return (
@@ -26,6 +23,10 @@ function App() {
             <Route path="/map/:mapId" element={<ConceptMapPage />} />
             <Route path="/tree/:mapId" element={<TreeEditMapPage />} />
             <Route path="/login" element={<LoginPage />} />
+<<<<<<< HEAD
+=======
+            <Route path="/register" element={<RegisterationPage />} />
+>>>>>>> f702ce2 (Integrated login with backend)
           </Routes>
         </AlertBoxProvider>
       </ReactFlowProvider>
