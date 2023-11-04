@@ -1,11 +1,15 @@
 import re
+from typing import List
 from pydantic import EmailStr, Field, validator, BaseModel
 
-STRONG_PASSWORD_PATTERN = re.compile(r"^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{6,128}$")
 
-class AuthUser(BaseModel):
+STRONG_PASSWORD_PATTERN = re.compile(
+    r"^(?=.*[\d])(?=.*[!@#$%^&*])[\w!@#$%^&*]{6,128}$")
+
+class User(BaseModel):
     email: EmailStr
     password: str = Field(min_length=6, max_length=128)
+    graphs: List[str] = Field(default_factory=list)
 
     @validator("password")
     @classmethod
