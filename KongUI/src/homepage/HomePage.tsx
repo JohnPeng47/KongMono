@@ -26,13 +26,13 @@ function HomePage() {
   const [metadataList, setMetadataList] = useState([]);
   const { backend } = useContext(BackendContext);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
-    // check if this actually affects useEffect execution
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     navigate('/login');
+  //   }
+  //   // check if this actually affects useEffect execution
+  // }, [navigate]);
 
   async function fetchData() {
     try {

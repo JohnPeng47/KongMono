@@ -1,15 +1,51 @@
+from pydantic import EmailStr
+
 from datetime import datetime, timedelta
 import jwt
 from fastapi import Request, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import pytz
 
+from .schema import AuthUser
+from .exceptions import DuplicateUserException
+from .config import ACCESS_TOKEN_EXPIRE_DAYS
+
+from database import db_conn
+from database.exceptions import MongoUnacknowledgeError 
+
+from logging import getLogger
+
+logger = getLogger("server")
+
 # Change this to use secrets manager at some point
 SECRET_KEY = "gangster_lean_boogie"
 ALGORITHM = "HS256"
-# ACCESS_TOKEN_EXPIRE_MINUTES = 30
-ACCESS_TOKEN_EXPIRE_NEVER = 999
 
+def create_user(user: AuthUser) -> AuthUser:
+    res = db_conn.get_collection("users").insert_one(user.dict())
+
+    # IDK about this exception
+    if not res.acknowledged:
+        raise MongoUnacknowledgeError("User creation Unacknowledged")
+    
+    return True
+    
+def get_user_by_email(email: EmailStr) -> AuthUser | None:
+    user_dict = db_conn.get_collection("users").find_one({
+        "email" : email
+    })
+
+    if user_dict:
+        return AuthUser(**user_dict)
+    
+    return None
+
+def user_email_checker(user: AuthUser) -> AuthUser | None:
+    user_exists = get_user_by_email(user.email)
+    # TODO: this error is not getting caught
+    if user_exists:
+        raise DuplicateUserException(f"User with email: {user.email} already exists")
+    return user
 
 def create_access_token(username: str):
     """
@@ -19,14 +55,13 @@ def create_access_token(username: str):
     local_tz = pytz.timezone('US/Eastern')
     local_now = datetime.now(local_tz)
 
-    expire = local_now + timedelta(days=ACCESS_TOKEN_EXPIRE_NEVER)
+    expire = local_now + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)
     to_encode = {
-        "username": username,
+        "email": username,
         "exp": expire
     }
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
-
 
 # probably should make this depend on another dependency to retrieve the user
 def validate_token(authorization: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
@@ -39,25 +74,28 @@ def validate_token(authorization: HTTPAuthorizationCredentials = Depends(HTTPBea
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
         # Check if the token has expired
-        local_tz = pytz.timezone('US/Eastern')
-        expiration = datetime.fromtimestamp(payload.get("exp"))
-        expiration = local_tz.localize(expiration)
+        # local_tz = pytz.timezone('US/Eastern')
+        # expiration = datetime.fromtimestamp(payload.get("exp"))
+        # expiration = local_tz.localize(expiration)
 
-        # need to convert to local timezone
-        local_now = datetime.now(local_tz)
-        if local_now > expiration:
-            print("Token has expired")
-            raise HTTPException(
-                status_code=401, detail="Access token has expired")
+        # # need to convert to local timezone
+        # local_now = datetime.now(local_tz)
+        # if local_now > expiration:
+        #     logger.debug(f"Token has expired for user {payload.email}")
+        #     raise HTTPException(
+        #         status_code=401, detail="Access token has expired")
 
         return payload  # or simply True if you don't need to return payload details
+    
+    except jwt.ExpiredSignatureError:
+        user = payload.get("email")
+        logger.debug(f"Token for user {user} has expired")
+        raise HTTPException(status_code=401, detail="Invalid token")
 
     except jwt.PyJWTError:
-        print("Invalid token")
         raise HTTPException(status_code=401, detail="Invalid token")
 
     except Exception as e:
-        print("Exception: ", e)
         raise HTTPException(status_code=401, detail=str(e))
 
 

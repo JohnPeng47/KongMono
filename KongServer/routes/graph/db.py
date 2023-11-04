@@ -1,5 +1,5 @@
 from typing import Dict
-from common import db_conn
+from database import db_conn
 
 from .schema import GraphMetadata
 

@@ -26,11 +26,11 @@ function RegistrationPage() {
                 width="505px"
             >
                 <Typography variant="h5" gutterBottom>
-                Welcome!
+                    Welcome!
                 </Typography>
                 
                 <Typography variant="subtitle1" gutterBottom>
-                Sign in to
+                    Sign in to
                 </Typography>
 
                 <TextField

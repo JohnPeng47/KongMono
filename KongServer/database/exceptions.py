@@ -1,0 +1,2 @@
+class MongoUnacknowledgeError(Exception):
+    pass

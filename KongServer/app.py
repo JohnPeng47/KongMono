@@ -10,12 +10,17 @@ import os
 import uvicorn
 
 from routes.graph.route import router as graph_router
-from routes.auth.route import router as auth_router
+from routes.auth.routes import router as auth_router
 from routes.events.route import router as events_router
 from routes.static.route import router as static_router
 
 from config import settings
 from common.message_queue.queue import KafkaQueue
+
+from logging import getLogger
+from configure import configure_logger
+
+logger = getLogger("server")
 
 app = FastAPI()
 
@@ -45,6 +50,8 @@ def read_root():
         content = f.read()
         return HTMLResponse(content=content)
 
+# TODO: add other configurations here, including database configurations
+configure_logger(logger)
 
 app.include_router(graph_router)
 app.include_router(auth_router)
