@@ -6,9 +6,8 @@ from networkx.algorithms.shortest_paths.generic import shortest_path
 from typing import List, Dict, Callable, Optional
 
 from bot.adapters.kg_to_frontend import FrontEndNodeAdapter
-from bot.base.exceptions import ConfigInitError
+from bot.base.exceptions import ConfigInitError, NodeDoesNotExist
 
-from .utils import CustomDict
 from utils import db_conn
 from inspect import iscoroutinefunction
 
@@ -200,12 +199,15 @@ class KnowledgeGraph(DiGraph):
         return filtered_node[0]
 
     def get_node(self, node_id: str) -> Dict:
-        return {
-            "id": node_id,
-            # why does this work with super but not self?
-            # super returns
-            "node_data": self._node[node_id]["node_data"]
-        }
+        try:
+            return {
+                "id": node_id,
+                # why does this work with super but not self?
+                # super returns
+                "node_data": self._node[node_id]["node_data"]
+            }
+        except KeyError:
+            raise NodeDoesNotExist(node_id)
 
     def remove_node(self, node_id: str):
         """

@@ -21,3 +21,7 @@ class ConfigInitError(GraphInitializationError):
     """
     Wrong graph config option
     """
+
+class NodeDoesNotExist(GraphRuntimeError):
+    def __init__(self, node_id):
+        super().__init__(message=f"NodeId: {node_id} does not exist")

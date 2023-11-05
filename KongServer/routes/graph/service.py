@@ -52,7 +52,7 @@ class GraphManager:
         raise GraphAuthorizationError(graph_id=graph_id, email=user.email)
 
     def load_graph(self, user: User, graph_id: str) -> KnowledgeGraph:
-        self.check_user_permissions(user, graph_id)
+        # self.check_user_permissions(user, graph_id)
 
         graph = db_conn.get_collection("graphs").find_one({
             "id": id

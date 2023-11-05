@@ -47,22 +47,29 @@ NEW_QUESTION = {
     "requests": [{
         "createItem": {
             "item": {
-                "title": "Why are you gay?",
+                "title": "Which of these singers was not a member of Destiny's Child?",
                 "questionItem": {
                     "question": {
                         "required": True,
+                        "grading": {
+                            "pointValue": 2,
+                            "correctAnswers": {
+                                "answers": [{"value": "Rihanna"}]
+                            },
+                            "whenRight": {"text": "You got it!"},
+                            "whenWrong": {"text": "Sorry, that's wrong"}
+                        },
                         "choiceQuestion": {
                             "type": "RADIO",
                             "options": [
-                                {"value": "1965"},
-                                {"value": "1967"},
-                                {"value": "1969"},
-                                {"value": "1971"}
-                            ],
-                            "shuffle": True
+                                {"value": "Kelly Rowland"},
+                                {"value": "Beyoncé"},
+                                {"value": "Rihanna"},
+                                {"value": "Michelle Williams"}
+                            ]
                         }
                     }
-                },
+                }
             },
             "location": {
                 "index": 0

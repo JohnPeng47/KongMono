@@ -1,12 +1,7 @@
-from pydantic import BaseModel
 from fastapi import APIRouter, Depends
 
 from .schema import GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
-<<<<<<< HEAD
-from .db import get_graph_metadata, get_graph_metadata, delete_graph_db, delete_graph_metadata, list_graphs_metadata
-=======
 from .service import get_graph_metadata_db, get_graph_db, delete_graph_db, delete_graph_metadata_db 
->>>>>>> 66c5269 (more serverside clean up, refactoring into dependency patterns, defining exceptions sort of thing)
 
 from fastapi.requests import Request
 from fastapi import HTTPException
@@ -27,16 +22,9 @@ from typing import List
 import json
 from logging import getLogger
 
-<<<<<<< HEAD
-logger = getLogger("base")
-
-router = APIRouter()
-
-
-@router.get("/metadata/", response_model=List[GraphMetadataResp])
-def list_metadatas():
-=======
 from ..auth.service import get_user_from_token
+
+logger = getLogger("base")
 
 router = APIRouter()
 
@@ -44,11 +32,10 @@ router = APIRouter()
             response_model=List[GraphMetadataResp])
 # def get_graph_metadata(user = Depends(get_user_from_token)):
 def get_graph_metadata(user = Depends(get_user_from_token)):
->>>>>>> 66c5269 (more serverside clean up, refactoring into dependency patterns, defining exceptions sort of thing)
     metadata_list = []
     # consider returning a cursor here to be more memory efficient
     # although the pagination limit should do the trick?
-    metadatas = list_graphs_metadata()
+    metadatas = get_graph_metadata_db()
     for document in metadatas:
         metadata_list.append(document)
     return metadata_list

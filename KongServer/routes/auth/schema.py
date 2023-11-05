@@ -43,6 +43,7 @@ class User(BaseModel):
             return email
         except EmailNotValidError:
             raise InvalidEmailError()
+        
 class RegisterUserResponse(BaseModel):
     email: str
 

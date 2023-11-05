@@ -79,7 +79,6 @@ function HomePage() {
               <button onClick={() => navToTree(item.id)}>Tree View</button>
               <button onClick={() => {
                 backend.deleteGraph(item.id);
-                fetchData();
               }}>Delete</button>
             </Card>
           </Grid>

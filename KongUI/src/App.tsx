@@ -11,7 +11,6 @@ import { BackendProvider } from "./concept_map/provider/backendProvider";
 import { AlertBoxProvider } from "./common/provider/AlertBoxProvider";
 
 import { ENDPOINT } from "./api/common";
-import { AlertBoxProvider } from "./common/provider/AlertBoxProvider";
 
 function App() {  
   return (

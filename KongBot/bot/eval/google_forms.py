@@ -60,28 +60,55 @@ NEW_FORM = {
         "title": "Quickstart form",
     }
 }
+# Creates the initial form
+result = form_service.forms().create(body=NEW_FORM).execute()
+
+# Updates form to quiz
+update = {
+    "requests": [
+        {
+            "updateSettings": {
+                "settings": {
+                    "quizSettings": {
+                        "isQuiz": True
+                    }
+                },
+                "updateMask": "quizSettings.isQuiz"
+            }
+        }
+    ]
+}
+question_setting = form_service.forms().batchUpdate(formId=result["formId"],
+                                                    body=update).execute()
 
 # Request body to add a multiple-choice question
 NEW_QUESTION = {
     "requests": [{
         "createItem": {
             "item": {
-                "title": "Why are you gay?",
+                "title": "Which of these singers was not a member of Destiny's Child?",
                 "questionItem": {
                     "question": {
                         "required": True,
+                        "grading": {
+                            "pointValue": 2,
+                            "correctAnswers": {
+                                "answers": [{"value": "Rihanna"}]
+                            },
+                            "whenRight": {"text": "You got it!"},
+                            "whenWrong": {"text": "Sorry, that's wrong"}
+                        },
                         "choiceQuestion": {
                             "type": "RADIO",
                             "options": [
-                                {"value": "1965"},
-                                {"value": "1967"},
-                                {"value": "1969"},
-                                {"value": "1971"}
-                            ],
-                            "shuffle": True
+                                {"value": "Kelly Rowland"},
+                                {"value": "Beyoncé"},
+                                {"value": "Rihanna"},
+                                {"value": "Michelle Williams"}
+                            ]
                         }
                     }
-                },
+                }
             },
             "location": {
                 "index": 0
@@ -89,9 +116,6 @@ NEW_QUESTION = {
         }
     }]
 }
-
-# Creates the initial form
-result = form_service.forms().create(body=NEW_FORM).execute()
 
 # Adds the question to the form
 question_setting = form_service.forms().batchUpdate(formId=result["formId"], body=NEW_QUESTION).execute()

@@ -34,7 +34,9 @@ configure_logger(logger)
 origins = [
     "http://localhost:3000",  # Allow requests from your local frontend
     "http://localhost:5900",
-    "http://localhost:10559"
+    "http://localhost:10559",
+    "http://18.221.129.100:8000",
+    "http://172.31.32.87:8000"
 ]
 
 app.add_middleware(

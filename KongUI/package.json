@@ -34,7 +34,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "export REACT_APP_API_ENDPOINT=http://18.221.129.100:8000 && react-scripts start",
     "build": "react-scripts build",
     "clean": "rimraf ../src/build",
     "postbuild": "npm run clean && ncp build/ ../KongServer/build",
