@@ -1,8 +1,12 @@
 from pydantic import BaseModel
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from .schema import GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
+<<<<<<< HEAD
 from .db import get_graph_metadata, get_graph_metadata, delete_graph_db, delete_graph_metadata, list_graphs_metadata
+=======
+from .service import get_graph_metadata_db, get_graph_db, delete_graph_db, delete_graph_metadata_db 
+>>>>>>> 66c5269 (more serverside clean up, refactoring into dependency patterns, defining exceptions sort of thing)
 
 from fastapi.requests import Request
 from fastapi import HTTPException
@@ -10,7 +14,7 @@ from fastapi import HTTPException
 import uuid
 
 from KongBot.bot.base import KnowledgeGraph
-from KongBot.bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
+from KongBot.bot.explorationv2.llm import GenSubTreeQueryV2
 from KongBot.bot.adapters.ascii_tree_to_kg import ascii_tree_to_kg_v2
 from KongBot.bot.explorationv2 import generate_short_description
 
@@ -23,6 +27,7 @@ from typing import List
 import json
 from logging import getLogger
 
+<<<<<<< HEAD
 logger = getLogger("base")
 
 router = APIRouter()
@@ -30,6 +35,16 @@ router = APIRouter()
 
 @router.get("/metadata/", response_model=List[GraphMetadataResp])
 def list_metadatas():
+=======
+from ..auth.service import get_user_from_token
+
+router = APIRouter()
+
+@router.get("/metadata/", 
+            response_model=List[GraphMetadataResp])
+# def get_graph_metadata(user = Depends(get_user_from_token)):
+def get_graph_metadata(user = Depends(get_user_from_token)):
+>>>>>>> 66c5269 (more serverside clean up, refactoring into dependency patterns, defining exceptions sort of thing)
     metadata_list = []
     # consider returning a cursor here to be more memory efficient
     # although the pagination limit should do the trick?
@@ -41,9 +56,6 @@ def list_metadatas():
 
 @router.get("/graph/{graph_id}", response_model=GraphNode)
 def get_graph(graph_id: str, request: Request):
-    """
-    This should be the 
-    """
     if not request.app.curr_graph or request.app.curr_graph != graph_id:
         print("Loading graph: ", graph_id)
         request.app.curr_graph = KnowledgeGraph.load_graph(graph_id)

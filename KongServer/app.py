@@ -4,7 +4,9 @@ sys.path.append("../KongBot/")
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.exceptions import RequestValidationError, HTTPException
+from fastapi.requests import Request
 import os
 
 import uvicorn
@@ -23,6 +25,10 @@ from configure import configure_logger
 logger = getLogger("server")
 
 app = FastAPI()
+
+# TODO: add other configurations here, including database configurations
+configure_logger(logger)
+
 
 # Set up the CORS middleware
 origins = [
@@ -43,15 +49,18 @@ STATIC_DIR = "build"
 app.mount(
     "/static", StaticFiles(directory=os.path.join(STATIC_DIR, "static")))
 
+# TODO: ideally we should delegate validation errors to a single error handler
+# @app.exception_handler(RequestValidationError)
+# async def validation_exception_handler(request: Request, exc: RequestValidationError):
+#     logger.error("Request validation")
+#     errors = {"errors": exc.errors()}
+#     return HTTPException(status_code=400, detail="error")
 
 @app.get("/")
 def read_root():
     with open(os.path.join(STATIC_DIR, "index.html"), 'r') as f:
         content = f.read()
         return HTMLResponse(content=content)
-
-# TODO: add other configurations here, including database configurations
-configure_logger(logger)
 
 app.include_router(graph_router)
 app.include_router(auth_router)

@@ -23,10 +23,7 @@ function App() {
             <Route path="/map/:mapId" element={<ConceptMapPage />} />
             <Route path="/tree/:mapId" element={<TreeEditMapPage />} />
             <Route path="/login" element={<LoginPage />} />
-<<<<<<< HEAD
-=======
             <Route path="/register" element={<RegisterationPage />} />
->>>>>>> f702ce2 (Integrated login with backend)
           </Routes>
         </AlertBoxProvider>
       </ReactFlowProvider>

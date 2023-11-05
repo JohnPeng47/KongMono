@@ -26,7 +26,6 @@ function LoginPage() {
     const Login = (email: string, password: string): void => {
         backend.login(email, password)
             .then((res) => {
-                localStorage.setItem("token", res.data.token);
                 navigate("/");
             })
             .catch((err) => {

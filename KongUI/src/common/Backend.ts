@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import {
   RFEdge,
   RFNodeData,
@@ -29,16 +29,26 @@ export class Backend {
   readonly url: string
   private token: string | null = null;
   private nodes: BackendNode;
+  private authConf: AxiosRequestConfig = { headers: {}};
 
   constructor(url: string) {
     this.url = url;
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.authConf = this.addBearerToConf(token);
+    }
   }
 
-  private getToken() {
-    const storedToken = localStorage.getItem("kong-token");
-    // assume first time user
-    if (!storedToken) {
-      // window.location("/login");
+  /**
+    * Adds Bearer token to conf
+  */
+  private addBearerToConf(token: string): AxiosRequestConfig {
+    return {
+      ...this.authConf,
+      headers: {
+        ...this.authConf.headers,
+        Authorization : `Bearer ${token}`
+      }
     }
   }
 
@@ -113,14 +123,32 @@ export class Backend {
   /**
    * Downloads graph from server
    */
-  async login(email: string, password: string): Promise<AxiosResponse> {
+  async login(email: string, password: string): Promise<string | Boolean> {
     const endpoint = this.url + "/authenticate";
     const data = {
       email: email,
       password: password
     }
 
-    return axios.post(endpoint, data);
+    return new Promise<Boolean>((resolve, reject) => {
+      axios.post(endpoint, data)
+        .then((res) => {
+          this.authConf = this.addBearerToConf(res.data.token);
+          localStorage.setItem("token", res.data.token);
+          resolve(true);
+        })
+        .catch(err => reject(err))
+    })
   }
+
+  /**
+   * Gets list of metadata
+   */
+    async getMetadaList(user: string): Promise<AxiosResponse> {
+      const endpoint = this.url + "/metadata";
+
+      return axios.get(endpoint, this.authConf);
+    }
+  
 }
 

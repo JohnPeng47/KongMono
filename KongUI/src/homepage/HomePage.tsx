@@ -34,20 +34,10 @@ function HomePage() {
     // check if this actually affects useEffect execution
   }, [navigate]);
 
-  async function fetchData() {
-    try {
-      const req = GETMetadataRequest.getMetadata();
-      const res = await req();
-      setMetadataList(res.data);
-    } catch (error) {
-      console.error("Error fetching metadata:", error);
-    }
-  }
-  
-  // console.log(getLayout());
-
   useEffect(() => {
-    fetchData();
+    backend.getMetadaList("placeholder")
+      .then(res => setMetadataList(res.data))
+      .catch(err => console.log(err));
   }, []);
 
   const handleExpandClick = () => {

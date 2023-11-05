@@ -1,12 +1,11 @@
-from pydantic import EmailStr
-
 from datetime import datetime, timedelta
 import jwt
 from fastapi import Request, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import pytz
 
-from .schema import User
+from .schema import User, JWTData
+from .utils import jwt_decode
 from .exceptions import DuplicateUserException
 from .config import ACCESS_TOKEN_EXPIRE_DAYS
 
@@ -32,7 +31,7 @@ def create_user(user: User) -> User:
     return True
 
 
-def get_user_by_email(email: EmailStr) -> User | None:
+def get_user_by_email(email: str) -> User | None:
     user_dict = db_conn.get_collection("users").find_one({
         "email": email
     })
@@ -52,7 +51,7 @@ def user_email_checker(user: User) -> User | None:
     return user
 
 
-def create_access_token(email: EmailStr):
+def create_access_token(email: str):
     """
     Utility function to create a new access token with expiration.
     """
@@ -69,15 +68,14 @@ def create_access_token(email: EmailStr):
     return encoded_jwt
 
 # probably should make this depend on another dependency to retrieve the user
-
-
-def validate_token(authorization: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+def validate_token(authorization: HTTPAuthorizationCredentials = Depends(HTTPBearer())) -> JWTData:
     """
     Validate the JWT token from the request's Authorization header.
     """
     token = authorization.credentials
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt_decode(token)
+        # payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
 
     # expiration is automatically checked during decode
@@ -94,18 +92,22 @@ def validate_token(authorization: HTTPAuthorizationCredentials = Depends(HTTPBea
 
 # TODO: replace decoded_token with JWTData
 # IMPORTANT: this is our main session implementation
-def get_user_from_token(decoded_token: dict = Depends(validate_token)) -> str:
+def get_user_from_token(decoded_token: JWTData = Depends(validate_token)) -> User:
     """
     Extract the username from the decoded JWT token.
     """
     # Extracting username from the decoded token
-    print(decoded_token)
-    email = decoded_token.get("email")
+    email = decoded_token.email
 
-    # TODO: raise JWT validation error
     if not email:
         raise HTTPException(
-            status_code=400, detail="Email not present in the token")
+            status_code=400, detail="Email not present in the token"
+        )
 
-    user = get_user_by_email()
-    return email
+    user = get_user_by_email(email)
+    if not user:
+        raise HTTPException(
+            status_code=400, detail="Not a registered user"
+        )
+    
+    return user
