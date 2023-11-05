@@ -1,5 +1,4 @@
 [development]
-DB_HOST = "18.191.159.163"
 LOG_FILE = "C:\\Users\\jpeng\\Documents\\business\\kongyiji\\kongbot\\output.log"
 LLM_LOG_FILE = "C:\\Users\\jpeng\\Documents\\business\\kongyiji\\kongbot\\llm_output.log"
 SERVER_LOG_FILE = "C:\\Users\\jpeng\\Documents\\business\\kongyiji\\kongbot\\server.log"
@@ -12,10 +11,21 @@ SERVER_LOG_FILE = "C:\\Users\\jpeng\\Documents\\business\\kongyiji\\kongbot\\ser
 LOG_LEVEL = 10 
 SERVER_LOG_LEVEL = 10
 
+DB_HOST = "18.191.159.163"
 API_HOST = "localhost"
 API_PORT = 8000
 
 [production]
 DB_HOST = "172.31.34.171"
+LOG_FILE = "/var/log/kong/output.log"
+LLM_LOG_FILE = "/var/log/kong/llm_output.log"
+
+# DEBUG = 10
+# INFO = 20
+# WARNING = 30
+# ERROR = 40
+# CRITICAL = 50
+LOG_LEVEL = 10 
+
 API_HOST = "0.0.0.0"
 API_PORT = 8000
