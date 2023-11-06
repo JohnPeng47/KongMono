@@ -11,6 +11,7 @@ import {
   ConvertNode,
   ConvertEdge
 } from "../data/processNodes";
+import { NumberLiteralType } from "typescript";
 
 type DFSNode = {
   node: BackendNode | Node<RFNodeData>
@@ -31,7 +32,6 @@ export class GraphUtils {
 
   // Is this consistent with RF getNodes()??
   private nodeDepth: { [NodeID: NodeID]: number };
-  private nodeIndices: { [NodeID: NodeID]: number };
 
   public constructor(
     getNodes: () => Node<any>[],
@@ -40,7 +40,6 @@ export class GraphUtils {
     this.getNodes = getNodes;
     this.getEdges = getEdges;
     this.nodeDepth = {};
-    this.nodeIndices = {};
   }
 
   /**
@@ -213,32 +212,6 @@ export class GraphUtils {
   };
 
   /**
-   * Returns nodes and edges that came before the current node
-   */
-  public getNodesBeforeAfter(nodeIndex: number, numNodes: number)
-    : {
-      beforeNodes: any,
-      beforeEdges: any,
-      afterNodes: any,
-      afterEdges: any
-    } {
-    // nodes that came before, not including the parent
-    const beforeNodes = this.getNodes().slice(0, nodeIndex);
-    const beforeEdges = this.getEdges().slice(0, nodeIndex - 1);
-
-    // nodes that comes after the last children of the parent node
-    let afterNodes = this.getNodes().slice(nodeIndex + numNodes + 1);
-    let afterEdges = this.getEdges().slice(nodeIndex + numNodes - 1 + 1);
-
-    return {
-      beforeNodes,
-      beforeEdges,
-      afterNodes,
-      afterEdges
-    }
-  }
-
-  /**
    * Finds the new nodes being added recursively
    */
   private numNewNodes(newNode: BackendNode): number {
@@ -249,6 +222,95 @@ export class GraphUtils {
     }
 
     return newNodes;
+  }
+
+  /**
+   * We break up the updating the internal RF state
+   * since individually calling setNode/edge would 
+   * be very expensive (actually not sure if true, but
+   * either way, its implementation is not much different).
+   * Also this gives us the benefit of keeping the setNode/Edge
+   * calls in the provider impl
+   */
+  // private insertNode(
+  //   node: Node<RFNodeData>
+  // ): {
+  //   updatedNodes: Node<RFNodeData>[]
+  // } {
+  //   return null;
+  // }
+
+  // /**
+  //  * Recalculates the positions of old nodes based on a single node deletion
+  //  */
+  // private deleteNodeUpdate (
+  //   nodeId: NodeID
+  // ): {
+  //   nodeUpdates: nodeUpdate[],
+  // } {
+  //   const nodeUpdates: nodeUpdate[] = [];
+  //   const edgeUpdates: postUpdate[] = [];
+
+  //   const {
+  //     beforeNodes, 
+  //     afterNodes, 
+  //     beforeEdges, 
+  //     afterEdges
+  //   } = this.getNodesBeforeAfter(nodeId);
+
+  //   for (const node of beforeNodes) {
+  //     nodeUpdates.push({
+  //       nodeId: node.id,
+  //       yOffsetUpdate: 0
+  //     })
+  //   }
+
+  //   for (const node of afterNodes) {
+  //     nodeUpdates.push({
+  //       nodeId: node.id,
+  //       yOffsetUpdate: this.Y_INTERVAL
+  //     })
+  //   }
+
+  //   return {
+  //     nodeUpdates
+  //   }
+  // }
+
+  // private updatePos(
+  //   updateNodes: Node<RFNodeData>,
+  //   yOffset: number
+  // ):{
+  //   updateNodes: Node<RFNodeData>
+  // } {
+  //   return null;
+  // }
+
+  /**
+   * Returns nodes and edges that came before the current node
+   */
+  public getNodesBeforeAfter(nodeId: NodeID, numNodes: number)
+    : {
+      beforeNodes: any,
+      beforeEdges: any,
+      afterNodes: any,
+      afterEdges: any
+    } {
+    const nodeIndex = this.getNodeIndex(nodeId);
+    // nodes that came before, not including the parent
+    const beforeNodes = this.getNodes().slice(0, nodeIndex);
+    const beforeEdges = this.getEdges().slice(0, nodeIndex - 1);
+
+    // nodes that comes after the last children of the parent node
+    let afterNodes = this.getNodes().slice(nodeIndex + numNodes + 1);
+    let afterEdges = this.getEdges().slice(nodeIndex + numNodes + 1 - 1);
+
+    return {
+      beforeNodes,
+      beforeEdges,
+      afterNodes,
+      afterEdges
+    }
   }
 
   /**
@@ -333,7 +395,7 @@ export class GraphUtils {
   /**
    * Returns all the nodes that come after the currNode
    */
-  public getNodeIndex(nodeId: NodeID): number {
+  private getNodeIndex(nodeId: NodeID): number {
     return this.getNodes().findIndex(node => node.id === nodeId);
   }
 
@@ -405,6 +467,7 @@ export class GraphUtils {
       }
     }
 
+    // console.log("RF NODE: ", node.data.title);
     const nodeId = node.id;
     const children = this.children(nodeId);
     node.data.children = [];

@@ -41,7 +41,7 @@ interface TreeEditMap {
   deleteNode: (nodeId: string) => void;
   saveGraph: (title: string) => void;
   genGraphDesc: (graphId: string) => Promise<AxiosResponse>;
-  collapseNodes: (parentId: string) => void;
+  collapseNodes: (parentId: string, expand: boolean) => void;
   addNode: (parentId: string) => void;
   nodesWithoutDescr: number;
 }
@@ -168,7 +168,15 @@ export const TreeEditMapProvider = memo(
             }
           }
         })
+      
+      const newEdges = getEdges()
+        .filter((edge) => 
+          !deleteNodes
+            .map(node => node.id)
+            .includes(edge.target)
+        )
 
+      changeEdges(newEdges);
       changeNodes(newNodes);
     }, [changeNodes]
   )
@@ -180,13 +188,12 @@ export const TreeEditMapProvider = memo(
     (currId: string): void => {
       const currNode = graph.findNodeRF(currId);
       const currEdge = graph.findEdge(currId);
-      const currIndex = graph.getNodeIndex(currId);
       const { 
         beforeNodes,
         beforeEdges,
         afterNodes,
         afterEdges
-      } = graph.getNodesBeforeAfter(currIndex, 0);
+      } = graph.getNodesBeforeAfter(currId, 0);
       
       const insertNode = CreateNode({
         data: {
@@ -205,11 +212,10 @@ export const TreeEditMapProvider = memo(
         source: graph.parent(currId).id
       });
 
-      // insert the curr node at the front
-      afterNodes.unshift(currNode);
       const newNodes = beforeNodes
         // we want to swap the order of the nodes
         .concat(insertNode)
+        .concat(currNode)
         // .concat(currNode)
         .concat(afterNodes)
         .map((node, index) => ({
@@ -225,12 +231,7 @@ export const TreeEditMapProvider = memo(
         .concat(insertEdge)
         .concat(currEdge)
         .concat(afterEdges);
-      
-      console.log("BeforeEdges: ", beforeEdges);
-      console.log("CurrEdge: ", currEdge);
-      console.log("AfterEdges: ", afterEdges);
-      console.log("NewEdges: ", newEdges);
-
+    
       changeNodes(newNodes);
       changeEdges(newEdges);
   }, [changeNodes, changeEdges]);
@@ -238,28 +239,57 @@ export const TreeEditMapProvider = memo(
   /**
    * Hides all children nodes
    */
-  const collapseNodes = useCallback((parentId: string): void => {
-    const nodesCollapsed = graph.getAllChildren(parentId)
-      .map(node => (
-        {
-          ...node,
-          hidden: !node.hidden
-        }
-      ));
-    const modNodes = modifyNodes(nodesCollapsed);
-  
-    changeNodes(modNodes
-      .map((node, index) => {
-        return {
-          ...node,
-          position: {
-            x : node.position.x,
-            y : index * 70
+  const collapseNodes = useCallback(
+    (parentId: string, collapsed: boolean): void => {
+      const direction = collapsed ? 1 : -1;
+
+      const parentNode = graph.findNodeRF(parentId);
+      const parentEdge = graph.findEdge(parentId);
+      const nodesCollapsed = graph.getAllChildren(parentId);
+      const collapsedNodeIds = nodesCollapsed.map(node => node.id);
+
+      const {
+        beforeNodes,
+        beforeEdges,
+        afterNodes,
+        afterEdges
+      } = graph.getNodesBeforeAfter(parentId, nodesCollapsed.length);
+      
+      const newNodes = beforeNodes
+        .concat(parentNode)
+        .concat(nodesCollapsed.map(node => (
+          {
+            ...node,
+            hidden: !collapsed
           }
-        }
-      })
-    )
-  }, [changeNodes]);
+        )))
+        .concat(afterNodes.map(node => (
+          {
+            ...node,
+            position: {
+              x: node.position.x,
+              y: node.position.y + nodesCollapsed.length * 70 * direction
+            }
+          }
+        )));
+      
+      const newEdges = beforeEdges
+          .concat(parentEdge)
+          .concat(
+            getEdges()
+              .filter(edge => collapsedNodeIds.includes(edge.target))
+              .map(edge => (
+                {
+                  ...edge,
+                  hidden: !collapsed
+                }
+              ))
+          )
+          .concat(afterEdges);
+
+      changeNodes(newNodes);
+      changeEdges(newEdges);
+  }, [changeNodes, changeEdges]);
   
   /**
    * Sync backend
@@ -269,7 +299,9 @@ export const TreeEditMapProvider = memo(
       return
 
     const rootNode = getNodes()[0];
+    console.log("Root: ", getNodes());
     const updateRoot = graph.RFtoJSON(rootNode);
+    // console.log("hello2")
     backend.updateGraph(updateRoot);
   }, [nodeChanges, edgeChanges])
 

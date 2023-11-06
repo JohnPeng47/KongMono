@@ -32,7 +32,7 @@ type TreeNodeProps = {
 
 function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) {
   const [showPopup, setShowPopup] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [navToMap, setNavToMap] = useState(false);
   const titleRef = useRef<string>(data.title);
@@ -122,11 +122,11 @@ function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) 
             display: selected ? "" : "none"
           }} direction={"row"}>
             <IconButton onClick={() =>  {
-                setCollapsed(!collapsed);
-                collapseNodes(data.id);
+                setCollapsed((collapsed) => !collapsed);
+                collapseNodes(data.id, !collapsed);
               }
             }>
-             {collapsed ? <ExpandMoreIcon></ExpandMoreIcon> : <ExpandLessIcon></ExpandLessIcon> }
+             {collapsed ? <ExpandLessIcon></ExpandLessIcon> : <ExpandMoreIcon></ExpandMoreIcon> }
             </IconButton>
             <IconButton sx={{
               width: 50,            // Set a specific width for the button
