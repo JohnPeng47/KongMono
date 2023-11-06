@@ -10,11 +10,18 @@ import {
   CardActions,
   IconButton,
   Box,
-  Fab
+  Fab,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  DialogContentText,
+  TextField,
+  Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AddIcon from "@mui/icons-material/Add";
+import AddIcon from '@mui/icons-material/Add';
 import { useContext } from "use-context-selector";
 import { BackendContext } from "../concept_map/provider/backendProvider";
 
@@ -24,6 +31,7 @@ function HomePage() {
   // right now all cards are toggled on/off at once
   const [expanded, setExpanded] = useState(false);
   const [metadataList, setMetadataList] = useState([]);
+  const [open, setOpen] = useState(false);
   const { backend } = useContext(BackendContext);
 
   useEffect(() => {
@@ -40,25 +48,13 @@ function HomePage() {
       .catch(err => console.log(err));
   }, []);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  const navToGraph = (graphId: string) => {
-    navigate("/map/" + graphId);
-  };
-
-  const navToTree = (graphId: string) => {
-    navigate("/tree/" + graphId);
-  };
-  
   return (
     <Box>
       <Grid container spacing={3}>
         {metadataList.map((item, index) => (
           <Grid item xs={4} key={index}>
             <Card>
-              <CardContent onClick={() => navToGraph(item.id)}>
+              <CardContent onClick={() => navigate("/map/" + item.id)}>
                 <Typography variant="h5" component="div">
                   {item.metadata.title}
                 </Typography>
@@ -68,7 +64,7 @@ function HomePage() {
               </CardContent>
               <CardActions disableSpacing>
                 <IconButton
-                  onClick={handleExpandClick}
+                  onClick={() => setExpanded(!expanded)}
                   aria-expanded={expanded}
                   aria-label="show more"
                 >
@@ -76,7 +72,7 @@ function HomePage() {
                 </IconButton>
               </CardActions>
 
-              <button onClick={() => navToTree(item.id)}>Tree View</button>
+              <button onClick={() => navigate("/tree/" + item.id)}>Tree View</button>
               <button onClick={() => {
                 backend.deleteGraph(item.id);
               }}>Delete</button>
@@ -84,7 +80,7 @@ function HomePage() {
           </Grid>
         ))}
       </Grid>
-      <Fab color="primary" aria-label="add" 
+      <Fab color="primary" aria-label="add" onClick={() => setOpen(true)} 
         sx={{
          position: 'fixed', 
          bottom: 100, 
@@ -92,6 +88,29 @@ function HomePage() {
         }}>
         <AddIcon />
       </Fab>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Create Concept Map</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To start generating your first concept map, write a brief description of your subject.
+          </DialogContentText>
+          <TextField
+            placeholder="A history of the Conflict of the Orders in Rome..."
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Curriculum"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          {/* <Button onClick={}>Subscribe</Button> */}
+        </DialogActions>
+      </Dialog>
+
     </Box>
   );
 }

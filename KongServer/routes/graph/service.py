@@ -18,8 +18,13 @@ def insert_graph_metadata_db(graph_id: str, metadata: GraphMetadata):
         },
         upsert=True)
 
-def get_graph_metadata_db(pagination=10):
+def list_graph_metadata_db(pagination=10):
     return db_conn.get_collection("graph_metadata").find({}).sort("timestamp", -1).limit(pagination)
+
+def get_graph_metadata_db(graph_id):
+    return db_conn.get_collection("graph_metadata").find_one({
+        "id": graph_id
+    })
 
 def get_graph_db(graph_id: str):
     return db_conn.get_collection("graphs").find_one({
@@ -51,6 +56,8 @@ class GraphManager:
                 return True
         raise GraphAuthorizationError(graph_id=graph_id, email=user.email)
 
+    # Find better way to pass user
+    # @check_user_auth(user: User)
     def load_graph(self, user: User, graph_id: str) -> KnowledgeGraph:
         # self.check_user_permissions(user, graph_id)
 
@@ -63,3 +70,5 @@ class GraphManager:
         new_graph.from_json(graph)
         
         return new_graph
+    
+    # def create_graph(self, user: User, curriculum: str) -> KnowledgeGraph:

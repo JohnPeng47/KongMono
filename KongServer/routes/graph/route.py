@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from .schema import GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
-from .service import get_graph_metadata_db, get_graph_db, delete_graph_db, delete_graph_metadata_db 
+from .service import get_graph_metadata_db, list_graph_metadata_db, get_graph_db, delete_graph_db, delete_graph_metadata_db 
 
 from fastapi.requests import Request
 from fastapi import HTTPException
@@ -35,7 +35,7 @@ def get_graph_metadata(user = Depends(get_user_from_token)):
     metadata_list = []
     # consider returning a cursor here to be more memory efficient
     # although the pagination limit should do the trick?
-    metadatas = get_graph_metadata_db()
+    metadatas = list_graph_metadata_db()
     for document in metadatas:
         metadata_list.append(document)
     return metadata_list
@@ -56,7 +56,7 @@ def get_graph(graph_id: str, request: Request):
 @router.get("/graph/delete/{graph_id}")
 def delete_graph(graph_id: str, request: Request):
     delete_graph_db(graph_id)
-    delete_graph_metadata(graph_id)
+    delete_graph_metadata_db(graph_id)
 
 @router.post("/graph/save")
 def update_graph(save_req: SaveGraphReq, request: Request):
@@ -77,7 +77,7 @@ def update_graph(save_req: SaveGraphReq, request: Request):
 @router.get("/graph/generate/{graph_id}")
 def generate_graph(graph_id: str, request: Request):
     kg: KnowledgeGraph = request.app.curr_graph
-    title = get_graph_metadata(graph_id)["metadata"]["title"]
+    title = get_graph_metadata_db(graph_id)["metadata"]["title"]
     config = {
         "global": {
             "subtree_size": 2

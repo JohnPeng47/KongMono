@@ -42,7 +42,8 @@ interface TreeEditMap {
   saveGraph: (title: string) => void;
   genGraphDesc: (graphId: string) => Promise<AxiosResponse>;
   collapseNodes: (parentId: string) => void;
-  addNode: (parentId: string) => void
+  addNode: (parentId: string) => void;
+  nodesWithoutDescr: number;
 }
 
 export const TreeEditMapContext = createContext<Readonly<TreeEditMap>>({} as TreeEditMap);
@@ -61,11 +62,11 @@ export const TreeEditMapProvider = memo(
     getEdges, 
   } = useReactFlow();
 
+  let nodesWithoutDescr = useRef<number>(0);
+
   const graph = useRef(new GraphUtils(getNodes, getEdges)).current;
   const setNodesRef = useRef<SetState<Node<any>[]>>(setNodes);
   const setEdgeRef = useRef<SetState<Edge<any>[]>>(setEdges);
-
-  console.log("Nodes: ", getNodes().length);
 
   const changeNodes = useMemo(
     () => wrapRefChanges(setNodesRef, addNodeChanges),
@@ -81,8 +82,9 @@ export const TreeEditMapProvider = memo(
       .then((res) => {
         // represents the order of nodes in JSON format
         let {newNodes, newEdges} = graph.initJson(res.data, graphType);
-        setNodes(newNodes);
-        setEdges(newEdges);
+        
+        changeNodes(newNodes);
+        changeEdges(newEdges);
       })
       .catch(error => {
         console.error("Error fetching graph error: ", error);
@@ -260,7 +262,7 @@ export const TreeEditMapProvider = memo(
   }, [changeNodes]);
   
   /**
-   * Can use this to trigger syncs with the backend
+   * Sync backend
    */
   useEffect(() => {
     if (nodeChanges === 0) 
@@ -270,6 +272,13 @@ export const TreeEditMapProvider = memo(
     const updateRoot = graph.RFtoJSON(rootNode);
     backend.updateGraph(updateRoot);
   }, [nodeChanges, edgeChanges])
+
+  /**
+   * Update nodes without description
+   */
+  useEffect(() => {
+    nodesWithoutDescr.current = getNodes().filter(node => node.data.description === "").length
+  }, [nodeChanges])
 
   /**
    * Syncs graph with updated node 
@@ -321,7 +330,8 @@ export const TreeEditMapProvider = memo(
     saveGraph,
     genGraphDesc,
     collapseNodes,
-    addNode
+    addNode,
+    nodesWithoutDescr: nodesWithoutDescr.current
   });
   
   return (

@@ -9,7 +9,8 @@ import ReactFlow, {
 } from "reactflow";
 import { useParams } from "react-router-dom";
 import TreeNode from "../concept_map/components/node/TreeNode";
-
+import { Fab } from "@mui/material";
+import QuizIcon from "@mui/icons-material/Add";
 import { TreeEditMapContext, TreeEditMapProvider } from "../concept_map/provider/TreeEditMapProvider";
 
 const nodeTypes = {
@@ -17,9 +18,6 @@ const nodeTypes = {
 }
 
 function TreeEditMapPage() {
-  let initialNodes = [];
-  let initialEdges = [];
-
   const [ initialized, setInitialized ] = useState(false);
 
   const { mapId } = useParams();
@@ -57,6 +55,14 @@ function TreeEditMapPage() {
         nodesDraggable={false}
       >
       </ReactFlow>
+      <Fab color="primary" aria-label="add" 
+        sx={{
+         position: 'fixed', 
+         bottom: 100, 
+         right: 70,
+        }}>
+        <QuizIcon />
+      </Fab>
     </div>
   );
 }

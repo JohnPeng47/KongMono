@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { TreeEditMapContext } from '../../provider/TreeEditMapProvider';
 import { useContext } from 'use-context-selector';
-
+import { useNavigate } from 'react-router-dom';
 import '../../../index.css'
 import { AlertBoxContext } from '../../../common/provider/AlertBoxProvider';
 
@@ -23,72 +23,33 @@ type TreeNodeProps = {
     yPos: number 
   };
 
-function SaveGraphButton({ onClick }) {
-  return (
-    <Button 
-      sx={{ width: 300, marginLeft: 1 }}
-      variant="contained" 
-      color="error" 
-      onClick={onClick}
-    >
-      SAVE GRAPH
-    </Button>
-  );
-}
-
-function GraphTitlePopup({ title, setTitle, onSave, onCancel }) {
-  return (
-    <div style ={{width: 300}} >
-      <input 
-        type="text" 
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Enter graph title"
-      />
-      <button onClick={onSave}>
-        Confirm
-      </button>
-      <button onClick={onCancel}>
-        Cancel
-      </button>
-    </div>
-  );
-}
-
 function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
   const [showPopup, setShowPopup] = useState(false);
-  const [title, setTitle] = useState(data.title);  
-
   const [loading, setLoading] = useState<boolean>(false);
+  const [navToMap, setNavToMap] = useState(false);
   const titleRef = useRef<string>(data.title);
 
   const { 
     modifyNodeTitle, 
     genSubGraph, 
     deleteNode, 
-    saveGraph,
     genGraphDesc,
     collapseNodes,
-    addNode
+    addNode,
+    nodesWithoutDescr
   } = useContext( TreeEditMapContext );
 
+  const navigate = useNavigate();
   const {
     sendToast
   } = useContext( AlertBoxContext );
 
-  const { id: currID } = data;
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     titleRef.current = event.target.value;
-    modifyNodeTitle(currID, titleRef.current);
+    modifyNodeTitle(data.id, titleRef.current);
   };
 
-  const openPopup = () => {
-    setShowPopup(x => !x);
-    console.log(showPopup);
-  }
-
-  function GenGraphDescBtn({graphId}) { 
+  function GenDescrBtn() { 
     return (
       <Button 
         sx={{ width: 300, marginLeft: 1 }}
@@ -96,15 +57,28 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
         color="success" 
         onClick={() => {
           sendToast("Started generating graph descriptions, please wait..", "info");
-          genGraphDesc(graphId).then(res => {
-            if (res)
-              sendToast("Finished updating graph!", "success")
+          genGraphDesc(data.id).then(res => {
+            sendToast("Finished updating graph!", "success");
+            setNavToMap(true);
           }).catch(err => {
             sendToast("Something went wrong..", "error");
           })
         }}
       >
         Generate Graph
+      </Button>
+    );
+  }
+
+  function NavToMapBtn() { 
+    return (
+      <Button 
+        sx={{ width: 300, marginLeft: 1 }}
+        variant="contained" 
+        color="secondary" 
+        onClick={() => navigate(`/map/${data.id}`)}
+      >
+        See Updated Map
       </Button>
     );
   }
@@ -141,8 +115,9 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
             marginLeft: 1            // Optional: add a little spacing between the TextField and Button
           }} variant="contained" color="primary" onClick={() =>  {
               setLoading(true);
-              genSubGraph(currID).then((_) => {
+              genSubGraph(data.id).then((_) => {
                 sendToast("Finished generating!", "success");
+                setNavToMap(false);
               }).catch((err) => {
                 sendToast(`Server error: ${err}`, "success");
                 // Success
@@ -158,8 +133,7 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
             width: 50,            // Set a specific width for the button
             marginLeft: 1            // Optional: add a little spacing between the TextField and Button
           }} variant="contained" color="primary" onClick={() =>  {
-              console.log("Deleting node: ", data.title);
-              deleteNode(currID);
+              deleteNode(data.id);
             }
           }>
             DELETE
@@ -169,8 +143,7 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
             width: 40,            // Set a specific width for the button
             marginLeft: 1            // Optional: add a little spacing between the TextField and Button
           }} variant="contained" color="primary" onClick={() =>  {
-              console.log("collapsing node: ", data.title);
-              collapseNodes(currID);
+              collapseNodes(data.id);
             }
           }>
             Collapse
@@ -179,8 +152,8 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
             width: 50,            // Set a specific width for the button
             marginLeft: 1            // Optional: add a little spacing between the TextField and Button
           }} variant="contained" color="primary" onClick={() =>  {
-              console.log("Adding node: ", data.title);
               addNode(data.id);
+              // setNavToMap(false);
             }
           }>
             Add
@@ -188,21 +161,7 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
 
           {
             data.node_type === "ROOT" && (
-              <>
-                <SaveGraphButton onClick={() => openPopup()} />
-                {showPopup && (
-                  <GraphTitlePopup 
-                    title={title}
-                    setTitle={setTitle}
-                    onSave={() => {
-                      saveGraph(title);
-                      setShowPopup(false);
-                    }}
-                    onCancel={() => setShowPopup(false)}
-                  />
-                )}
-                <GenGraphDescBtn graphId={data.id} />
-              </>
+                !navToMap ? <GenDescrBtn /> : <NavToMapBtn />
             )
           }
           <Box sx={{
