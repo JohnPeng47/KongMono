@@ -5,8 +5,15 @@ import {
   Box, 
   TextField, 
   Button,
-  CircularProgress
+  CircularProgress,
+  Stack,
+  IconButton
 } from '@mui/material';
+import CloseIconOutlined from '@mui/icons-material/CloseOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import AddIcon from '@mui/icons-material/Add';
+
 import { TreeEditMapContext } from '../../provider/TreeEditMapProvider';
 import { useContext } from 'use-context-selector';
 import { useNavigate } from 'react-router-dom';
@@ -23,8 +30,9 @@ type TreeNodeProps = {
     yPos: number 
   };
 
-function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
+function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) {
   const [showPopup, setShowPopup] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [navToMap, setNavToMap] = useState(false);
   const titleRef = useRef<string>(data.title);
@@ -52,7 +60,7 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
   function GenDescrBtn() { 
     return (
       <Button 
-        sx={{ width: 300, marginLeft: 1 }}
+        sx={{ height: "100%", marginLeft: 1 }}
         variant="contained" 
         color="success" 
         onClick={() => {
@@ -110,60 +118,63 @@ function TreeNode({ data, isConnectable, xPos, yPos }: TreeNodeProps) {
             defaultValue={data.title}
             sx={{ width: 500 }}       // Allow the text field to grow as needed
           />
-          <Button sx={{
-            width: 100,            // Set a specific width for the button
-            marginLeft: 1            // Optional: add a little spacing between the TextField and Button
-          }} variant="contained" color="primary" onClick={() =>  {
-              setLoading(true);
-              genSubGraph(data.id).then((_) => {
-                sendToast("Finished generating!", "success");
-                setNavToMap(false);
-              }).catch((err) => {
-                sendToast(`Server error: ${err}`, "success");
-                // Success
-              }).finally(() => {
-                setLoading(false);
-              })
-            }
-          }>
-            Re-generate
-          </Button>
+          <Stack className="treenode-button-group" sx={{
+            display: selected ? "" : "none"
+          }} direction={"row"}>
+            <IconButton onClick={() =>  {
+                setCollapsed(!collapsed);
+                collapseNodes(data.id);
+              }
+            }>
+             {collapsed ? <ExpandMoreIcon></ExpandMoreIcon> : <ExpandLessIcon></ExpandLessIcon> }
+            </IconButton>
+            <IconButton sx={{
+              width: 50,            // Set a specific width for the button
+              marginLeft: 1            // Optional: add a little spacing between the TextField and Button
+            }} color="primary" onClick={() =>  {
+                addNode(data.id);
+                // setNavToMap(false);
+              }
+            }>
+              
+              <AddIcon></AddIcon>
+            </IconButton>
+            <IconButton sx={{
+              width: 50,            // Set a specific width for the button
+              marginLeft: 1            // Optional: add a little spacing between the TextField and Button
+            }} color="error" onClick={() =>  {
+                deleteNode(data.id);
+              }
+            }>
+              <CloseIconOutlined ></CloseIconOutlined>
+            </IconButton>
 
-          <Button sx={{
-            width: 50,            // Set a specific width for the button
-            marginLeft: 1            // Optional: add a little spacing between the TextField and Button
-          }} variant="contained" color="primary" onClick={() =>  {
-              deleteNode(data.id);
-            }
-          }>
-            DELETE
-          </Button>
-
-          <Button sx={{
-            width: 40,            // Set a specific width for the button
-            marginLeft: 1            // Optional: add a little spacing between the TextField and Button
-          }} variant="contained" color="primary" onClick={() =>  {
-              collapseNodes(data.id);
-            }
-          }>
-            Collapse
-          </Button>
-          <Button sx={{
-            width: 50,            // Set a specific width for the button
-            marginLeft: 1            // Optional: add a little spacing between the TextField and Button
-          }} variant="contained" color="primary" onClick={() =>  {
-              addNode(data.id);
-              // setNavToMap(false);
-            }
-          }>
-            Add
-          </Button>
+            <Button sx={{
+              width: 100,            // Set a specific width for the button
+              marginLeft: 1            // Optional: add a little spacing between the TextField and Button
+            }} variant="contained" color="primary" onClick={() =>  {
+                setLoading(true);
+                genSubGraph(data.id).then((_) => {
+                  sendToast("Finished generating!", "success");
+                  setNavToMap(false);
+                }).catch((err) => {
+                  sendToast(`Server error: ${err}`, "success");
+                  // Success
+                }).finally(() => {
+                  setLoading(false);
+                })
+              }
+            }>
+              Re-generate
+            </Button>
+          </Stack>
 
           {
             data.node_type === "ROOT" && (
-                !navToMap ? <GenDescrBtn /> : <NavToMapBtn />
+              !navToMap ? <GenDescrBtn /> : <NavToMapBtn />
             )
           }
+
           <Box sx={{
             paddingLeft: 5,
             display: 'flex',
