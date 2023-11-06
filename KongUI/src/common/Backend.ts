@@ -144,11 +144,24 @@ export class Backend {
   /**
    * Gets list of metadata
    */
-    async getMetadaList(user: string): Promise<AxiosResponse> {
-      const endpoint = this.url + "/metadata";
+  async getMetadaList(user: string): Promise<AxiosResponse> {
+    const endpoint = this.url + "/metadata";
 
-      return axios.get(endpoint, this.authConf);
-    }
+    return axios.get(endpoint, this.authConf);
+  }
   
+  /**
+   * Downloads graph from server
+   */
+  async createGraph(curriculum: string, title: string): Promise<AxiosResponse> {
+    const endpoint = this.url + "/graph/create";
+    const data = {
+      curriculum: curriculum,
+      title: title
+    }
+
+    console.log(data);
+    return axios.post(endpoint, data);
+  }
 }
 

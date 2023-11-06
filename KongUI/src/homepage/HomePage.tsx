@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useMemo } from "react";
-
-// import axios from "axios";
-import { GETMetadataRequest } from "../api/api";
 import {
   Grid,
   Card,
@@ -25,6 +22,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useContext } from "use-context-selector";
 import { BackendContext } from "../concept_map/provider/backendProvider";
 
+import {handleChangeEvent} from "../common/utils";
+
 function HomePage() {
   const navigate = useNavigate();
   // modify this to use an array of booleans
@@ -32,6 +31,8 @@ function HomePage() {
   const [expanded, setExpanded] = useState(false);
   const [metadataList, setMetadataList] = useState([]);
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [curriculum, setCurriculum] = useState("");
   const { backend } = useContext(BackendContext);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ function HomePage() {
             To start generating your first concept map, write a brief description of your subject.
           </DialogContentText>
           <TextField
+            onChange={(e) => handleChangeEvent(e, setCurriculum)}
             placeholder="A history of the Conflict of the Orders in Rome..."
             autoFocus
             margin="dense"
@@ -103,11 +105,31 @@ function HomePage() {
             type="email"
             fullWidth
             variant="standard"
+          />          
+          <DialogContentText>
+            Title of your map
+          </DialogContentText>
+          <TextField
+            onChange={(e) => handleChangeEvent(e, setTitle)}
+            placeholder="War of the Orders"
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Title"
+            type="email"
+            fullWidth
+            variant="standard"
           />
+
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          {/* <Button onClick={}>Subscribe</Button> */}
+          <Button onClick={
+            () => {
+              backend.createGraph(curriculum, title).then(
+                res => window.location.reload()
+              );
+            }}>Create</Button>
         </DialogActions>
       </Dialog>
 

@@ -21,3 +21,9 @@ export function generateUUID(): string {
 }
 
 export const noop = () => {};
+
+export function handleChangeEvent(event, setVal): void {
+	setVal(event.target.value);
+} 
+
+

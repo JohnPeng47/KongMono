@@ -222,6 +222,8 @@ class KnowledgeGraph(DiGraph):
 
         super().remove_node(node_id)
 
+    # TODO: automatically add id
+    # TODO: dont validate for id and node_type
     def add_node(self, child_node: Dict, parent_node: dict = {}, merge: bool = False):
         """
         Recursively adds a node and all its children to graph

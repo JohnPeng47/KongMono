@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from .schema import GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
-from .service import get_graph_metadata_db, list_graph_metadata_db, get_graph_db, delete_graph_db, delete_graph_metadata_db 
+from .schema import CreateGraphReq, GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
+from .service import GraphManager, get_graph_metadata_db, list_graph_metadata_db, get_graph_db, delete_graph_db, delete_graph_metadata_db 
 
 from fastapi.requests import Request
 from fastapi import HTTPException
@@ -27,6 +27,7 @@ from ..auth.service import get_user_from_token
 logger = getLogger("base")
 
 router = APIRouter()
+graph_manager = GraphManager()
 
 @router.get("/metadata/", 
             response_model=List[GraphMetadataResp])
@@ -143,3 +144,8 @@ def gen_subgraph(rf_subgraph: RFNode, request: Request):
             continue
 
     raise HTTPException(status_code=500, detail="Internal server error")
+
+@router.post("/graph/create")
+def create_graph(request: CreateGraphReq):
+    print("Creating graph with: ", request.curriculum, request.title)
+    return graph_manager.create_graph(request.curriculum, request.title)
