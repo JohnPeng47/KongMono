@@ -51,10 +51,16 @@ function HomePage() {
 
   return (
     <Box>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} marginRight={3} >
         {metadataList.map((item, index) => (
           <Grid item xs={4} key={index}>
-            <Card>
+            <Card sx={{
+                  cursor: "pointer",
+                  ':hover': {
+                    boxShadow: 20, // theme.shadows[20]
+                  },
+                }}
+              >
               <CardContent onClick={() => navigate("/map/" + item.id)}>
                 <Typography variant="h5" component="div">
                   {item.metadata.title}
@@ -73,7 +79,7 @@ function HomePage() {
                 </IconButton>
               </CardActions>
 
-              <button onClick={() => navigate("/tree/" + item.id)}>Tree View</button>
+              <button onClick={() => navigate("/tree/" + item.id)}>Edit Map</button>
               <button onClick={() => {
                 backend.deleteGraph(item.id);
               }}>Delete</button>

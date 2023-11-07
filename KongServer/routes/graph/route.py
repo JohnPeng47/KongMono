@@ -59,20 +59,20 @@ def delete_graph(graph_id: str, request: Request):
     delete_graph_db(graph_id)
     delete_graph_metadata_db(graph_id)
 
-@router.post("/graph/save")
-def update_graph(save_req: SaveGraphReq, request: Request):
-    curr_kg: KnowledgeGraph = request.app.curr_graph
+# @router.post("/graph/save")
+# def update_graph(save_req: SaveGraphReq, request: Request):
+#     curr_kg: KnowledgeGraph = request.app.curr_graph
 
-    rf_graph, title = save_req.graph, save_req.title
+#     rf_graph, title = save_req.graph, save_req.title
 
-    kg_graph = rfnode_to_kgnode(rf_graph)
-    # assign different ID so it gets saved as a new graph
-    kg_graph["id"] = str(uuid.uuid4())
+#     kg_graph = rfnode_to_kgnode(rf_graph)
+#     # assign different ID so it gets saved as a new graph
+#     kg_graph["id"] = str(uuid.uuid4())
 
-    curriculum = curr_kg.curriculum
-    new_kg: KnowledgeGraph = KnowledgeGraph(curriculum)
-    new_kg.from_json(kg_graph)
-    new_kg.save_graph(title=title)
+#     curriculum = curr_kg.curriculum
+#     new_kg: KnowledgeGraph = KnowledgeGraph(curriculum)
+#     new_kg.from_json(kg_graph)
+#     new_kg.save_graph(title=title)
 
 ### These routes actually perform graph modification
 @router.get("/graph/generate/{graph_id}")

@@ -112,21 +112,21 @@ export const TreeEditMapProvider = memo(
     [setNodes]
   );
   
-  const modifyNodes = useCallback((modNodes: Node<RFNodeData>[]) => {
-    const newNodes: Node<RFNodeData>[] = [];
-    for (const oldNode of getNodes()) {
-      const modify = modNodes
-        .map(node => node.id)
-        .includes(oldNode.id)
-      newNodes.push(
-        modify
-        // double loop here not ideal but looks nicer 
-        ? modNodes.find(node => node.id === oldNode.id)
-        : oldNode
-      )
-    }
-    return newNodes;
-  }, [getNodes])
+  // const modifyNodes = useCallback((modNodes: Node<RFNodeData>[]) => {
+  //   const newNodes: Node<RFNodeData>[] = [];
+  //   for (const oldNode of getNodes()) {
+  //     const modify = modNodes
+  //       .map(node => node.id)
+  //       .includes(oldNode.id)
+  //     newNodes.push(
+  //       modify
+  //       // double loop here not ideal but looks nicer 
+  //       ? modNodes.find(node => node.id === oldNode.id)
+  //       : oldNode
+  //     )
+  //   }
+  //   return newNodes;
+  // }, [getNodes])
 
   /**
    * Modifies the node title
@@ -299,9 +299,7 @@ export const TreeEditMapProvider = memo(
       return
 
     const rootNode = getNodes()[0];
-    console.log("Root: ", getNodes());
     const updateRoot = graph.RFtoJSON(rootNode);
-    // console.log("hello2")
     backend.updateGraph(updateRoot);
   }, [nodeChanges, edgeChanges])
 

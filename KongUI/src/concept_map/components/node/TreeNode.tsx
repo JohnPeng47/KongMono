@@ -7,7 +7,8 @@ import {
   Button,
   CircularProgress,
   Stack,
-  IconButton
+  IconButton,
+  TextareaAutosize
 } from '@mui/material';
 import CloseIconOutlined from '@mui/icons-material/CloseOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -114,20 +115,34 @@ function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) 
             label="Text"
             variant="outlined"
             onChange={handleInputChange}
-            fullWidth                  // This will ensure it takes up the available space
+            fullWidth
             defaultValue={data.title}
-            sx={{ width: 500 }}       // Allow the text field to grow as needed
-          />
+            sx={{ 
+              borderColor: "red",
+              width: 500,
+            }}       // Allow the text field to grow as needed
+          >
+          </TextField>
+
           <Stack className="treenode-button-group" sx={{
             display: selected ? "" : "none"
           }} direction={"row"}>
-            <IconButton onClick={() =>  {
-                setCollapsed((collapsed) => !collapsed);
-                collapseNodes(data.id, !collapsed);
-              }
-            }>
-             {collapsed ? <ExpandLessIcon></ExpandLessIcon> : <ExpandMoreIcon></ExpandMoreIcon> }
-            </IconButton>
+            {
+              collapsed ?
+              <IconButton color="error" onClick={() =>  {
+                  setCollapsed((collapsed) => !collapsed);
+                  collapseNodes(data.id, !collapsed);
+                }}>
+                <ExpandLessIcon></ExpandLessIcon>
+              </IconButton> :
+              <IconButton color="success" onClick={() =>  {
+                  setCollapsed((collapsed) => !collapsed);
+                  collapseNodes(data.id, !collapsed);
+                }}>
+                <ExpandMoreIcon></ExpandMoreIcon>
+              </IconButton>
+            }
+
             <IconButton sx={{
               width: 50,            // Set a specific width for the button
               marginLeft: 1            // Optional: add a little spacing between the TextField and Button
@@ -136,9 +151,9 @@ function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) 
                 // setNavToMap(false);
               }
             }>
-              
               <AddIcon></AddIcon>
             </IconButton>
+
             <IconButton sx={{
               width: 50,            // Set a specific width for the button
               marginLeft: 1            // Optional: add a little spacing between the TextField and Button
@@ -187,7 +202,6 @@ function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) 
               <CircularProgress /> // This will be rendered when loading is true
             }
           </Box>
-
         </Box>
       </Box>
       {/* Cant actually remove this because RF expects it*/}
