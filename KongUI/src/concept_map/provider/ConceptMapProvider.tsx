@@ -11,7 +11,7 @@ import {
   Node,
 } from "reactflow";
 import { NodeType } from "../../common/common-types";
-import { GraphUtils } from "../graph/graphUtils";
+import { TreeUtils } from "../graph/graphUtils";
 import { GraphType } from "../data/processNodes";
 import { BackendContext } from "./backendProvider";
 import getCytoScapeLayout from "../layout/CytoscapeLayout";
@@ -36,7 +36,7 @@ export const ConceptMapProvider = memo(
     getEdges, 
     } = useReactFlow();
 
-    const graph = useRef(new GraphUtils(getNodes, getEdges)).current;
+    const graph = useRef(new TreeUtils(getNodes, getEdges)).current;
     const [selecteNodeID, setSelectedNode] = useState<string>("null_user_id");
     
     const downloadGraph = (graphId: string, graphType: GraphType) => {

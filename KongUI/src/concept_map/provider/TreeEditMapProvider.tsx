@@ -12,7 +12,7 @@ import {
   Node,
   Edge
 } from "reactflow";
-import { GraphUtils } from "../graph/graphUtils";
+import { TreeUtils } from "../graph/graphUtils";
 import { 
   RFNodeData,
   NodeType
@@ -64,7 +64,7 @@ export const TreeEditMapProvider = memo(
 
   let nodesWithoutDescr = useRef<number>(0);
 
-  const graph = useRef(new GraphUtils(getNodes, getEdges)).current;
+  const graph = useRef(new TreeUtils(getNodes, getEdges)).current;
   const setNodesRef = useRef<SetState<Node<any>[]>>(setNodes);
   const setEdgeRef = useRef<SetState<Edge<any>[]>>(setEdges);
 
@@ -316,9 +316,10 @@ export const TreeEditMapProvider = memo(
   const genSubGraph = (nodeId: string): Promise<AxiosResponse> => {
     return new Promise((resolve, reject) => {
       const subgraph = graph.RFtoJSON(nodeId);
+      const rootId = getNodes()[0].id;
       console.log("Subgraph: ", subgraph);
   
-      backend.genSubGraph(subgraph)
+      backend.genSubGraph(subgraph, rootId)
         .then((res) => {
           const {
             updateNodes, 

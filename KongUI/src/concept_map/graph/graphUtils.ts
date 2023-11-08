@@ -19,16 +19,18 @@ type DFSNode = {
   nodeIndex: number
   parentId: NodeID
 }
+type NumChildren = number;
 
 /**
  * Utility functions for read-only graph level functions
  * Does not support modification of RF node state
  */
-export class GraphUtils {
+export class TreeUtils {
   private getNodes: () => Node<any>[];
   private getEdges: () => Edge<any>[];
   private X_INTERVAL = 50;
   private Y_INTERVAL = 70;
+  private collapsedNodes: { [NodeIndex: number] : NumChildren }
 
   // Is this consistent with RF getNodes()??
   private nodeDepth: { [NodeID: NodeID]: number };
@@ -394,6 +396,7 @@ export class GraphUtils {
 
   /**
    * Returns all the nodes that come after the currNode
+   * TODO: change this to support collapsed nodes
    */
   private getNodeIndex(nodeId: NodeID): number {
     return this.getNodes().findIndex(node => node.id === nodeId);

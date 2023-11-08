@@ -57,13 +57,16 @@ export class Backend {
    * server, a single node at a time
    */
   genSubGraph(
-    subgraph: Node<RFNodeData>): Promise<AxiosResponse> {
+    subgraph: Node<RFNodeData>,
+    graphId: string): Promise<AxiosResponse> {
     // this.syncGraph(rfNode);
     // this should have the latest sync'd data from the rf node
-    const endpoint = this.url + "/gen/subgraph";
+    const endpoint = this.url + `/gen/subgraph/${graphId}`;
+    const data = {
+      subgraph: subgraph
+    }
 
-    // return null;
-    return axios.post(endpoint, subgraph);
+    return axios.post(endpoint, data);
   }
 
   /**

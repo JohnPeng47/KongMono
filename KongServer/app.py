@@ -1,26 +1,25 @@
-import sys
-sys.path.append("../KongBot/")
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError, HTTPException
 from fastapi.requests import Request
+
 import os
-
 import uvicorn
+from logging import getLogger
+import logging.config
+import yaml
 
-from routes.graph.route import router as graph_router
-from routes.auth.routes import router as auth_router
-from routes.events.route import router as events_router
-from routes.static.route import router as static_router
+from src.server.routes.graph.route import router as graph_router
+from src.server.routes.auth.routes import router as auth_router
+from src.server.routes.events.route import router as events_router
+from src.server.routes.static.route import router as static_router
+
+from src.server.configure import configure_logger
 
 from config import settings
-from common.message_queue.queue import KafkaQueue
 
-from logging import getLogger
-from configure import configure_logger
 
 logger = getLogger("server")
 
@@ -58,19 +57,27 @@ app.mount(
 #     errors = {"errors": exc.errors()}
 #     return HTTPException(status_code=400, detail="error")
 
+
 @app.get("/")
 def read_root():
     with open(os.path.join(STATIC_DIR, "index.html"), 'r') as f:
         content = f.read()
         return HTMLResponse(content=content)
 
+
 app.include_router(graph_router)
 app.include_router(auth_router)
 app.include_router(events_router)
 
-app.queue = KafkaQueue()
 # realistically, needs to be a dictionary keyed by user IDs
 app.curr_graph = None
 
+with open("config/logger.yaml", "r") as config_file:
+    yaml_config = yaml.safe_load(config_file.read())
+
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=settings.API_PORT, reload=True)
+    uvicorn.run("app:app", 
+                host="0.0.0.0", 
+                port=settings.API_PORT, 
+                reload=True, 
+                log_config=yaml_config)
