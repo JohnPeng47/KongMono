@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends, Body, Query
 
 from .schema import GenSubgraphRequest, CreateGraphRequest, GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
 from .service import create_graph, get_graph, get_graph_metadata_db, list_graph_metadata_db, \
@@ -6,6 +6,8 @@ get_graph_db, delete_graph_db, delete_graph_metadata_db
 
 from fastapi.requests import Request
 from fastapi import HTTPException
+
+from networkx.exception import NetworkXError
 
 from src.KongBot.bot.base import KnowledgeGraph
 from src.KongBot.bot.explorationv2.llm import GenSubTreeQueryV2
@@ -96,7 +98,8 @@ def generate_graph_route(graph_id: str, request: Request):
     return success
 
 @router.post("/graph/update")
-def update_graph_route(rf_graph: RFNode, request: Request):
+def update_graph_route(rf_graph: RFNode, 
+                       request: Request):
     kg: KnowledgeGraph = request.app.curr_graph
 
     kg_graph = rfnode_to_kgnode(rf_graph)
@@ -106,12 +109,21 @@ def update_graph_route(rf_graph: RFNode, request: Request):
 
 
 @router.post("/gen/subgraph/{graph_id}", response_model=GraphNode)
-def gen_subgraph_route(request: GenSubgraphRequest = Body(...), 
-                       kg: KnowledgeGraph = Depends(get_graph)):
-    
-    logger.debug("Generating subgraph for: ", request.subgraph.data.title)
+def gen_subgraph_route(graph_id: str,
+                        request: GenSubgraphRequest = Body(...),
+                        kg: KnowledgeGraph = Depends(get_graph)):
     rf_subgraph_json = rfnode_to_kgnode(request.subgraph)
-    kg.add_node(rf_subgraph_json, merge=True)
+
+    # unknown race condition here
+    try:
+        kg.add_node(rf_subgraph_json, merge=True)
+    except NetworkXError as e:
+        subgraph_id, subgraph_title = rf_subgraph_json["id"], rf_subgraph_json["id"]["node_data"]["title"]
+        logger.error("Error in subgraph add_node")
+        logger.error(e)
+        logger.error(f"Subgraph id: {subgraph_id} and subgraph title: {subgraph_title}")
+        raise HTTPException(status_code=500)
+    
     tree1, tree2, _ = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
 
     retry, success = 6, False

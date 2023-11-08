@@ -3,7 +3,6 @@ from config import settings
 from logging import StreamHandler, Formatter, Logger
 from logging.handlers import RotatingFileHandler
 
-
 def configure_logger(logger: Logger):
     logger.setLevel(settings.SERVER_LOG_LEVEL)
 

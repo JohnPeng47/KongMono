@@ -14,7 +14,7 @@ from src.server.database.exceptions import MongoUnacknowledgeError
 
 from logging import getLogger
 
-logger = getLogger("server")
+logger = getLogger("base")
 
 # Change this to use secrets manager at some point
 SECRET_KEY = "gangster_lean_boogie"

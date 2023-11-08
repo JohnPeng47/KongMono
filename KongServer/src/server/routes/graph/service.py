@@ -15,7 +15,7 @@ from src.KongBot.bot.base import KnowledgeGraph
 from logging import getLogger
 from threading import Lock
 
-logger = getLogger("server")
+logger = getLogger("base")
 
 
 # Should add user auth check as a dependency here, and use this as the entry point 

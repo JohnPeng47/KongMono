@@ -15,18 +15,22 @@ from src.server.routes.graph.route import router as graph_router
 from src.server.routes.auth.routes import router as auth_router
 from src.server.routes.events.route import router as events_router
 from src.server.routes.static.route import router as static_router
-
 from src.server.configure import configure_logger
+
+from src.server.utils.utils import log_start_banner
 
 from config import settings
 
 
-logger = getLogger("server")
+logger = getLogger("base")
+
+log_start_banner()
 
 app = FastAPI()
 
 # TODO: add other configurations here, including database configurations
-configure_logger(logger)
+# log configurations done through yaml
+# configure_logger(logger)
 
 
 # Set up the CORS middleware
@@ -64,7 +68,6 @@ def read_root():
         content = f.read()
         return HTMLResponse(content=content)
 
-
 app.include_router(graph_router)
 app.include_router(auth_router)
 app.include_router(events_router)
@@ -72,7 +75,8 @@ app.include_router(events_router)
 # realistically, needs to be a dictionary keyed by user IDs
 app.curr_graph = None
 
-with open("config/logger.yaml", "r") as config_file:
+# TODO: add linux yaml_config
+with open(settings.LOG_CONFIG, "r") as config_file:
     yaml_config = yaml.safe_load(config_file.read())
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ import warnings
 warnings.filterwarnings("ignore", message="Numerical issues were encountered ")
 
 # initialize the logger
-initialize_logging()
+# initialize_logging()
 
 # Considerations and TODOs:
 # 1. Currently the node object uses the self.node dictionary representation used
