@@ -125,7 +125,6 @@ def gen_subgraph_route(graph_id: str,
         raise HTTPException(status_code=500)
     
     tree1, tree2, _ = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
-
     retry, success = 6, False
     default_model = "gpt3"
     while retry > 0 and not success:

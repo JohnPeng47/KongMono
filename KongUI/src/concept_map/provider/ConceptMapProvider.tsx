@@ -11,7 +11,7 @@ import {
   Node,
 } from "reactflow";
 import { NodeType } from "../../common/common-types";
-import { TreeUtils } from "../graph/graphUtils";
+import { TreeUtils } from "../graph/tree/treeUtils";
 import { GraphType } from "../data/processNodes";
 import { BackendContext } from "./backendProvider";
 import getCytoScapeLayout from "../layout/CytoscapeLayout";

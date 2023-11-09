@@ -5,12 +5,12 @@ import {
   Position,
   NodeID,
   RFNode
-} from "../../common/common-types"
+} from "../../../common/common-types"
 import {
   GraphType,
   ConvertNode,
   ConvertEdge
-} from "../data/processNodes";
+} from "../../data/processNodes";
 import { NumberLiteralType } from "typescript";
 
 type DFSNode = {
@@ -30,10 +30,16 @@ export class TreeUtils {
   private getEdges: () => Edge<any>[];
   private X_INTERVAL = 50;
   private Y_INTERVAL = 70;
-  private collapsedNodes: { [NodeIndex: number] : NumChildren }
 
   // Is this consistent with RF getNodes()??
   private nodeDepth: { [NodeID: NodeID]: number };
+  
+  private savedCollapsedNodes: { 
+    [parentID: NodeID]: {
+      savedNodes: Node<RFNodeData>[],
+      savedEdges: Edge[]
+   }
+  };
 
   public constructor(
     getNodes: () => Node<any>[],
@@ -42,6 +48,7 @@ export class TreeUtils {
     this.getNodes = getNodes;
     this.getEdges = getEdges;
     this.nodeDepth = {};
+    this.savedCollapsedNodes = {};
   }
 
   /**
@@ -144,7 +151,8 @@ export class TreeUtils {
         updateEdges: []
       };
     }
-    const numChildrenBefore = this.getAllChildren(parentNode.id).length
+    const { childNodes } = this.getAllChildren(parentNode.id);
+    const numChildrenBefore = childNodes.length
     console.log("New nodes: ", this.numNewNodes(parentNode));
 
     let numChildren = 0;
@@ -347,6 +355,31 @@ export class TreeUtils {
   // }
 
   /**
+   * Save collapse nodes and edges
+   */
+  public saveCollapsedNodes(parentId: NodeID, nodes: Node<RFNodeData>[], edges: Edge[]): void {
+    this.savedCollapsedNodes[parentId] = {
+      savedNodes: nodes,
+      savedEdges: edges
+    }
+  }
+
+  /**
+   * Restore collapsed nodes and edges
+   */
+  public getCollapsedNodes(parentId: NodeID):
+  {
+    savedNodes: Node<RFNodeData>[],
+    savedEdges: Edge[]
+  } {
+    const savedNodes = this.savedCollapsedNodes[parentId];
+    delete this.savedCollapsedNodes[parentId];
+
+    return savedNodes;
+  }
+
+
+  /**
    * Calculates the position of a node during initJson
    */
   private nodePosInit(depth: number, nodeIndex: number): Position {
@@ -424,10 +457,19 @@ export class TreeUtils {
   /**
    * Recursively retrieves all the child nodes
    */
-  public getAllChildren = (nodeId: string): Node<RFNodeData>[] => {
-    return this.children(nodeId).flatMap(child => {
-      return [child, ...this.getAllChildren(child.id)];
-    })
+  public getAllChildren(nodeId: string): {
+    childNodes: Node<RFNodeData>[],
+    childEdges: Edge[] 
+  } {    
+    return {
+      childNodes: this.children(nodeId).flatMap(child => {
+        return [child, ...this.getAllChildren(child.id).childNodes];
+      }),
+      childEdges: this.children(nodeId).flatMap(child => {
+        return [this.findEdge(child.id), ...this.getAllChildren(child.id).childEdges]
+      })
+    }
+
   }
 
   /**

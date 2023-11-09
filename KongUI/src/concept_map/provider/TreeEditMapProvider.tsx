@@ -12,7 +12,7 @@ import {
   Node,
   Edge
 } from "reactflow";
-import { TreeUtils } from "../graph/graphUtils";
+import { TreeUtils } from "../graph/tree/treeUtils";
 import { 
   RFNodeData,
   NodeType
@@ -151,7 +151,7 @@ export const TreeEditMapProvider = memo(
   const deleteNode = useCallback(
     (id: string) : void => {
       const node = graph.findNodeRF(id);
-      const children = graph.getAllChildren(id);
+      const { childNodes: children } = graph.getAllChildren(id);
       const deleteNodes = [children, node].flat();
       const newNodes = getNodes()
         .filter((node) => 
@@ -241,56 +241,125 @@ export const TreeEditMapProvider = memo(
    */
   const collapseNodes = useCallback(
     (parentId: string, collapsed: boolean): void => {
-      const direction = collapsed ? 1 : -1;
-
       const parentNode = graph.findNodeRF(parentId);
       const parentEdge = graph.findEdge(parentId);
-      const nodesCollapsed = graph.getAllChildren(parentId);
-      const collapsedNodeIds = nodesCollapsed.map(node => node.id);
 
-      const {
-        beforeNodes,
-        beforeEdges,
-        afterNodes,
-        afterEdges
-      } = graph.getNodesBeforeAfter(parentId, nodesCollapsed.length);
-      
-      const newNodes = beforeNodes
-        .concat(parentNode)
-        .concat(nodesCollapsed.map(node => (
-          {
-            ...node,
-            hidden: !collapsed
-          }
-        )))
-        .concat(afterNodes.map(node => (
-          {
+      let newNodes = [];
+      let newEdges = [];
+      if (!collapsed) {
+        const { childNodes, childEdges } = graph.getAllChildren(parentId);
+
+        graph.saveCollapsedNodes(parentId, childNodes, childEdges);
+
+        console.log("Expanding nodes: ", childNodes.length);
+        const {
+          beforeNodes,
+          beforeEdges,
+          afterNodes,
+          afterEdges
+        } = graph.getNodesBeforeAfter(parentId, childNodes.length);
+        
+        newNodes = beforeNodes
+          .concat(parentNode)
+          .concat(afterNodes)
+          .map((node, index) => ({
             ...node,
             position: {
-              x: node.position.x,
-              y: node.position.y + nodesCollapsed.length * 70 * direction
+              x : node.position.x,
+              y : index * 70
             }
-          }
-        )));
-      
-      const newEdges = beforeEdges
-          .concat(parentEdge)
-          .concat(
-            getEdges()
-              .filter(edge => collapsedNodeIds.includes(edge.target))
-              .map(edge => (
-                {
-                  ...edge,
-                  hidden: !collapsed
-                }
-              ))
-          )
-          .concat(afterEdges);
+          }));
+
+        newEdges = beforeEdges
+            .concat(parentEdge)
+            .concat(afterEdges);
+
+      } else {
+        const { savedNodes, savedEdges } = graph.getCollapsedNodes(parentId);
+        const {
+          beforeNodes,
+          beforeEdges,
+          afterNodes,
+          afterEdges
+        } = graph.getNodesBeforeAfter(parentId, 0);
+
+        console.log("Expanding nodes: ", savedNodes.length);
+        
+        newNodes = beforeNodes
+          .concat(parentNode)
+          .concat(savedNodes)
+          .concat(afterNodes)
+          .map((node, index) => ({
+            ...node,
+            position: {
+              x : node.position.x,
+              y : index * 70
+            }
+          }));
+  
+        newEdges = beforeEdges
+            .concat(parentEdge)
+            .concat(savedEdges)
+            .concat(afterEdges);
+      }
 
       changeNodes(newNodes);
       changeEdges(newEdges);
   }, [changeNodes, changeEdges]);
-  
+
+
+  // const collapseNodes = useCallback(
+  //   (parentId: string, collapsed: boolean): void => {
+  //     const direction = collapsed ? 1 : -1;
+
+  //     const parentNode = graph.findNodeRF(parentId);
+  //     const parentEdge = graph.findEdge(parentId);
+  //     const { childNodes: nodesCollapsed, childEdges } = graph.getAllChildren(parentId);
+  //     const collapsedNodeIds = nodesCollapsed.map(node => node.id);
+
+  //     const {
+  //       beforeNodes,
+  //       beforeEdges,
+  //       afterNodes,
+  //       afterEdges
+  //     } = graph.getNodesBeforeAfter(parentId, nodesCollapsed.length);
+      
+  //     const newNodes = beforeNodes
+  //       .concat(parentNode)
+  //       .concat(nodesCollapsed.map(node => (
+  //         {
+  //           ...node,
+  //           hidden: !collapsed
+  //         }
+  //       )))
+  //       .concat(afterNodes.map(node => (
+  //         {
+  //           ...node,
+  //           position: {
+  //             x: node.position.x,
+  //             y: node.position.y + nodesCollapsed.length * 70 * direction
+  //           }
+  //         }
+  //       )));
+      
+  //     const newEdges = beforeEdges
+  //         .concat(parentEdge)
+  //         .concat(
+  //           getEdges()
+  //             .filter(edge => collapsedNodeIds.includes(edge.target))
+  //             .map(edge => (
+  //               {
+  //                 ...edge,
+  //                 hidden: !collapsed
+  //               }
+  //             ))
+  //         )
+  //         .concat(afterEdges);
+
+  //     changeNodes(newNodes);
+  //     changeEdges(newEdges);
+  // }, [changeNodes, changeEdges]);
+
   /**
    * Sync backend
    */
