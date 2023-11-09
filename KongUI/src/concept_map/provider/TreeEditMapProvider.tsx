@@ -369,7 +369,7 @@ export const TreeEditMapProvider = memo(
 
     const rootNode = getNodes()[0];
     const updateRoot = graph.RFtoJSON(rootNode);
-    backend.updateGraph(updateRoot);
+    backend.updateGraph(updateRoot, rootNode.id);
   }, [nodeChanges, edgeChanges])
 
   /**

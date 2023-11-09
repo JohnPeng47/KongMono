@@ -113,14 +113,10 @@ def get_graph(graph_id: str,
     return graph
 
 def save_graph(graph: KnowledgeGraph, title: str = ""):
-
-
     graph_id = graph.get_root()["id"]
     graph_title = graph.get_root()["node_data"]["title"] if not title else title
 
     print("Saving graph with title: ", graph_title) 
-
-    print("Saving: ", graph.to_json())
     insert_graph_db(graph.to_json())
     insert_graph_metadata_db(graph_id, {
         "curriculum": graph.curriculum,

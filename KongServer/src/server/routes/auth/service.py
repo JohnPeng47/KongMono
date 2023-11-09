@@ -20,7 +20,6 @@ logger = getLogger("base")
 SECRET_KEY = "gangster_lean_boogie"
 ALGORITHM = "HS256"
 
-
 def create_user(user: User) -> User:
     res = db_conn.get_collection("users").insert_one(user.dict())
 

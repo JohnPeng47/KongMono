@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, Body, Query
+from fastapi import APIRouter, Depends, Body, Query, Response
 
 from .schema import GenSubgraphRequest, CreateGraphRequest, GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
 from .service import create_graph, get_graph, get_graph_metadata_db, list_graph_metadata_db, \
-get_graph_db, delete_graph_db, delete_graph_metadata_db 
+get_graph_db, delete_graph_db, delete_graph_metadata_db, save_graph
 
 from fastapi.requests import Request
 from fastapi import HTTPException
@@ -43,13 +43,8 @@ def get_graph_metadata_route(user = Depends(get_user_from_token)):
 
 
 @router.get("/graph/{graph_id}", response_model=GraphNode)
-def get_graph_route(graph_id: str, request: Request):
-    if not request.app.curr_graph or request.app.curr_graph != graph_id:
-        print("Loading graph: ", graph_id)
-        request.app.curr_graph = KnowledgeGraph.load_graph(graph_id)
-
-    kg: KnowledgeGraph = request.app.curr_graph
-
+def get_graph_route(graph_id: str, 
+                    kg: KnowledgeGraph = Depends(get_graph)):
     return json.loads(kg.to_json_frontend())
 
 # TODO: Remove graph_id from this function and move delete button on UI to
@@ -76,8 +71,8 @@ def delete_graph_route(graph_id: str, request: Request):
 
 ### These routes actually perform graph modification
 @router.get("/graph/generate/{graph_id}")
-def generate_graph_route(graph_id: str, request: Request):
-    kg: KnowledgeGraph = request.app.curr_graph
+def generate_graph_route(graph_id: str, 
+                         kg: KnowledgeGraph = Depends(get_graph)):
     title = get_graph_metadata_db(graph_id)["metadata"]["title"]
     config = {
         "global": {
@@ -93,20 +88,23 @@ def generate_graph_route(graph_id: str, request: Request):
         generate_short_description
     ])
     success = kg.generate_nodes()
-    kg.save_graph(title=title)
+    save_graph(kg, title=title)
 
     return success
 
-@router.post("/graph/update")
-def update_graph_route(rf_graph: RFNode, 
-                       request: Request):
-    kg: KnowledgeGraph = request.app.curr_graph
-
+@router.post("/graph/update/{graph_id}")
+def update_graph_route(graph_id: str,
+                       rf_graph: RFNode, 
+                       response: Response,
+                       kg: KnowledgeGraph = Depends(get_graph)):
     kg_graph = rfnode_to_kgnode(rf_graph)
     kg.add_node(kg_graph, merge=True)
 
-    kg.save_graph()
-
+    save_graph(kg)
+    response.headers["Allow"] = "POST"
+    return {
+        "status": "success"
+    }
 
 @router.post("/gen/subgraph/{graph_id}", response_model=GraphNode)
 def gen_subgraph_route(graph_id: str,
@@ -140,8 +138,8 @@ def gen_subgraph_route(graph_id: str,
                 subtree, rf_subgraph_json, parent)
 
             kg.add_node(subtree_node_new, merge=True)
-            # TODO: consider just returning the subgraph
-            kg.save_graph()
+            save_graph(kg)
+
             return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))
         except GeneratorException as e:
             # to increment it by one

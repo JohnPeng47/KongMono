@@ -6,6 +6,7 @@ import {
 } from "./common-types";
 import { Node } from "reactflow";
 import { useNavigate } from "react-router-dom";
+import { GraphicEqRounded } from "@mui/icons-material";
 
 // import { mergeOverwite } from "./utils";
 
@@ -59,8 +60,6 @@ export class Backend {
   genSubGraph(
     subgraph: Node<RFNodeData>,
     graphId: string): Promise<AxiosResponse> {
-    // this.syncGraph(rfNode);
-    // this should have the latest sync'd data from the rf node
     const endpoint = this.url + `/gen/subgraph/${graphId}`;
     const data = {
       subgraph: subgraph
@@ -73,8 +72,9 @@ export class Backend {
    * Updates the entire graph viaootNode
    */
   updateGraph(
-    rootNode: Node<RFNodeData>): void {
-    const endpoint = this.url + "/graph/update"
+    rootNode: Node<RFNodeData>,
+    graphId: string): void {
+    const endpoint = this.url + "/graph/update/" + graphId;
 
     axios.post(endpoint, rootNode);
   }
@@ -84,7 +84,7 @@ export class Backend {
    */
   deleteGraph(
     graphId: string): void {
-    const endpoint = this.url + "/graph/delete/" + graphId
+    const endpoint = this.url + "/graph/delete/" + graphId;
 
     axios.get(endpoint);
   }
