@@ -1,4 +1,6 @@
-from src.KongBot.utils.db import db_conn
+from src.KongBot.utils.db import KongBotDB
+
+db_conn = KongBotDB()
 
 
 def cache_result(func):

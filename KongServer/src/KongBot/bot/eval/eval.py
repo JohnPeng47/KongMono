@@ -5,12 +5,13 @@ import yaml
 import glob
 
 from src.KongBot.bot.base import KnowledgeGraph
-from src.KongBot.utils import db_conn, logger
+from src.KongBot.utils.db import KongBotDB, logger
 
 from .llm import GenerateCurriculumQuery
 
 from functools import reduce
 
+db_conn = KongBotDB()
 
 class Eval:
     def __init__(self, output_folder="MY_PROVIDER", num_tests: int = 10):

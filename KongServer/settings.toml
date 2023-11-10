@@ -1,11 +1,15 @@
 [development]
+DB = "kongbot"
 DB_HOST = "18.191.159.163"
+DB_PORT = 27017
 API_HOST = "localhost"
 API_PORT = 8000
 LOG_CONFIG = "log_config/logger_windows.yaml"
 
 [production]
+DB = "kongbot"
 DB_HOST = "172.31.34.171"
+DB_PORT = 27017
 API_HOST = "0.0.0.0"
 API_PORT = 8000
 LOG_CONFIG = "log_config/logger_linux.yaml"

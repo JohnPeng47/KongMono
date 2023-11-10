@@ -6,7 +6,7 @@ import jsonschema
 from langchain import LLMChain, PromptTemplate
 from langchain.callbacks import get_openai_callback
 from .cache import cache_result
-from src.KongBot.utils import db_conn
+from src.KongBot.utils.db import KongBotDB
 
 import tiktoken
 
@@ -22,6 +22,8 @@ import os
 
 TRAVERSE_PROBABILITY = 0.7
 
+
+db_conn = KongBotDB()
 
 class BaseLLM:
     # the type ofmodule

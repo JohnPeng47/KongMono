@@ -9,7 +9,7 @@ from typing import List, Dict, Callable, Optional
 from src.KongBot.bot.adapters.kg_to_frontend import FrontEndNodeAdapter
 from src.KongBot.bot.base.exceptions import ConfigInitError, NodeDoesNotExist
 
-from src.KongBot.utils import db_conn
+from src.KongBot.utils.db import KongBotDB
 from inspect import iscoroutinefunction
 
 import asyncio
@@ -27,15 +27,7 @@ import logging
 import warnings
 warnings.filterwarnings("ignore", message="Numerical issues were encountered ")
 
-# initialize the logger
-# initialize_logging()
-
-# Considerations and TODOs:
-# 1. Currently the node object uses the self.node dictionary representation used
-# by networkx. Efforts to define a custom class for this has not been attempted
-# because of uncertainty in new methods added to the class
-
-
+db_conn = KongBotDB()
 class KnowledgeGraph(DiGraph):
     """
     This data structure contains a set of graph operations for a set of Nodes

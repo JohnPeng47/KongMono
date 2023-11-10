@@ -1,27 +1,32 @@
 from pymongo import MongoClient
-from typing import Dict
-from dynaconf import Dynaconf
 from config import settings
 from logging import getLogger
-
-from .constants import COLLECTION_UNIQUE_INDICES
 
 logger = getLogger("base")
 
 class DBConnection:
-    def __init__(self, host=settings.DB_HOST, port=27017, username=None, password=None):
-        self.host = host
-        self.port = port
-        self.username = username
-        self.password = password
-        self.client = None
-        self.db = None
-        self.connected = False
+    _instance = None
+    _is_initialized = False
 
-        DATABASE = "kongbot"
-        self.connect(DATABASE)
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(DBConnection, cls).__new__(cls)
+        return cls._instance
 
-        # self.create_indices()
+    def __init__(self, host=settings.DB_HOST, port=settings.DB_PORT, username=None, password=None):
+        if not DBConnection._is_initialized:
+            self._initialized = True
+            self.host = host
+            self.port = port
+            self.username = username
+            self.password = password
+            self.client = None
+            self.db = None
+            self.connected = False
+
+            DBConnection._is_initialized = True
+            
+            self.connect(settings.DB)
 
     def connect(self, database):
         try:
@@ -59,5 +64,3 @@ class DBConnection:
             #     collection.create_index(field, **enabled_indices)
             #     logger.info(f"Creating indices: [{index_types}] on field: {field} for \
             #                 collection: {c}")
-
-db_conn = DBConnection()

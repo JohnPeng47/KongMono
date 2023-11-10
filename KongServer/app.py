@@ -17,17 +17,10 @@ from src.server.utils.utils import log_start_banner
 
 from config import settings
 
-
 logger = getLogger("base")
-
 log_start_banner()
 
 app = FastAPI()
-
-# TODO: add other configurations here, including database configurations
-# log configurations done through yaml
-# configure_logger(logger)
-
 
 # Set up the CORS middleware
 origins = [
@@ -56,7 +49,6 @@ app.mount(
 #     logger.error("Request validation")
 #     errors = {"errors": exc.errors()}
 #     return HTTPException(status_code=400, detail="error")
-
 
 @app.get("/")
 def read_root():

@@ -9,12 +9,13 @@ from .utils import jwt_decode
 from .exceptions import DuplicateUserException
 from .config import ACCESS_TOKEN_EXPIRE_DAYS
 
-from src.server.database.db import db_conn
+from src.server.database.db import DBConnection
 from src.server.database.exceptions import MongoUnacknowledgeError
 
 from logging import getLogger
 
 logger = getLogger("base")
+db_conn = DBConnection()
 
 # Change this to use secrets manager at some point
 SECRET_KEY = "gangster_lean_boogie"

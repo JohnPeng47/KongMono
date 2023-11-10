@@ -2,7 +2,7 @@ from typing import Dict
 import uuid
 from collections import defaultdict
 
-from src.server.database.db import db_conn
+from src.server.database.db import DBConnection
 
 from fastapi import Depends, Body
 
@@ -17,7 +17,7 @@ from logging import getLogger
 from threading import Lock
 
 logger = getLogger("base")
-
+db_conn = DBConnection()
 
 # Should add user auth check as a dependency here, and use this as the entry point 
 # authz on graph_id
