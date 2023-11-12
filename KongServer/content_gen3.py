@@ -1,11 +1,10 @@
-import uuid
-import json
 from src.KongBot.bot.base import KnowledgeGraph
-import bot.explorationv2.generators.generators as GENERATORS
+import src.KongBot.bot.explorationv2.generators.generators as GENERATORS
 # from src.KongBot.explorationv2 import generate_tree, generate_sub_trees_v2, generate_subtree_descriptions, generate_entity_relations, \
 #     generate_details_hierarchal, generate_keywords
-from src.KongBot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
+from src.KongBot.bot.explorationv2.llm import GenSubTreeQuery, Tree2FlatJSONQuery, GenSubTreeQueryV2
 from src.KongBot.bot.adapters import ascii_tree_to_kg
+from src.KongBot.bot.essay_gen.generator import generate_tree
 
 context = """
 Generate something about the origin of electronic music. Focus on the history techno
@@ -68,24 +67,26 @@ config = {
     "generate_sub_trees": {
         "cache_policy": "default",
         "model": "gpt3",
+    },
+    "gen_tree_essay" : {
+        "model" : "gpt4"
     }
 }
 
-# kg = KnowledgeGraph.load_graph("f3444cd4-3186-4931-80e2-689531326899")
-kg = KnowledgeGraph("Russia")
-# kg.add_node({
-#     "id": str(uuid.uuid4()),
-#     "node_data" : {
-#         "title": "Russian revolution",
-#         "children": [],
-#         "node_type": "TREE_NODE"
-#     }
-# })
+# kg = KnowledgeGraph("The first Mongol invasion of Europe")
 # kg.add_config(config)
 # kg.add_generators([
-#     GENERATORS.generate_sub_trees,
+#     generate_tree,
 #     # generate_details_hierarchal
 # ])
 # kg.generate_nodes()
 # print(kg.display_tree())
 # # # kg.save_graph()
+
+import json
+
+data = open("test/KongServer/data/data.json", 'r')
+data = json.loads(data.read())
+kg = KnowledgeGraph("Attaturk and the origins of the modern Turkish State")
+kg.from_json(data)
+print(kg.display_tree("cc2f7a97-bb67-4a88-90f3-358e843f426c", lineage=True))

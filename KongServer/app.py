@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 import os
 import uvicorn
@@ -12,6 +12,7 @@ from src.server.routes.graph.route import router as graph_router
 from src.server.routes.auth.routes import router as auth_router
 from src.server.routes.events.route import router as events_router
 from src.server.routes.static.route import router as static_router
+from src.server.routes.essay.route import router as essay_router
 
 from src.server.utils.utils import log_start_banner
 
@@ -59,6 +60,7 @@ def read_root():
 app.include_router(graph_router)
 app.include_router(auth_router)
 app.include_router(events_router)
+app.include_router(essay_router)
 
 from src.server.routes.graph.route import get_tree_router as tree_router
 from src.server.routes.graph.service import GraphManager

@@ -63,7 +63,7 @@ class KongBotDB:
         results.sort(key=lambda x: x[1])
         return results
 
-    def find_graph(self, id) -> Dict:
+    def get_graph(self, id) -> Dict:
         graph = db_conn.get_collection("graphs").find_one(
             {
                 "id": id
@@ -85,6 +85,13 @@ class KongBotDB:
                 "$set": graph
             },
             upsert=True)
+
+    def delete_graph(self, graph_id: str):
+        return db_conn.get_collection("graphs").delete_one(
+            {
+                "id": graph_id
+            }
+        )
 
     # does it make sense to store this on graph in separate collection?
     # thinking is, we may not want to load the full graph in mem if we just

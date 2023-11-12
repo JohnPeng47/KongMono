@@ -1,0 +1,189 @@
+{
+    "id": "45f3f91b-8058-49b1-a26b-d4a904caf412",
+    "node_data": {
+      "title": "Attaturk and the origins of the modern Turkish State",
+      "node_type": "ROOT",
+      "description": null,
+      "entity_relations": null,
+      "concept": null,
+      "color": "white",
+      "children": [
+        {
+          "id": "468b2b40-b32f-4cbc-b521-2ff4de306f0c",
+          "node_data": {
+            "title": "Early life and military career",
+            "node_type": "TREE_NODE",
+            "description": "",
+            "entity_relations": null,
+            "concept": null,
+            "color": "white",
+            "children": [
+              {
+                "id": "e6aa1bec-a4ff-4c24-b872-4929d7c076fa",
+                "node_data": {
+                  "title": "Attaturk's role in the Young Turk Revolution",
+                  "node_type": "TREE_NODE",
+                  "description": "",
+                  "entity_relations": null,
+                  "concept": null,
+                  "color": "white",
+                  "children": [
+                    {
+                      "id": "c4842940-c812-41cb-aa82-28b7c9b3167b",
+                      "node_data": {
+                        "title": "Leading the Ottoman Empire during World War I",
+                        "node_type": "TREE_NODE",
+                        "description": "",
+                        "entity_relations": null,
+                        "concept": null,
+                        "color": "white",
+                        "children": []
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "af8964f1-851f-44c5-9349-0b9e809ca953",
+          "node_data": {
+            "title": "Implementation of reforms",
+            "node_type": "TREE_NODE",
+            "description": "",
+            "entity_relations": null,
+            "concept": null,
+            "color": "white",
+            "children": [
+              {
+                "id": "cc2f7a97-bb67-4a88-90f3-358e843f426c",
+                "node_data": {
+                  "title": "Introduction of the Latin alphabet",
+                  "node_type": "TREE_NODE",
+                  "description": "",
+                  "entity_relations": null,
+                  "concept": null,
+                  "color": "white",
+                  "children": [
+                    {
+                      "id": "182eceb0-065c-4125-9704-e52c03931710",
+                      "node_data": {
+                        "title": "Abolition of the Caliphate",
+                        "node_type": "TREE_NODE",
+                        "description": "",
+                        "entity_relations": null,
+                        "concept": null,
+                        "color": "white",
+                        "children": []
+                      }
+                    },
+                    {
+                      "id": "764bd9c6-41b6-4d1c-bf7e-b979c3fef681",
+                      "node_data": {
+                        "title": "Emancipation of women",
+                        "node_type": "TREE_NODE",
+                        "description": "",
+                        "entity_relations": null,
+                        "concept": null,
+                        "color": "white",
+                        "children": []
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "4115e831-2fd0-4436-b69e-bb5118543920",
+                "node_data": {
+                  "title": "Creation of a secular state",
+                  "node_type": "TREE_NODE",
+                  "description": "",
+                  "entity_relations": null,
+                  "concept": null,
+                  "color": "white",
+                  "children": [
+                    {
+                      "id": "d43800ca-34a1-4b6a-b35a-f587e4deb490",
+                      "node_data": {
+                        "title": "Separation of religion and state",
+                        "node_type": "TREE_NODE",
+                        "description": "",
+                        "entity_relations": null,
+                        "concept": null,
+                        "color": "white",
+                        "children": []
+                      }
+                    },
+                    {
+                      "id": "5725e2bb-6d38-42b8-a8b7-c2953fcb5b41",
+                      "node_data": {
+                        "title": "Creation of a civil legal system",
+                        "node_type": "TREE_NODE",
+                        "description": "",
+                        "entity_relations": null,
+                        "concept": null,
+                        "color": "white",
+                        "children": []
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "828acb9f-9ac3-41fa-a479-cbfb78fa2e01",
+          "node_data": {
+            "title": "Modernization of Turkey",
+            "node_type": "TREE_NODE",
+            "description": "",
+            "entity_relations": null,
+            "concept": null,
+            "color": "white",
+            "children": [
+              {
+                "id": "412f78c4-67f8-4d62-b730-ebc241473c18",
+                "node_data": {
+                  "title": "Industrialization and economic reforms",
+                  "node_type": "TREE_NODE",
+                  "description": "",
+                  "entity_relations": null,
+                  "concept": null,
+                  "color": "white",
+                  "children": [
+                    {
+                      "id": "85ea93b2-e019-4a8d-9265-69f3f780ca4f",
+                      "node_data": {
+                        "title": "Development of infrastructure and transportation",
+                        "node_type": "TREE_NODE",
+                        "description": "",
+                        "entity_relations": null,
+                        "concept": null,
+                        "color": "white",
+                        "children": []
+                      }
+                    },
+                    {
+                      "id": "e52a95cd-458d-49ea-877c-986fcd693bee",
+                      "node_data": {
+                        "title": "Promotion of education and scientific research",
+                        "node_type": "TREE_NODE",
+                        "description": "",
+                        "entity_relations": null,
+                        "concept": null,
+                        "color": "white",
+                        "children": []
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+  

@@ -285,6 +285,9 @@ def test_ancestors(empty_knowledge_graph):
     # Testing ancestors for grandparent node (no ancestors)
     assert empty_knowledge_graph.ancestors("1") == []
 
+# def test_display_tree(empty_knowledge_graph):
+    
+
 # def test_display_tree_v2_lineage(empty_knowledge_graph):
 #     knowledge_graph = empty_knowledge_graph
 #     root = {

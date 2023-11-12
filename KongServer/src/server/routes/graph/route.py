@@ -103,6 +103,7 @@ def update_graph_route(graph_id: str,
 
     save_graph(kg)
     response.headers["Allow"] = "POST"
+    
     return {
         "status": "success"
     }

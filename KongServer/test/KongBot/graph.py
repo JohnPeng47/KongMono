@@ -1,6 +1,16 @@
 import pytest
+import json
 from src.KongBot.bot.base import KnowledgeGraph
 
+SMALL_GRAPH_JSON = json.loads(open("test/KongBot/data/data.json", "r").read())
+
+
+@pytest.fixture
+def small_knowledge_graph():
+    CURRICULUM = "Attaturk and the modern turkish state"
+    kg = KnowledgeGraph(CURRICULUM)
+    kg.from_json(SMALL_GRAPH_JSON)
+    return kg
 
 @pytest.fixture
 def empty_knowledge_graph():
@@ -54,6 +64,14 @@ def test_add_node_with_merge(empty_knowledge_graph):
             "children": []
         }
     }
+    root2 = {
+        "id": "0",
+        "node_data": {
+            "title": "Root2",
+            "node_type": "type1",
+            "children": []
+        }
+    }
     parent = {
         "id": "1",
         "node_data": {
@@ -74,9 +92,11 @@ def test_add_node_with_merge(empty_knowledge_graph):
     empty_knowledge_graph.add_node(root, {})
     empty_knowledge_graph.add_node(parent, root)
     empty_knowledge_graph.add_node(child, merge=True)
-
+    assert empty_knowledge_graph.get_node("1")["node_data"]["title"] == child["node_data"]["title"]
     assert empty_knowledge_graph.has_edge("0", "1")
-    # assert not empty_knowledge_graph.has_node("1")
+    
+    empty_knowledge_graph.add_node(root2, {})
+    assert empty_knowledge_graph.get_root()["node_data"]["title"] == root2["node_data"]["title"]
 
 
 def test_recursive_add(empty_knowledge_graph):
@@ -284,6 +304,40 @@ def test_ancestors(empty_knowledge_graph):
 
     # Testing ancestors for grandparent node (no ancestors)
     assert empty_knowledge_graph.ancestors("1") == []
+
+def test_display_tree(small_knowledge_graph: KnowledgeGraph):
+    NODE_ID = "cc2f7a97-bb67-4a88-90f3-358e843f426c"
+
+    assert small_knowledge_graph.display_tree() == \
+"""> Attaturk and the origins of the modern Turkish State
+--> Early life and military career
+----> Attaturk's role in the Young Turk Revolution
+------> Leading the Ottoman Empire during World War I
+--> Implementation of reforms
+----> Introduction of the Latin alphabet
+------> Abolition of the Caliphate
+------> Emancipation of women
+----> Creation of a secular state
+------> Separation of religion and state
+------> Creation of a civil legal system
+--> Modernization of Turkey
+----> Industrialization and economic reforms
+------> Development of infrastructure and transportation
+------> Promotion of education and scientific research
+""" 
+    assert small_knowledge_graph.display_tree(NODE_ID) == \
+"""> Introduction of the Latin alphabet
+--> Abolition of the Caliphate
+--> Emancipation of women
+"""
+    assert small_knowledge_graph.display_tree(NODE_ID, lineage=True) == \
+"""> Attaturk and the origins of the modern Turkish State
+--> Implementation of reforms
+=========SEPARATOR=========
+----> Introduction of the Latin alphabet
+------> Abolition of the Caliphate
+------> Emancipation of women
+"""
 
 # def test_display_tree_v2_lineage(empty_knowledge_graph):
 #     knowledge_graph = empty_knowledge_graph

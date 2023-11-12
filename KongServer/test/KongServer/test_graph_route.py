@@ -1,61 +1,74 @@
-import pytest
-from fastapi import FastAPI, status
-from starlette.testclient import TestClient
-from unittest.mock import MagicMock, patch
-
-from src.server.routes.auth.service import get_user_from_token
 from src.server.routes.graph.service import get_graph
+from src.server.routes.graph.route import router as graph_route
+from src.server.routes.graph.service import save_graph, delete_graph_db, get_graph, delete_graph_metadata_db
+from src.server.routes.graph.exceptions import GraphNotFound
+from src.KongBot.utils.db import KongBotDB
+from src.KongBot.bot.base.graph import KnowledgeGraph
 
-# Assuming your FastAPI app is named 'app' and you have the above routes added to it
-# and assuming you have defined 'get_user_from_token' and 'get_graph' dependency functions
+from .utils import convert_kg_to_rf
 
-# Mock dependencies
+from uuid import uuid4
+import pytest
+import json
+
+from .conftest import test_app_client
+
+TEST_GRAPH_SMALL = json.loads(open("test/KongServer/data/data.json", "r").read())
+KG_ID = TEST_GRAPH_SMALL['id']
+NON_EXISTENT_GRAPHID = "1234"
+
+KG_INSTANCE = KnowledgeGraph("Test Curriculum")
+KG_INSTANCE.from_json(TEST_GRAPH_SMALL)
+PARENT_NODE = KG_INSTANCE.filter_nodes({"children" : 3})[0]
+
 @pytest.fixture
-def mock_get_user_from_token():
-    return MagicMock(return_value={"user_id": "test_user"})
+def test_knowledgegraph():
+    save_graph(KG_INSTANCE, title="Test Graph")
+
+    yield
+
+    delete_graph_db(KG_ID)
+    delete_graph_metadata_db(KG_ID)
+    
+
+class TestGetGraphRoute:
+    def test_get_graph_route(self, test_app_client, test_knowledgegraph):
+        response = test_app_client.get(f"/graph/{KG_ID}")
+        assert response.status_code == 200
+        assert response.json() is not None
+
+    def test_get_graph_non_exist_id(self, test_app_client, test_knowledgegraph):
+        response = test_app_client.get(f"/graph/{NON_EXISTENT_GRAPHID}")
+        assert response.status_code == 404
+        assert response.json() is not None
 
 @pytest.fixture
-def mock_get_graph():
-    mock_graph = MagicMock()
-    mock_graph.to_json_frontend.return_value = '{}'
-    return mock_graph
+def update_add_child():
+    save_graph(KG_INSTANCE, title="Test Graph")
 
-@pytest.fixture
-def test_app_client(mock_get_user_from_token, mock_get_graph):
-    app = FastAPI()
+    update_kg = KnowledgeGraph("Test Curriculum")
+    update_kg.from_json(TEST_GRAPH_SMALL)
+    update_kg.add_node({
+        "id": str(uuid4()),
+        "node_data": {
+            "node_type": "NODE",
+            "title": "",
+            "children": []
+        }
+    }, parent_node=PARENT_NODE)
 
-    # Include your router here
-    # app.include_router(your_router)
+    update_payload = convert_kg_to_rf(update_kg)
+    print(json.dumps(update_payload.to_json()))
 
-    # Dependency overrides
-    app.dependency_overrides[get_user_from_token] = mock_get_user_from_token
-    app.dependency_overrides[get_graph] = mock_get_graph
+    yield update_payload.to_json()
 
-    with TestClient(app) as client:
-        yield client
+    delete_graph_db(KG_ID)
+    delete_graph_metadata_db(KG_ID)
 
-# Test for getting graph metadata
-def test_get_graph_metadata_route_success(test_app_client):
-    response = test_app_client.get("/metadata/")
-    assert response.status_code == status.HTTP_200_OK
-    assert isinstance(response.json(), list)  # Should return a list
-
-def test_get_graph_route_success(test_app_client, mock_get_graph):
-    graph_id = "test_graph_id"
-    response = test_app_client.get(f"/graph/{graph_id}")
-    assert response.status_code == status.HTTP_200_OK
-    # Confirm that we're returning JSON, mock_get_graph's to_json_frontend returns '{}'
-    assert response.json() == {}
-
-# Test for deletion of a graph
-def test_delete_graph_route_success(test_app_client):
-    graph_id = "test_graph_id"
-    with patch('path.to.your.delete_graph_db') as mock_delete_graph_db, \
-         patch('path.to.your.delete_graph_metadata_db') as mock_delete_graph_metadata_db:
-        mock_delete_graph_db.return_value = None
-        mock_delete_graph_metadata_db.return_value = None
-
-        response = test_app_client.get(f"/graph/delete/{graph_id}")
-        assert response.status_code == status.HTTP_200_OK
-        mock_delete_graph_db.assert_called_once_with(graph_id)
-        mock_delete_graph_metadata_db.assert_called_once_with(graph_id)
+class TestUpdateGraphRoute:
+    def test_add_node(self, test_app_client, update_add_child):
+        response = test_app_client.post(f"/graph/update/{KG_ID}", 
+                                        json=update_add_child)
+        
+        assert response.status_code == 200
+        assert response.json() is not None

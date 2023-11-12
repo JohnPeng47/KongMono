@@ -4,7 +4,7 @@ from fastapi import Request, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import pytz
 
-from .schema import User, JWTData
+from .schema import User, JWTData, UserAuthRequest
 from .utils import jwt_decode
 from .exceptions import DuplicateUserException
 from .config import ACCESS_TOKEN_EXPIRE_DAYS
@@ -21,17 +21,38 @@ db_conn = DBConnection()
 SECRET_KEY = "gangster_lean_boogie"
 ALGORITHM = "HS256"
 
-def create_user(user: User) -> User:
+def create_user(user: UserAuthRequest) -> User:
     res = db_conn.get_collection("users").insert_one(user.dict())
 
     # IDK about this exception
     if not res.acknowledged:
         raise MongoUnacknowledgeError("User creation Unacknowledged")
 
+    return User(**user.dict())
+
+def delete_user(user: User) -> User:
+    res = db_conn.get_collection("users").delete_one(user.dict())
+
+    if not res.acknowledged:
+        raise MongoUnacknowledgeError("User deletion Unacknowledged")
+
     return True
+    
 
+def get_user_by_id(authReq: UserAuthRequest) -> User | None:
+    user_dict = db_conn.get_collection("users").find_one({
+        "id": authReq.id
+    })
 
-def get_user_by_email(email: str) -> User | None:
+    if user_dict:
+        return User(**user_dict)
+
+    return None
+
+def get_email_from_user(user: UserAuthRequest) -> str:
+    return user.email
+
+def get_user_by_email(email: str = Depends(get_email_from_user)) -> User | None:
     user_dict = db_conn.get_collection("users").find_one({
         "email": email
     })
@@ -41,15 +62,10 @@ def get_user_by_email(email: str) -> User | None:
 
     return None
 
-
-def user_email_checker(user: User) -> User | None:
+def user_email_checker(user: User) -> bool | None:
     user_exists = get_user_by_email(user.email)
-    # TODO: this error is not getting caught
-    if user_exists:
-        raise DuplicateUserException(
-            f"User with email: {user.email} already exists")
-    return user
 
+    return True if user_exists else False
 
 def create_access_token(email: str):
     """

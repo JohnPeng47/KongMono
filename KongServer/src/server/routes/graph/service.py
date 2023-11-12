@@ -6,7 +6,7 @@ from src.server.database.db import DBConnection
 
 from fastapi import Depends, Body
 
-from .exceptions import GraphAuthorizationError
+from .exceptions import GraphAuthorizationError, GraphNotFound
 from .schema import GraphMetadata, GenSubgraphRequest
 from ..auth.schema import User
 
@@ -44,9 +44,6 @@ def get_graph_metadata_db(graph_id):
     metadata = db_conn.get_collection("graph_metadata").find_one({
         "id": graph_id
     })
-    if not metadata:
-        logger.error("No metadata is found for: ", graph_id)
-        raise Exception("No metadata found for graph: ", graph_id)
     
     return metadata
 
@@ -99,12 +96,16 @@ def check_graph_user_auth(user: User, graph: KnowledgeGraph) -> KnowledgeGraph:
 # TEMP
 def get_graph(graph_id: str, 
     metadata: GraphMetadata = Depends(get_graph_metadata_db)) -> KnowledgeGraph:
+    if not metadata:
+        raise GraphNotFound
+    
     graph_json = db_conn.get_collection("graphs").find_one({
         "id": graph_id
     })
 
     if not graph_json:
-        raise Exception("No graph is found for: ", graph_id)
+        logger.critical("Graph not found but metadata exists: ", metadata.dict())
+        raise GraphNotFound
     
     # this feels kinda weird
     curriculum = metadata["metadata"]["curriculum"]

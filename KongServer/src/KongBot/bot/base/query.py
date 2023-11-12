@@ -116,9 +116,8 @@ class BaseLLMQueryV2(BaseLLM):
         # TODO: hacky. Currently only supports single args. Need to change manually for cache
         # level2 hack: use inspect to figure out the number of positional args, so as to support
         # it for multiple args
-        # This calls the __init__ defined by the children, FYI
         return cls("placeholder1", cache_policy=cache_policy, model=model)
-
+    
     def init_prompt(self, prompt_template, **prompt_args):
         self.prompt_template = prompt_template
         super().init_prompt(prompt_template, **prompt_args)

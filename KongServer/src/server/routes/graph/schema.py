@@ -36,7 +36,6 @@ class RFNode(BaseModel):
     id: str
     data: GraphNodeData
     hidden: bool
-    type: str
     position: Position
     positionAbsolute: Position
     height: Optional[int]

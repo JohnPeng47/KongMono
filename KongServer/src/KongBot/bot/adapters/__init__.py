@@ -1,3 +1,4 @@
 from .llm_tree_json import llm_tree_json_adapter
 from .kg_to_frontend import FrontEndNodeAdapter
 from .ascii_tree_to_kg import ascii_tree_to_kg_v2
+from .dash_tree_to_kg import dash_tree_to_json

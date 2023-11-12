@@ -65,7 +65,7 @@ class KnowledgeGraph(DiGraph):
             self.from_json(graph_json)
 
         if config:
-            self.validate_config(config)
+            # self.validate_config(config)
             self.config = config
 
     @classmethod
@@ -78,9 +78,13 @@ class KnowledgeGraph(DiGraph):
             cls(graph["curriculum"], graph_id=graph["id"]) for graph in graphs
         ]
 
+    @cached_property
+    def graph_id(self) -> str:
+        return self.get_root()["id"]
+
     @classmethod
     def load_graph(cls, id) -> KnowledgeGraph:
-        graph = db_conn.find_graph(id)
+        graph = db_conn.get_graph(id)
         metadata = db_conn.get_graph_metadata(id)
 
         curriculum = metadata["metadata"]["curriculum"]
@@ -93,7 +97,7 @@ class KnowledgeGraph(DiGraph):
         """
         Save graph to mongo
         """
-        graph_id = self.get_root()["id"]
+        graph_id = self.graph_id()
         graph_title = self.get_root(
         )["node_data"]["title"] if not title else title
 
@@ -133,7 +137,7 @@ class KnowledgeGraph(DiGraph):
         self.generators.extend(generators)
 
     def add_config(self, config):
-        self.validate_config(config)
+        # self.validate_config(config)
         self.config = config
 
     # TODO: make sure to change to Dict
@@ -443,15 +447,6 @@ class KnowledgeGraph(DiGraph):
             #     print(f"Generator {config_k} in config not found")
             if config_k not in Config.generators:
                 raise ConfigInitError(f"Config {config_k} not found")
-
-    @cached_property
-    def leaves(self):
-        return [node for node in self.nodes if self.out_degree(node) == 0 and self.in_degree(node) != 0]
-
-    def shortest_path(self, target) -> List[Dict]:
-        root_id = self.get_root()["id"]
-        path = shortest_path(self, root_id, target)
-        return [self.get_node(node_id) for node_id in path]
 
     def get_random_node(self, node_filter: str = None):
         if node_filter:
