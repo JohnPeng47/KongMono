@@ -53,6 +53,9 @@ class CreateGraphRequest(BaseModel):
 class GenSubgraphRequest(BaseModel):
     subgraph: RFNode
 
+class GenSubGraphResponse(BaseModel):
+    subgraph: RFNode
+
 # TODO: should probably create a KGNode class
 def rfnode_to_kgnode(node: RFNode):
     node_data = node.data

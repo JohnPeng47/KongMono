@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, Body, Query, Response
-
 from .schema import GenSubgraphRequest, CreateGraphRequest, GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
 from .service import create_graph, get_graph, get_graph_metadata_db, list_graph_metadata_db, \
 get_graph_db, delete_graph_db, delete_graph_metadata_db, save_graph
 
+
+from fastapi import APIRouter, Depends, Body, Query, Response
+from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 from fastapi import HTTPException
 
@@ -111,16 +112,21 @@ def gen_subgraph_route(graph_id: str,
                         request: GenSubgraphRequest = Body(...),
                         kg: KnowledgeGraph = Depends(get_graph)):
     rf_subgraph_json = rfnode_to_kgnode(request.subgraph)
+    # get the old 
+    old_node = kg.get_node(request.subgraph.id)
 
     # unknown race condition here
     try:
         kg.add_node(rf_subgraph_json, merge=True)
     except NetworkXError as e:
-        subgraph_id, subgraph_title = rf_subgraph_json["id"], rf_subgraph_json["id"]["node_data"]["title"]
+        # subgraph_id, subgraph_title = rf_subgraph_json["id"], rf_subgraph_json["id"]["node_data"]["title"]
         logger.error("Error in subgraph add_node")
         logger.error(e)
-        logger.error(f"Subgraph id: {subgraph_id} and subgraph title: {subgraph_title}")
-        raise HTTPException(status_code=500)
+        # return the old node here so that at least frontend state can be kept clean
+        return JSONResponse(
+            status_code=400,
+            content = json.loads(kg.to_json_frontend(node=old_node))
+        )
     
     tree1, tree2, _ = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
     retry, success = 6, False
@@ -134,13 +140,14 @@ def gen_subgraph_route(graph_id: str,
 
             parent_ids = kg.parents(rf_subgraph_json["id"])
             parent = kg.get_node(parent_ids[0]) if len(parent_ids) > 0 else {}
-            subtree_node_new = ascii_tree_to_kg_v2(
-                subtree, rf_subgraph_json, parent)
-
+            subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, parent)
             kg.add_node(subtree_node_new, merge=True)
             save_graph(kg)
 
-            return json.loads(kg.to_json_frontend(parent_node=subtree_node_new))
+            return JSONResponse(
+                status_code=200,
+                content=json.loads(kg.to_json_frontend(node=subtree_node_new))
+            )
         except GeneratorException as e:
             # to increment it by one
             logger.error(

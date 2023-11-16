@@ -1,21 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi.exceptions import RequestValidationError, HTTPException
-from fastapi.requests import Request
+from fastapi.responses import HTMLResponse
 
 import os
 import uvicorn
 from logging import getLogger
-import logging.config
 import yaml
 
 from src.server.routes.graph.route import router as graph_router
 from src.server.routes.auth.routes import router as auth_router
 from src.server.routes.events.route import router as events_router
 from src.server.routes.static.route import router as static_router
-from src.server.configure import configure_logger
 
 from src.server.utils.utils import log_start_banner
 

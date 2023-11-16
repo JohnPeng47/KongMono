@@ -2,10 +2,10 @@
 DB_HOST = "18.191.159.163"
 API_HOST = "localhost"
 API_PORT = 8000
-LOG_CONFIG = "config/logger_windows.yaml"
+LOG_CONFIG = "log_config/logger_windows.yaml"
 
 [production]
 DB_HOST = "172.31.34.171"
 API_HOST = "0.0.0.0"
 API_PORT = 8000
-LOG_CONFIG = "config/logger_linux.yaml"
+LOG_CONFIG = "log_config/logger_linux.yaml"

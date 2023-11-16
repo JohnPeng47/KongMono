@@ -2,10 +2,10 @@ version: 1
 disable_existing_loggers: False
 formatters:
   default:
-    # "()": uvicorn.logging.DefaultFormatter
+    class: log_config.tzFormatter.TZFormatter
     format: "[%(asctime)s] %(module)s:%(funcName)s => %(message)s"
   access:
-    # "()": uvicorn.logging.AccessFormatter
+    class: log_config.tzFormatter.TZFormatter
     format: "[%(asctime)s] %(module)s:%(funcName)s => %(message)s"
 handlers:
   default:

@@ -6,7 +6,8 @@ sudo lsof -t -i:8000 -sTCP:LISTEN | xargs -r kill
 
 if [ "$1" = "server" ]; then
     cd KongServer
-    screen -mS kongserver python3 app.py
+    # screen -mS kongserver python3 app.py
+    python3 app.py
     # python3 app.py
 else
     cd KongUI && npm run build
