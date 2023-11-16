@@ -1,6 +1,6 @@
 from .schema import GenSubgraphRequest, CreateGraphRequest, GraphMetadataResp, GraphNode, RFNode, SaveGraphReq, rfnode_to_kgnode
 from .service import create_graph, get_graph, get_graph_metadata_db, list_graph_metadata_db, \
-get_graph_db, delete_graph_db, delete_graph_metadata_db, save_graph
+get_graph_db, delete_graph_db, delete_graph_metadata_db, save_graph, GraphManager
 
 
 from fastapi import APIRouter, Depends, Body, Query, Response
@@ -163,3 +163,83 @@ def gen_subgraph_route(graph_id: str,
 def create_graph_route(request: CreateGraphRequest):
     print("Creating graph with: ", request.curriculum, request.title)
     return create_graph(request.curriculum, request.title)
+
+from .lock import lock_graph
+
+def get_tree_router(
+    graph_manager: GraphManager
+) -> APIRouter:
+    router = APIRouter()
+    graph_lock = lock_graph(graph_manager)
+
+    @router.post("/graph/v2/update/{graph_id}")
+    @graph_lock
+    def update_graph_route(graph_id: str,
+                        rf_graph: RFNode, 
+                        response: Response):
+        kg = graph_manager.get_graph(graph_id)
+        kg_graph = rfnode_to_kgnode(rf_graph)
+        kg.add_node(kg_graph, merge=True)
+
+        save_graph(kg)
+        response.headers["Allow"] = "POST"
+        
+        return {
+            "status": "success"
+        }
+    
+    @router.post("/gen/v2/subgraph/{graph_id}", response_model=GraphNode)
+    @graph_lock
+    def gen_subgraph_route(graph_id: str,
+                            request: GenSubgraphRequest = Body(...)):
+        kg = graph_manager.get_graph(graph_id)
+        rf_subgraph_json = rfnode_to_kgnode(request.subgraph)
+        # get the old 
+        old_node = kg.get_node(request.subgraph.id)
+
+        # unknown race condition here
+        try:
+            kg.add_node(rf_subgraph_json, merge=True)
+        except NetworkXError as e:
+            # subgraph_id, subgraph_title = rf_subgraph_json["id"], rf_subgraph_json["id"]["node_data"]["title"]
+            logger.error("Error in subgraph add_node")
+            logger.error(e)
+            # return the old node here so that at least frontend state can be kept clean
+            return JSONResponse(
+                status_code=400,
+                content = json.loads(kg.to_json_frontend(node=old_node))
+            )
+        
+        tree1, tree2, _ = kg.display_tree_v2_lineage(rf_subgraph_json["id"])
+        retry, success = 6, False
+        default_model = "gpt3"
+        while retry > 0 and not success:
+            try:
+                subtree = GenSubTreeQueryV2(kg.curriculum,
+                                            tree1 + tree2,
+                                            cache_policy="default",
+                                            model=default_model).get_llm_output()
+
+                parent_ids = kg.parents(rf_subgraph_json["id"])
+                parent = kg.get_node(parent_ids[0]) if len(parent_ids) > 0 else {}
+                subtree_node_new = ascii_tree_to_kg_v2(subtree, rf_subgraph_json, parent)
+                kg.add_node(subtree_node_new, merge=True)
+                save_graph(kg)
+
+                return JSONResponse(
+                    status_code=200,
+                    content=json.loads(kg.to_json_frontend(node=subtree_node_new))
+                )
+            except GeneratorException as e:
+                # to increment it by one
+                logger.error(
+                    f"Retry attempt {6 - retry + 1}, use model: {default_model}, error: {e}")
+                retry -= 1
+                if retry <= 3:
+                    default_model = "gpt4"
+                continue
+
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+    return router

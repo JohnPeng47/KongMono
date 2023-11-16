@@ -60,7 +60,7 @@ export class Backend {
   genSubGraph(
     subgraph: Node<RFNodeData>,
     graphId: string): Promise<AxiosResponse> {
-    const endpoint = this.url + `/gen/subgraph/${graphId}`;
+    const endpoint = this.url + `/gen/v2/subgraph/${graphId}`;
     const data = {
       subgraph: subgraph
     }
@@ -74,7 +74,7 @@ export class Backend {
   updateGraph(
     rootNode: Node<RFNodeData>,
     graphId: string): void {
-    const endpoint = this.url + "/graph/update/" + graphId;
+    const endpoint = this.url + "/graph/v2/update/" + graphId;
 
     axios.post(endpoint, rootNode);
   }

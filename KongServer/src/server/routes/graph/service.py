@@ -1,5 +1,6 @@
 from typing import Dict
 import uuid
+from collections import defaultdict
 
 from src.server.database.db import db_conn
 
@@ -126,6 +127,8 @@ def save_graph(graph: KnowledgeGraph, title: str = ""):
 
     logger.debug(f"Saving graph: {graph_id}")
 
+import time
+
 class GraphManager:
     """
     Class that should be used to manage caching and locking graphs
@@ -137,20 +140,27 @@ class GraphManager:
     # https://redis.io/docs/manual/keyspace-notifications/
 
     def __init__(self):
-        self.locks = {}
+        self.locks = defaultdict(Lock)
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(GraphManager, cls).__new__(cls)
         return cls._instance
     
-    def get_graph(self,
-            graph_id: str, 
-            metadata: GraphMetadata = Depends(get_graph_metadata_db)) -> KnowledgeGraph:
-        
-        if not self.locks.get(graph_id, None):
-            self.locks[graph_id] = Lock()
+    def acquire_lock(self, graph_id: str):
+        lock = self.locks[graph_id]
+        lock.acquire()
+        logger.debug(f"Lock acquired: {graph_id}")
+    
+    def release_lock(self, graph_id: str):
+        lock = self.locks.get(graph_id, None)
+        if lock is None or not lock.locked():
+            raise Exception("Attempt to release an unacquired lock")
+        lock.release()
+        logger.debug(f"Lock released: {graph_id}")
 
+    def get_graph(self,
+            graph_id: str) -> KnowledgeGraph:
         graph_json = db_conn.get_collection("graphs").find_one({
             "id": graph_id
         })
@@ -161,6 +171,8 @@ class GraphManager:
             raise Exception("No graph is found for: ", graph_id)
         
         # this feels kinda weird
+
+        metadata = get_graph_metadata_db(graph_id)
         curriculum = metadata["metadata"]["curriculum"]
         graph = KnowledgeGraph(curriculum)
         graph.from_json(graph_json)
@@ -180,8 +192,6 @@ class GraphManager:
             graph_id = graph.get_root()["id"]
             graph_title = graph.get_root()["node_data"]["title"] if not title else title
 
-            print("Saving graph with title: ", graph_title) 
-
             print("Saving: ", graph.to_json())
             insert_graph_db(graph.to_json())
             insert_graph_metadata_db(graph_id, {
@@ -190,7 +200,7 @@ class GraphManager:
                 "tree": graph.display_tree()
             })
 
-            logger.debug(f"Saving graph: {graph_id}")
+            logger.debug(f"Saving graph: {graph_id} with title: {graph_title}")
         except Exception as e:
             logger.error("Error while saving graph: ", e)
             

@@ -68,6 +68,11 @@ app.include_router(graph_router)
 app.include_router(auth_router)
 app.include_router(events_router)
 
+from src.server.routes.graph.route import get_tree_router as tree_router
+from src.server.routes.graph.service import GraphManager
+app.include_router(tree_router(GraphManager()))
+
+
 # realistically, needs to be a dictionary keyed by user IDs
 app.curr_graph = None
 
