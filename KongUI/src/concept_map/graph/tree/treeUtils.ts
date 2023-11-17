@@ -4,13 +4,15 @@ import {
   BackendNode,
   Position,
   NodeID,
-  RFNode
+  RFNode,
+  NodeType
 } from "../../../common/common-types"
 import {
   GraphType,
   ConvertNode,
   ConvertEdge
 } from "../../data/processNodes";
+import { CreateNode, CreateEdge } from "../../data/processTree";
 import { NumberLiteralType } from "typescript";
 
 type DFSNode = {
@@ -232,6 +234,176 @@ export class TreeUtils {
     }
 
     return newNodes;
+  }
+
+  /**
+   * Delete node and their children
+   */
+  public deleteNodes(id: string): {
+    newNodes: Node<RFNodeData>[],
+    newEdges: Edge[]
+  } {
+    const node = this.findNodeRF(id);
+    const { childNodes: children } = this.getAllChildren(id);
+    const deleteNodes = [children, node].flat();
+    const newNodes = this.getNodes()
+      .filter((node) => 
+        !deleteNodes
+          .map(node => node.id)
+          .includes(node.id)
+      )
+      .map((node, index) => {
+        return {
+          ...node,
+          position: {
+            x : node.position.x,
+            y : index * 70
+          }
+        }
+      })
+    
+    const newEdges = this.getEdges()
+      .filter((edge) => 
+        !deleteNodes
+          .map(node => node.id)
+          .includes(edge.target)
+      )
+
+    return {
+      newNodes,
+      newEdges
+    }
+  }
+
+  /**
+   * Adds blank node
+   */
+  public addNode(id: string): {
+    newNodes: Node<RFNodeData>[],
+    newEdges: Edge[]
+  } {
+    const currNode = this.findNodeRF(id);
+    const currEdge = this.findEdge(id);
+    const { 
+      beforeNodes,
+      beforeEdges,
+      afterNodes,
+      afterEdges
+    } = this.getNodesBeforeAfter(id, 0);
+    
+    const insertNode = CreateNode({
+      data: {
+        title: ""
+      },
+      type: NodeType.TreeNode,
+      hidden: false,
+      position: {
+        x : currNode.position.x,
+        y: currNode.position.y
+      }
+    });
+
+    const insertEdge = CreateEdge({
+      target: insertNode.id,
+      source: this.parent(id).id
+    });
+
+    const newNodes = beforeNodes
+      // we want to swap the order of the nodes
+      .concat(insertNode)
+      .concat(currNode)
+      // .concat(currNode)
+      .concat(afterNodes)
+      .map((node, index) => ({
+        ...node,
+        position: {
+          x : node.position.x,
+          y : index * 70
+        }
+      })
+    );
+
+    const newEdges = beforeEdges
+      .concat(insertEdge)
+      .concat(currEdge)
+      .concat(afterEdges);
+
+    return {
+      newNodes,
+      newEdges
+    }
+  }
+
+
+  /**
+   * Collapse nodes
+   */
+  public collapseNodes(parentId: string, collapsed: boolean): {
+    newNodes: Node<RFNodeData>[],
+    newEdges: Edge[]
+  } {
+    const parentNode = this.findNodeRF(parentId);
+    const parentEdge = this.findEdge(parentId);
+
+    let newNodes = [];
+    let newEdges = [];
+    if (!collapsed) {
+      const { childNodes, childEdges } = this.getAllChildren(parentId);
+
+      this.saveCollapsedNodes(parentId, childNodes, childEdges);
+      const {
+        beforeNodes,
+        beforeEdges,
+        afterNodes,
+        afterEdges
+      } = this.getNodesBeforeAfter(parentId, childNodes.length);
+      
+      newNodes = beforeNodes
+        .concat(parentNode)
+        .concat(afterNodes)
+        .map((node, index) => ({
+          ...node,
+          position: {
+            x : node.position.x,
+            y : index * 70
+          }
+        }));
+
+      newEdges = beforeEdges
+          .concat(parentEdge)
+          .concat(afterEdges);
+
+    } else {
+      const { savedNodes, savedEdges } = this.getCollapsedNodes(parentId);
+      const {
+        beforeNodes,
+        beforeEdges,
+        afterNodes,
+        afterEdges
+      } = this.getNodesBeforeAfter(parentId, 0);
+      
+      newNodes = beforeNodes
+        .concat(parentNode)
+        .concat(savedNodes)
+        .concat(afterNodes)
+        .map((node, index) => ({
+          ...node,
+          position: {
+            x : node.position.x,
+            y : index * 70
+          }
+        }));
+
+      newEdges = beforeEdges
+          .concat(parentEdge)
+          .concat(savedEdges)
+          .concat(afterEdges);
+    }
+
+    return {
+      newNodes,
+      newEdges
+    }
   }
 
   /**

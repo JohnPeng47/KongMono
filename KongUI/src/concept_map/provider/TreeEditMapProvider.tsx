@@ -13,11 +13,7 @@ import {
   Edge
 } from "reactflow";
 import { TreeUtils } from "../graph/tree/treeUtils";
-import { 
-  RFNodeData,
-  NodeType
-} from "../../common/common-types";
-
+import { RFNodeData } from "../../common/common-types";
 import {
   ChangeCounter,
   nextChangeCount,
@@ -31,9 +27,6 @@ import { GraphType } from "../data/processNodes";
 import { BackendContext } from "./backendProvider";
 import { AxiosResponse } from "axios";
 
-// Should just get rid of processNodes
-// import { CreateTreeNode, CreateTreeEdge } from "../data/processNodes";
-import { CreateNode, CreateEdge } from "../data/processTree";
 interface TreeEditMap {
   downloadGraph: (graphID: string, graphType: GraphType) => void;
   genSubGraph: (nodeId: string) => Promise<AxiosResponse>;
@@ -149,32 +142,8 @@ export const TreeEditMapProvider = memo(
    * Deletes node and all its children as well as repositioning
    */
   const deleteNode = useCallback(
-    (id: string) : void => {
-      const node = graph.findNodeRF(id);
-      const { childNodes: children } = graph.getAllChildren(id);
-      const deleteNodes = [children, node].flat();
-      const newNodes = getNodes()
-        .filter((node) => 
-          !deleteNodes
-            .map(node => node.id)
-            .includes(node.id)
-        )
-        .map((node, index) => {
-          return {
-            ...node,
-            position: {
-              x : node.position.x,
-              y : index * 70
-            }
-          }
-        })
-      
-      const newEdges = getEdges()
-        .filter((edge) => 
-          !deleteNodes
-            .map(node => node.id)
-            .includes(edge.target)
-        )
+    (id: string): void => {
+      const {newNodes, newEdges} = graph.deleteNodes(id);
 
       changeEdges(newEdges);
       changeNodes(newNodes);
@@ -186,52 +155,8 @@ export const TreeEditMapProvider = memo(
    */
   const addNode = useCallback(
     (currId: string): void => {
-      const currNode = graph.findNodeRF(currId);
-      const currEdge = graph.findEdge(currId);
-      const { 
-        beforeNodes,
-        beforeEdges,
-        afterNodes,
-        afterEdges
-      } = graph.getNodesBeforeAfter(currId, 0);
-      
-      const insertNode = CreateNode({
-        data: {
-          title: ""
-        },
-        type: NodeType.TreeNode,
-        hidden: false,
-        position: {
-          x : currNode.position.x,
-          y: currNode.position.y
-        }
-      });
+      const {newNodes, newEdges} = graph.addNode(currId);
 
-      const insertEdge = CreateEdge({
-        target: insertNode.id,
-        source: graph.parent(currId).id
-      });
-
-      const newNodes = beforeNodes
-        // we want to swap the order of the nodes
-        .concat(insertNode)
-        .concat(currNode)
-        // .concat(currNode)
-        .concat(afterNodes)
-        .map((node, index) => ({
-          ...node,
-          position: {
-            x : node.position.x,
-            y : index * 70
-          }
-        })
-      );
-
-      const newEdges = beforeEdges
-        .concat(insertEdge)
-        .concat(currEdge)
-        .concat(afterEdges);
-    
       changeNodes(newNodes);
       changeEdges(newEdges);
   }, [changeNodes, changeEdges]);
@@ -241,68 +166,8 @@ export const TreeEditMapProvider = memo(
    */
   const collapseNodes = useCallback(
     (parentId: string, collapsed: boolean): void => {
-      const parentNode = graph.findNodeRF(parentId);
-      const parentEdge = graph.findEdge(parentId);
-
-      let newNodes = [];
-      let newEdges = [];
-      if (!collapsed) {
-        const { childNodes, childEdges } = graph.getAllChildren(parentId);
-
-        graph.saveCollapsedNodes(parentId, childNodes, childEdges);
-
-        console.log("Expanding nodes: ", childNodes.length);
-        const {
-          beforeNodes,
-          beforeEdges,
-          afterNodes,
-          afterEdges
-        } = graph.getNodesBeforeAfter(parentId, childNodes.length);
-        
-        newNodes = beforeNodes
-          .concat(parentNode)
-          .concat(afterNodes)
-          .map((node, index) => ({
-            ...node,
-            position: {
-              x : node.position.x,
-              y : index * 70
-            }
-          }));
-
-        newEdges = beforeEdges
-            .concat(parentEdge)
-            .concat(afterEdges);
-
-      } else {
-        const { savedNodes, savedEdges } = graph.getCollapsedNodes(parentId);
-        const {
-          beforeNodes,
-          beforeEdges,
-          afterNodes,
-          afterEdges
-        } = graph.getNodesBeforeAfter(parentId, 0);
-
-        console.log("Expanding nodes: ", savedNodes.length);
-        
-        newNodes = beforeNodes
-          .concat(parentNode)
-          .concat(savedNodes)
-          .concat(afterNodes)
-          .map((node, index) => ({
-            ...node,
-            position: {
-              x : node.position.x,
-              y : index * 70
-            }
-          }));
-  
-        newEdges = beforeEdges
-            .concat(parentEdge)
-            .concat(savedEdges)
-            .concat(afterEdges);
-      }
-
+      const {newNodes, newEdges} = graph.collapseNodes(parentId, collapsed);
+      
       changeNodes(newNodes);
       changeEdges(newEdges);
   }, [changeNodes, changeEdges]);
