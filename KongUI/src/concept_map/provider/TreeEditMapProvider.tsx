@@ -308,58 +308,6 @@ export const TreeEditMapProvider = memo(
   }, [changeNodes, changeEdges]);
 
 
-  // const collapseNodes = useCallback(
-  //   (parentId: string, collapsed: boolean): void => {
-  //     const direction = collapsed ? 1 : -1;
-
-  //     const parentNode = graph.findNodeRF(parentId);
-  //     const parentEdge = graph.findEdge(parentId);
-  //     const { childNodes: nodesCollapsed, childEdges } = graph.getAllChildren(parentId);
-  //     const collapsedNodeIds = nodesCollapsed.map(node => node.id);
-
-  //     const {
-  //       beforeNodes,
-  //       beforeEdges,
-  //       afterNodes,
-  //       afterEdges
-  //     } = graph.getNodesBeforeAfter(parentId, nodesCollapsed.length);
-      
-  //     const newNodes = beforeNodes
-  //       .concat(parentNode)
-  //       .concat(nodesCollapsed.map(node => (
-  //         {
-  //           ...node,
-  //           hidden: !collapsed
-  //         }
-  //       )))
-  //       .concat(afterNodes.map(node => (
-  //         {
-  //           ...node,
-  //           position: {
-  //             x: node.position.x,
-  //             y: node.position.y + nodesCollapsed.length * 70 * direction
-  //           }
-  //         }
-  //       )));
-      
-  //     const newEdges = beforeEdges
-  //         .concat(parentEdge)
-  //         .concat(
-  //           getEdges()
-  //             .filter(edge => collapsedNodeIds.includes(edge.target))
-  //             .map(edge => (
-  //               {
-  //                 ...edge,
-  //                 hidden: !collapsed
-  //               }
-  //             ))
-  //         )
-  //         .concat(afterEdges);
-
-  //     changeNodes(newNodes);
-  //     changeEdges(newEdges);
-  // }, [changeNodes, changeEdges]);
-
   /**
    * Sync backend
    */

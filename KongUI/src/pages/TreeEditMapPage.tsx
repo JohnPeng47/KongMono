@@ -12,6 +12,8 @@ import TreeNode from "../concept_map/components/node/TreeNode";
 import { Fab } from "@mui/material";
 import QuizIcon from "@mui/icons-material/Add";
 import { TreeEditMapContext, TreeEditMapProvider } from "../concept_map/provider/TreeEditMapProvider";
+import SideMenu from "../concept_map/components/sidebar";
+
 
 const nodeTypes = {
   treeNode : TreeNode
@@ -19,6 +21,7 @@ const nodeTypes = {
 
 function TreeEditMapPage() {
   const [ initialized, setInitialized ] = useState(false);
+  const [ sideMenuOpen, setSideMenuOpen ] = useState(false);
 
   const { mapId } = useParams();
   // const [dataFetched, setDataFetched] = useState(false);
@@ -56,6 +59,7 @@ function TreeEditMapPage() {
       >
       </ReactFlow>
       <Fab color="primary" aria-label="add" 
+        onClick={() => setSideMenuOpen(open => !open)}
         sx={{
          position: 'fixed', 
          bottom: 100, 
@@ -63,6 +67,9 @@ function TreeEditMapPage() {
         }}>
         <QuizIcon />
       </Fab>
+      <SideMenu 
+        isOpen={sideMenuOpen} 
+        setIsOpen={setSideMenuOpen}></SideMenu>
     </div>
   );
 }
