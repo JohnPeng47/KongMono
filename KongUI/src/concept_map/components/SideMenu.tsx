@@ -2,7 +2,7 @@ import Drawer from '@mui/material/Drawer';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import List from '@mui/material/List';
 import TextField from '@mui/material/TextField';
-import { IconButton } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 
 import { UseStateDispatch } from "../utils/types";
 import { Node } from "reactflow";
@@ -29,7 +29,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function SideMenu(props: SideMenuProps) {
     const { setIsOpen, isOpen } = props;
-    
+    console.log("Re-rendering with: ", props.data);
+
     return (
         <div>
             <Drawer
@@ -43,16 +44,19 @@ export default function SideMenu(props: SideMenuProps) {
                      <ChevronRightIcon />
                 </IconButton>
             </DrawerHeader>
-            <List>
+            <Stack>
                 <TextField
-                id="standard-multiline-static"
-                label="Multiline"
-                multiline
-                rows={4}
-                defaultValue="Default Value"
-                variant="standard"
+                    value={props.data ? props.data.title : ""}
+                    variant="standard"
                 />
-            </List>
+                <TextField
+                    id="standard-multiline-static"
+                    multiline
+                    rows={4}
+                    value={props.data ? props.data.description : ""}
+                    variant="standard"
+                />
+            </Stack>
             </Drawer>
         </div>
     );

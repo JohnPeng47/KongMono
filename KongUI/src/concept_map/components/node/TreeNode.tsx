@@ -59,9 +59,11 @@ function TreeNode({ data, isConnectable, selected, xPos, yPos, openSideMenu}: Tr
     modifyNodeTitle(data.id, titleRef.current);
   };
 
-  if (selected)
+  if (selected) {
+    console.log("selected node: ", data.id);
     openSideMenu(data, true);
-
+  }
+    
   function GenDescrBtn() { 
     return (
       <Button 
