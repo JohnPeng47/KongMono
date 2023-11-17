@@ -96,7 +96,7 @@ const ConceptMapPage = () => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        nodeTypes={nodeTypes}
+        // nodeTypes={nodeTypes}
         fitView
       >
         <Panel position="top-right">

@@ -28,10 +28,11 @@ type TreeNodeProps = {
     isConnectable: boolean;
     selected: boolean;
     xPos: number,
-    yPos: number 
+    yPos: number,
+    openSideMenu: (data: RFNodeData, open: boolean) => void;
   };
 
-function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) {
+function TreeNode({ data, isConnectable, selected, xPos, yPos, openSideMenu}: TreeNodeProps) {
   const [showPopup, setShowPopup] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [loading, setLoading] = useState<boolean>(false);
@@ -57,6 +58,9 @@ function TreeNode({ data, isConnectable, selected, xPos, yPos }: TreeNodeProps) 
     titleRef.current = event.target.value;
     modifyNodeTitle(data.id, titleRef.current);
   };
+
+  if (selected)
+    openSideMenu(data, true);
 
   function GenDescrBtn() { 
     return (

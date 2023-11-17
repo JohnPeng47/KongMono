@@ -5,12 +5,16 @@ import TextField from '@mui/material/TextField';
 import { IconButton } from '@mui/material';
 
 import { UseStateDispatch } from "../utils/types";
-
+import { Node } from "reactflow";
 import styled from 'styled-components';
+import { RFNodeData } from '../../common/common-types';
 
 type SideMenuProps = {
-    isOpen: boolean;
+    // what?
+    children: React.ReactNode;
+    data: RFNodeData;
     setIsOpen: UseStateDispatch<boolean>;
+    isOpen: boolean;
 }
 
 const DrawerHeader = styled('div')(({ theme }) => ({

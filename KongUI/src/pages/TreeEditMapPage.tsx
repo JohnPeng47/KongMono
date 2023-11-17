@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useContext } from "use-context-selector";
 import ReactFlow, {
     applyNodeChanges,
@@ -12,19 +12,17 @@ import TreeNode from "../concept_map/components/node/TreeNode";
 import { Fab } from "@mui/material";
 import QuizIcon from "@mui/icons-material/Add";
 import { TreeEditMapContext, TreeEditMapProvider } from "../concept_map/provider/TreeEditMapProvider";
-import SideMenu from "../concept_map/components/sidebar";
-
-
-const nodeTypes = {
-  treeNode : TreeNode
-}
+import SideMenu from "../concept_map/components/SideMenu";
+import { RFNodeData } from "../common/common-types";
+import { createElement } from 'react';
+import { addPropsToRFNode } from "../concept_map/utils/types";
 
 function TreeEditMapPage() {
   const [ initialized, setInitialized ] = useState(false);
   const [ sideMenuOpen, setSideMenuOpen ] = useState(false);
+  const [ sideMenuData, setSideMenuData ] = useState<RFNodeData | null>(null);
 
   const { mapId } = useParams();
-  // const [dataFetched, setDataFetched] = useState(false);
 
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
@@ -43,7 +41,18 @@ function TreeEditMapPage() {
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     []
   );
-  
+
+  const openSideMenu = (data: RFNodeData, open: boolean) => {
+    setSideMenuData(data);
+    setSideMenuOpen(open);
+  };
+
+  const nodeTypeWithSideMenu = useMemo(
+    () => ({
+        treeNode: addPropsToRFNode(TreeNode, {  openSideMenu: openSideMenu }),
+    }), [] 
+  );
+
   return (
     <div style={{ height: '100%' }}>
       <ReactFlow
@@ -51,7 +60,7 @@ function TreeEditMapPage() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         edges={edges}
-        nodeTypes={nodeTypes}
+        nodeTypes={nodeTypeWithSideMenu}
         deleteKeyCode={null}
         zoomOnDoubleClick={null}
         // disable dragging
@@ -67,9 +76,11 @@ function TreeEditMapPage() {
         }}>
         <QuizIcon />
       </Fab>
-      <SideMenu 
+      <SideMenu
+        data={sideMenuData}
         isOpen={sideMenuOpen} 
-        setIsOpen={setSideMenuOpen}></SideMenu>
+        setIsOpen={setSideMenuOpen}>
+      </SideMenu>
     </div>
   );
 }
